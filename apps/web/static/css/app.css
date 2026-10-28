@@ -1,7 +1,8 @@
 /* ==========================================================================
-   TEMA DAS CORES DO BRASIL — TRANSPARÊNCIA PÚBLICA & AUDITORIA CÍVICA
-   Verde Bandeira (#009c3b), Amarelo Ouro (#ffdf00), Azul Noturno (#030a16 / #08162b)
-   REGRA FUNDAMENTAL: O Vermelho (#dc2626 / #ef4444) é ESTRITAMENTE EXCLUSIVO
+   TEMA SÓBRIO EM FUNDO BRANCO — TRANSPARÊNCIA PÚBLICA & AUDITORIA CÍVICA
+   Fundo Branco / Papel Neutro (#ffffff / #f8fafc), Azul Institucional (#002776),
+   Verde Bandeira (#00853b), Âmbar Ouro (#b45309)
+   REGRA FUNDAMENTAL: O Vermelho (#dc2626 / #991b1b) é ESTRITAMENTE EXCLUSIVO
    para sinalizar "ALERTA DE CORRUPÇÃO E IRREGULARIDADES GRAVES"!
    ========================================================================== */
 
@@ -9,36 +10,44 @@
   --font-sans: 'Public Sans', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
 
-  /* Cores Nacionais do Brasil */
-  --br-azul-fundo: #030a16;
-  --br-azul-superficie: #08162b;
-  --br-azul-borda: #122b52;
-  --br-azul-borda-hover: #1d4077;
-  --br-azul-texto-secundario: #cbd5e1;
-  --br-azul-texto-apoio: #94a3b8;
+  /* Cores Neutras e Superfícies (Fundo Branco Sóbrio) */
+  --br-fundo: #f8fafc;
+  --br-superficie: #ffffff;
+  --br-superficie-subtil: #f1f5f9;
+  --br-borda: #e2e8f0;
+  --br-borda-hover: #cbd5e1;
+  --br-borda-foco: #002776;
 
-  --br-verde-bandeira: #009c3b;
-  --br-verde-hover: #00b343;
-  --br-verde-claro: #10b981;
-  --br-verde-superficie: rgba(0, 156, 59, 0.12);
-  --br-verde-borda: rgba(0, 156, 59, 0.4);
+  /* Tipografia de Alto Contraste */
+  --br-texto-primario: #0f172a;
+  --br-texto-secundario: #334155;
+  --br-texto-apoio: #64748b;
 
-  --br-amarelo-ouro: #ffdf00;
-  --br-amarelo-hover: #ffe433;
-  --br-amarelo-ambar: #f59e0b;
-  --br-amarelo-superficie: rgba(255, 223, 0, 0.1);
-  --br-amarelo-borda: rgba(255, 223, 0, 0.35);
+  /* Cores Institucionais do Brasil */
+  --br-azul-institucional: #002776;
+  --br-azul-superficie: #eff6ff;
+  --br-azul-borda: #bfdbfe;
+  --br-azul-texto: #1d4ed8;
 
-  --br-branco: #ffffff;
+  --br-verde-bandeira: #00853b;
+  --br-verde-hover: #006b2f;
+  --br-verde-superficie: #ecfdf5;
+  --br-verde-borda: #a7f3d0;
+  --br-verde-texto: #065f46;
+
+  --br-ouro-ambar: #b45309;
+  --br-ouro-superficie: #fffbeb;
+  --br-ouro-borda: #fde68a;
 
   /* VERMELHO EXCLUSIVO: ALERTA DE CORRUPÇÃO & IRREGULARIDADES GRAVES */
-  --corrupcao-vermelho-alerta: #ef4444;
-  --corrupcao-vermelho-profundo: #dc2626;
-  --corrupcao-vermelho-superficie: rgba(239, 68, 68, 0.12);
-  --corrupcao-vermelho-borda: rgba(239, 68, 68, 0.45);
+  --corrupcao-vermelho: #dc2626;
+  --corrupcao-vermelho-hover: #b91c1c;
+  --corrupcao-vermelho-superficie: #fef2f2;
+  --corrupcao-vermelho-borda: #fca5a5;
+  --corrupcao-vermelho-texto: #991b1b;
 }
 
-/* Reset e Escala Tipográfica Rigorosa (> 1.25x entre papéis) */
+/* Reset e Escala Tipográfica Rigorosa */
 *, *::before, *::after {
   box-sizing: border-box;
 }
@@ -47,40 +56,38 @@ body {
   font-family: var(--font-sans);
   font-size: 0.875rem; /* 14px */
   line-height: 1.5;
-  background-color: var(--br-azul-fundo);
-  color: var(--br-branco);
+  background-color: var(--br-fundo);
+  color: var(--br-texto-primario);
   margin: 0;
   padding: 0;
-  background-image: 
-    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(0, 39, 118, 0.35), transparent),
-    radial-gradient(circle at 10% 20%, rgba(0, 156, 59, 0.08), transparent 40%),
-    radial-gradient(circle at 90% 80%, rgba(255, 223, 0, 0.05), transparent 40%);
-  background-attachment: fixed;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 h1 {
-  font-size: 1.875rem; /* 30px (1.33x de h2) */
+  font-size: 1.875rem; /* 30px */
   font-weight: 800;
   line-height: 1.2;
   letter-spacing: -0.025em;
+  color: var(--br-texto-primario);
   margin: 0;
 }
 
 h2 {
-  font-size: 1.375rem; /* 22px (1.22x de h3) */
+  font-size: 1.375rem; /* 22px */
   font-weight: 800;
   line-height: 1.25;
   letter-spacing: -0.02em;
+  color: var(--br-texto-primario);
   margin: 0;
 }
 
 h3 {
-  font-size: 1.125rem; /* 18px (1.28x de body) */
+  font-size: 1.125rem; /* 18px */
   font-weight: 700;
   line-height: 1.35;
   letter-spacing: -0.01em;
+  color: var(--br-texto-primario);
   margin: 0;
 }
 
@@ -88,19 +95,20 @@ h4 {
   font-size: 0.9375rem; /* 15px */
   font-weight: 600;
   line-height: 1.4;
+  color: var(--br-texto-primario);
   margin: 0;
 }
 
-/* Custom Scrollbars Tematizadas nas Cores Nacionais */
+/* Custom Scrollbars Sóbrias */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--br-azul-fundo);
+  background: var(--br-fundo);
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--br-azul-borda);
+  background: #cbd5e1;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
@@ -110,32 +118,32 @@ h4 {
 /* Seleção de Texto e Focus Rings */
 ::selection {
   background-color: var(--br-verde-bandeira);
-  color: var(--br-branco);
+  color: #ffffff;
 }
 
 :focus-visible {
-  outline: 2px solid var(--br-amarelo-ouro);
+  outline: 2px solid var(--br-azul-institucional);
   outline-offset: 2px;
 }
 
-/* Numerais Tabulares */
+/* Numerais Tabulares e Fontes Periciais */
 .tabular-nums {
   font-variant-numeric: tabular-nums;
 }
 
-/* Superfícies e Cartões Analíticos */
+/* Cartões Analíticos em Fundo Branco */
 .card-analitico {
-  background-color: var(--br-azul-superficie);
-  border: 1px solid var(--br-azul-borda);
+  background-color: var(--br-superficie);
+  border: 1px solid var(--br-borda);
   border-radius: 12px;
   padding: 1.25rem;
-  box-shadow: 0 4px 16px -2px rgba(3, 10, 22, 0.6);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
 }
 
 /* Abas de Navegação */
 .tab-btn {
   border-bottom: 2px solid transparent;
-  color: var(--br-azul-texto-apoio);
+  color: var(--br-texto-apoio);
   padding: 0.625rem 1rem;
   font-size: 0.8125rem;
   font-weight: 600;
@@ -143,54 +151,54 @@ h4 {
 }
 
 .tab-btn:hover {
-  color: var(--br-branco);
-  background-color: rgba(18, 43, 82, 0.4);
+  color: var(--br-texto-primario);
+  background-color: var(--br-superficie-subtil);
 }
 
 .tab-btn.active {
-  border-bottom-color: var(--br-amarelo-ouro);
-  color: var(--br-amarelo-ouro);
-  background-color: var(--br-azul-superficie);
+  border-bottom-color: var(--br-azul-institucional);
+  color: var(--br-azul-institucional);
+  background-color: var(--br-superficie);
 }
 
 .tab-btn-corrupcao {
-  color: #fca5a5;
-  background-color: rgba(69, 10, 10, 0.4);
+  color: var(--corrupcao-vermelho-texto);
+  background-color: var(--corrupcao-vermelho-superficie);
 }
 
 .tab-btn-corrupcao:hover {
-  background-color: rgba(127, 29, 29, 0.4);
-  color: #ffffff;
+  background-color: #fee2e2;
+  color: var(--corrupcao-vermelho);
 }
 
 .tab-btn-corrupcao.active {
-  border-bottom-color: var(--corrupcao-vermelho-alerta) !important;
-  color: var(--corrupcao-vermelho-alerta) !important;
+  border-bottom-color: var(--corrupcao-vermelho) !important;
+  color: var(--corrupcao-vermelho) !important;
   background-color: var(--corrupcao-vermelho-superficie) !important;
 }
 
 /* ==========================================================================
-   ALERTA DE CORRUPÇÃO — REGRAS CRAFT FLOOR
-   Sem border-left 4px, sem glow zero-offset (#ef4444)
+   ALERTA DE CORRUPÇÃO EM FUNDO CLARO — DESTAQUE COM MÁXIMA GRAVIDADE
    ========================================================================== */
 .card-corrupcao-alerta {
-  background-color: rgba(45, 10, 10, 0.7);
-  border: 1px solid var(--corrupcao-vermelho-alerta);
+  background-color: var(--corrupcao-vermelho-superficie);
+  border: 1px solid var(--corrupcao-vermelho-borda);
   border-radius: 12px;
   padding: 1.25rem;
-  box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.6);
-  transition: transform 0.15s ease, background-color 0.15s ease;
+  box-shadow: 0 1px 3px 0 rgba(220, 38, 38, 0.08);
+  transition: transform 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 .card-corrupcao-alerta:hover {
-  background-color: rgba(65, 12, 12, 0.85);
+  background-color: #fee2e2;
+  box-shadow: 0 4px 12px -2px rgba(220, 38, 38, 0.15);
   transform: translateY(-1px);
 }
 
 .badge-corrupcao {
-  background-color: rgba(239, 68, 68, 0.18);
-  color: #fca5a5;
-  border: 1px solid var(--corrupcao-vermelho-alerta);
+  background-color: #fee2e2;
+  color: var(--corrupcao-vermelho-texto);
+  border: 1px solid var(--corrupcao-vermelho-borda);
   font-family: var(--font-mono);
   font-weight: 700;
   text-transform: uppercase;
@@ -204,15 +212,15 @@ h4 {
 
 /* Linha da Tabela sob Alerta de Corrupção */
 .linha-corrupcao {
-  background-color: rgba(127, 29, 29, 0.22) !important;
-  box-shadow: inset 0 0 0 1px rgba(239, 68, 68, 0.45);
+  background-color: #fef2f2 !important;
+  box-shadow: inset 0 0 0 1px var(--corrupcao-vermelho-borda);
 }
 
 .linha-corrupcao:hover {
-  background-color: rgba(153, 27, 27, 0.32) !important;
+  background-color: #fee2e2 !important;
 }
 
-/* Badges das Fases Orçamentárias */
+/* Badges das Fases Orçamentárias em Fundo Claro */
 .badge-fase {
   padding: 2px 8px;
   border-radius: 9999px;
@@ -227,31 +235,31 @@ h4 {
 }
 
 .badge-pagamento {
-  background-color: rgba(0, 156, 59, 0.18);
-  color: #34d399;
-  border: 1px solid rgba(0, 156, 59, 0.45);
+  background-color: #ecfdf5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
 }
 
 .badge-liquidacao {
-  background-color: rgba(59, 130, 246, 0.18);
-  color: #93c5fd;
-  border: 1px solid rgba(59, 130, 246, 0.45);
+  background-color: #eff6ff;
+  color: #1d4ed8;
+  border: 1px solid #bfdbfe;
 }
 
 .badge-empenho {
-  background-color: rgba(245, 158, 11, 0.18);
-  color: #fcd34d;
-  border: 1px solid rgba(245, 158, 11, 0.45);
+  background-color: #fffbeb;
+  color: #b45309;
+  border: 1px solid #fde68a;
 }
 
 .badge-rap {
-  background-color: rgba(217, 119, 6, 0.18);
-  color: #fde68a;
-  border: 1px solid rgba(217, 119, 6, 0.45);
+  background-color: #fefce8;
+  color: #854d0e;
+  border: 1px solid #fef08a;
 }
 
 .badge-repasse {
-  background-color: rgba(14, 165, 233, 0.18);
-  color: #7dd3fc;
-  border: 1px solid rgba(14, 165, 233, 0.45);
+  background-color: #f0f9ff;
+  color: #0369a1;
+  border: 1px solid #bae6fd;
 }

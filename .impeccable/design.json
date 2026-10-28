@@ -1,32 +1,32 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-28T22:30:00Z",
-  "title": "Design System: Transparência Brasil",
+  "generatedAt": "2026-10-28T23:15:00Z",
+  "title": "Design System: Transparência Brasil (Tema Sóbrio Claro)",
   "extensions": {
     "colorMeta": {
       "primary": {
         "role": "primary",
-        "displayName": "Verde Bandeira",
-        "canonical": "#009c3b",
-        "tonalRamp": ["#003314", "#004d1e", "#006627", "#008031", "#009c3b", "#10b981", "#34d399", "#a7f3d0"]
+        "displayName": "Verde Bandeira Oficial",
+        "canonical": "#00853b",
+        "tonalRamp": ["#003314", "#004d1e", "#006b2f", "#00853b", "#059669", "#10b981", "#34d399", "#ecfdf5"]
       },
       "secondary": {
         "role": "secondary",
-        "displayName": "Amarelo Ouro",
-        "canonical": "#ffdf00",
-        "tonalRamp": ["#4d4300", "#807000", "#b39c00", "#e6c900", "#ffdf00", "#ffe833", "#fff166", "#fff9b3"]
+        "displayName": "Azul Institucional Republicano",
+        "canonical": "#002776",
+        "tonalRamp": ["#05122e", "#0a1f4d", "#002776", "#1e3a8a", "#2563eb", "#3b82f6", "#93c5fd", "#eff6ff"]
       },
       "corruption": {
         "role": "accent",
         "displayName": "Vermelho Alerta Corrupção",
-        "canonical": "#ef4444",
-        "tonalRamp": ["#450a0a", "#7f1d1d", "#991b1b", "#b91c1c", "#dc2626", "#ef4444", "#f87171", "#fca5a5"]
+        "canonical": "#dc2626",
+        "tonalRamp": ["#450a0a", "#7f1d1d", "#991b1b", "#b91c1c", "#dc2626", "#ef4444", "#fca5a5", "#fef2f2"]
       },
       "neutral-bg": {
         "role": "neutral",
-        "displayName": "Azul Noturno Fundo",
-        "canonical": "#030a16",
-        "tonalRamp": ["#010307", "#02070f", "#030a16", "#061426", "#08182f", "#0f274c", "#122b52", "#1e3a8a"]
+        "displayName": "Branco e Papel Neutro",
+        "canonical": "#ffffff",
+        "tonalRamp": ["#0f172a", "#334155", "#475569", "#64748b", "#cbd5e1", "#e2e8f0", "#f8fafc", "#ffffff"]
       }
     },
     "typographyMeta": {
@@ -50,12 +50,12 @@
     "shadows": [
       {
         "name": "sombra-superficie",
-        "value": "0 4px 20px -2px rgba(3, 10, 22, 0.6)",
-        "purpose": "Elevação sutil de cartões e tabelas."
+        "value": "0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05)",
+        "purpose": "Elevação sutil de cartões e tabelas no fundo branco."
       },
       {
         "name": "sombra-corrupcao",
-        "value": "0 0 24px -4px rgba(239, 68, 68, 0.25)",
+        "value": "0 4px 16px -2px rgba(220, 38, 38, 0.12)",
         "purpose": "Aura de atenção exclusiva do Radar Anti-Corrupção."
       }
     ],
@@ -80,7 +80,7 @@
       "refersTo": "button-primary",
       "description": "Ações afirmativas de consulta e confirmação orçamentária.",
       "html": "<button class=\"ds-btn-primary\"><svg class=\"ds-icon\" viewBox=\"0 0 20 20\" fill=\"currentColor\"><path fill-rule=\"evenodd\" d=\"M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z\" clip-rule=\"evenodd\"/></svg>Buscar Despesas</button>",
-      "css": ".ds-btn-primary { background: #009c3b; color: #ffffff; padding: 8px 16px; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 13px; font-weight: 700; border: none; border-radius: 8px; display: inline-flex; items-center: center; gap: 6px; cursor: pointer; transition: background 0.15s ease; } .ds-btn-primary:hover { background: #00b343; } .ds-btn-primary:focus-visible { outline: 2px solid #ffdf00; outline-offset: 2px; } .ds-icon { width: 14px; height: 14px; fill: currentColor; }"
+      "css": ".ds-btn-primary { background: #00853b; color: #ffffff; padding: 8px 16px; font-family: 'Public Sans', sans-serif; font-size: 13px; font-weight: 700; border: none; border-radius: 8px; display: inline-flex; align-items: center; gap: 6px; cursor: pointer; transition: background 0.15s ease; } .ds-btn-primary:hover { background: #006b2f; } .ds-btn-primary:focus-visible { outline: 2px solid #002776; outline-offset: 2px; } .ds-icon { width: 14px; height: 14px; fill: currentColor; }"
     },
     {
       "name": "Botão Alerta Anti-Corrupção",
@@ -88,7 +88,7 @@
       "refersTo": "button-corruption",
       "description": "Ação direta para auditoria de denúncias e casos com indício de corrupção.",
       "html": "<button class=\"ds-btn-corruption\"><svg class=\"ds-icon\" viewBox=\"0 0 20 20\" fill=\"currentColor\"><path fill-rule=\"evenodd\" d=\"M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z\" clip-rule=\"evenodd\"/></svg>Auditar Caso</button>",
-      "css": ".ds-btn-corruption { background: #dc2626; color: #ffffff; padding: 8px 16px; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 13px; font-weight: 700; border: 1px solid #ef4444; border-radius: 8px; display: inline-flex; align-items: center; gap: 6px; cursor: pointer; transition: background 0.15s ease; box-shadow: 0 0 12px rgba(239, 68, 68, 0.3); } .ds-btn-corruption:hover { background: #ef4444; } .ds-btn-corruption:focus-visible { outline: 2px solid #ffdf00; outline-offset: 2px; }"
+      "css": ".ds-btn-corruption { background: #dc2626; color: #ffffff; padding: 8px 16px; font-family: 'Public Sans', sans-serif; font-size: 13px; font-weight: 700; border: 1px solid #b91c1c; border-radius: 8px; display: inline-flex; align-items: center; gap: 6px; cursor: pointer; transition: background 0.15s ease; } .ds-btn-corruption:hover { background: #b91c1c; } .ds-btn-corruption:focus-visible { outline: 2px solid #002776; outline-offset: 2px; }"
     },
     {
       "name": "Badge Alerta de Corrupção",
@@ -96,17 +96,17 @@
       "refersTo": "badge-corruption",
       "description": "Identificador textual de empresas inidôneas e suspeitas no CEIS.",
       "html": "<span class=\"ds-badge-corruption\"><span class=\"ds-dot-ping\"></span>CEIS / INIDÔNEA</span>",
-      "css": ".ds-badge-corruption { background: rgba(239, 68, 68, 0.18); color: #fca5a5; border: 1px solid #ef4444; font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 9999px; display: inline-flex; align-items: center; gap: 6px; } .ds-dot-ping { width: 6px; height: 6px; border-radius: 9999px; background: #ef4444; }"
+      "css": ".ds-badge-corruption { background: #fef2f2; color: #991b1b; border: 1px solid #fca5a5; font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 9999px; display: inline-flex; align-items: center; gap: 6px; } .ds-dot-ping { width: 6px; height: 6px; border-radius: 9999px; background: #dc2626; }"
     }
   ],
   "narrative": {
-    "northStar": "O Escudo Cívico Republicano",
-    "overview": "A linguagem visual da Transparência Brasil une a sobriedade institucional da República à contundência de uma ferramenta de auditoria cívica de ponta. A paleta é orgulhosamente ancorada nas cores nacionais do Brasil: o Azul Noturno Imperial atua como base sólida e solene, o Verde Bandeira sinaliza execução orçamentária regular e legalidade, e o Amarelo Ouro guia a atenção do olhar para títulos e métricas de destaque.",
+    "northStar": "O Livro Aberto da República",
+    "overview": "A linguagem visual da Transparência Brasil adota uma estética editorial sóbria, luminosa e rigorosa, assentada em fundo branco puro e tela neutra em papel cívico. A paleta homenageia a tradição republicana brasileira com contensão impecável: o Azul Institucional confere autoridade e estrutura, o Verde Bandeira sinaliza execução orçamentária regular e quitação, e os acentos em Âmbar Ouro pontuam fases preliminares como empenhos.",
     "keyCharacteristics": [
-      "Solenidade Cívica: Estética republicana, livre de clichês e ruído visual desnecessário.",
-      "Rigor Numérico: Tipografia monoespaçada com numerais tabulares em todos os dados financeiros.",
-      "Iconografia Vetorial Autoral: Ícones em SVG nítidos de 1.5px/2px de espessura de traço, abolindo emojis da interface.",
-      "Reserva do Vermelho: Vermelho com sinalização semântica absoluta de corrupção."
+      "Sobriedade Luminosa: Fundo claro com bordas de precisão de 1px e zero ruído decorativo.",
+      "Leitura Impecável: Alto contraste tipográfico (Slate-900 e Slate-700 sobre branco puro).",
+      "Rigor Tabular: Numerais monoespaçados com alinhamento tabular vertical em todas as métricas fiscais.",
+      "Reserva do Vermelho: Vermelho exclusivamente semântico para corrupção e auditoria forense."
     ],
     "rules": [
       {
@@ -121,21 +121,21 @@
       },
       {
         "name": "The Single Elevation Rule",
-        "body": "Cartões e contêineres declaram sua elevação através de uma borda nítida de 1px ou de uma sombra suave difusa, nunca acumulando bordas espessas de múltiplas cores.",
+        "body": "Cartões declaram elevação através de uma borda nítida de 1px e sombra sutil, sem acumular contornos pesados.",
         "section": "elevation"
       }
     ],
     "dos": [
+      "Do manter o fundo branco e papel claro sóbrio e arejado.",
       "Do manter o Vermelho restrito 100% dos casos a situações de desvio, irregularidade grave e combate à corrupção.",
       "Do utilizar numerais tabulares (tabular-nums) e JetBrains Mono em todos os valores monetários e códigos fiscais.",
-      "Do utilizar ícones SVG desenhados com espessura homogênea (16x16 ou 20x20).",
       "Do manter contraste mínimo de 4.5:1 para qualquer texto informativo."
     ],
     "donts": [
       "Don't utilizar emojis como ícones de interface.",
       "Don't aplicar border-left: 4px em linhas da tabela ou cartões.",
       "Don't utilizar textos com gradiente de cor.",
-      "Don't misturar valores de transferências intergovernamentais com gastos diretos do governo."
+      "Don't utilizar texto amarelo claro sobre fundo branco."
     ]
   }
 }

@@ -47,9 +47,9 @@ Diferente de dashboards genéricos que somam contratos, empenhos e liquidações
 
 ## Brand Commitments
 
-- **Identidade Visual:** Brasil Institucional e Cívico — Verde Bandeira (`#009c3b`), Amarelo Ouro (`#ffdf00`), Azul Noturno Imperial (`#030a16`, `#08182f`), e Branco (`#ffffff`).
-- **Regra Sagrada da Cor Vermelha:** O tom vermelho (`#ef4444`, `#dc2626`) é terminantemente reservado e exclusivo para alertar "Corrupção, Suspeita de Desvio e Irregularidades Graves". Nunca deve ser usado para decorações triviais, status comuns ou elementos neutros da interface.
-- **Tipografia:** Plus Jakarta Sans para leitura e hierarquia; JetBrains Mono para valores monetários, números tabulares, códigos orçamentários, identificadores e hashes de auditoria.
+- **Identidade Visual:** Brasil Institucional Sóbrio em Fundo Branco — Fundo branco puro e papel neutro (`#ffffff`, `#f8fafc`), Azul Institucional Republicano (`#002776`, `#0f172a`), Verde Bandeira (`#00853b`), Acentos Ouro/Âmbar de alta legibilidade (`#b45309`, `#f59e0b`) e cinzas nobres de delimitação (`#e2e8f0`).
+- **Regra Sagrada da Cor Vermelha:** O tom vermelho (`#dc2626`, `#ef4444`) é terminantemente reservado e exclusivo para alertar "Corrupção, Suspeita de Desvio e Irregularidades Graves". Em contraste com a sobriedade do fundo branco, o alerta de corrupção adquire clareza e impacto moral imediato.
+- **Tipografia:** Public Sans para leitura editorial e hierarquia cívica; JetBrains Mono para valores monetários, números tabulares, códigos orçamentários, identificadores e hashes de auditoria.
 - **Iconografia:** Ícones vetoriais SVG autorais e geométricos, de traço limpo e consistente. É vetado o uso de emojis comuns como sistema iconográfico.
 
 ## Evidence on Hand

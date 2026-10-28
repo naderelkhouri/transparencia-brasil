@@ -1,21 +1,26 @@
 ---
 name: Transparência Brasil
-description: Sistema de Transparência Pública, Rigor Fiscal e Radar Anti-Corrupção
+description: Sistema Sóbrio de Transparência Pública, Rigor Fiscal e Radar Anti-Corrupção
 colors:
-  primary: "#009c3b"
-  primary-hover: "#00b343"
-  secondary: "#ffdf00"
-  secondary-amber: "#f59e0b"
-  tertiary: "#38bdf8"
-  corruption: "#ef4444"
-  corruption-deep: "#dc2626"
-  corruption-surface: "rgba(239, 68, 68, 0.12)"
-  neutral-bg: "#030a16"
-  neutral-surface: "#08162b"
-  neutral-border: "#122b52"
-  neutral-text: "#ffffff"
-  neutral-muted: "#94a3b8"
-  neutral-soft: "#cbd5e1"
+  primary: "#00853b"
+  primary-hover: "#006b2f"
+  primary-surface: "#ecfdf5"
+  secondary: "#002776"
+  secondary-surface: "#eff6ff"
+  accent-amber: "#b45309"
+  accent-amber-surface: "#fffbeb"
+  tertiary: "#0284c7"
+  corruption: "#dc2626"
+  corruption-hover: "#b91c1c"
+  corruption-surface: "#fef2f2"
+  neutral-bg: "#ffffff"
+  neutral-canvas: "#f8fafc"
+  neutral-surface: "#ffffff"
+  neutral-border: "#e2e8f0"
+  neutral-border-strong: "#cbd5e1"
+  neutral-text: "#0f172a"
+  neutral-muted: "#475569"
+  neutral-soft: "#64748b"
 typography:
   display:
     fontFamily: "'Public Sans', system-ui, sans-serif"
@@ -49,9 +54,9 @@ typography:
     letterSpacing: "0.025em"
 rounded:
   sm: "6px"
-  md: "10px"
-  lg: "14px"
-  xl: "18px"
+  md: "8px"
+  lg: "12px"
+  xl: "16px"
   full: "9999px"
 spacing:
   xs: "4px"
@@ -62,14 +67,12 @@ spacing:
 components:
   button-primary:
     backgroundColor: "{colors.primary}"
-    textColor: "{colors.neutral-text}"
+    textColor: "#ffffff"
     rounded: "{rounded.md}"
     padding: "8px 16px"
-  button-primary-hover:
-    backgroundColor: "{colors.primary-hover}"
   button-corruption:
-    backgroundColor: "{colors.corruption-deep}"
-    textColor: "{colors.neutral-text}"
+    backgroundColor: "{colors.corruption}"
+    textColor: "#ffffff"
     rounded: "{rounded.md}"
     padding: "8px 16px"
   card-neutral:
@@ -88,124 +91,122 @@ components:
 
 ## Overview
 
-**Creative North Star: "O Escudo Cívico Republicano"**
+**Creative North Star: "O Livro Aberto da República"**
 
-A linguagem visual da Transparência Brasil une a sobriedade institucional da República à contundência de uma ferramenta de auditoria cívica de ponta. A paleta é orgulhosamente ancorada nas cores nacionais do Brasil: o Azul Noturno Imperial (`#030a16`, `#08162b`) atua como base sólida e solene, o Verde Bandeira (`#009c3b`) sinaliza execução orçamentária regular e legalidade, e o Amarelo Ouro (`#ffdf00`) guia a atenção do olhar para títulos e métricas de destaque.
+A linguagem visual da Transparência Brasil adota uma estética editorial sóbria, luminosa e rigorosa, assentada em fundo branco puro (`#ffffff`) e tela neutra em papel cívico (`#f8fafc`). A paleta homenageia a tradição republicana brasileira com contensão impecável: o Azul Institucional (`#002776`) confere autoridade e estrutura, o Verde Bandeira (`#00853b`) sinaliza execução orçamentária regular e quitação, e os acentos em Âmbar Ouro (`#b45309`, `#f59e0b`) pontuam fases preliminares como empenhos com contraste superior a 4.5:1.
 
-O elemento definidor e inflexível do sistema é a reserva moral da cor Vermelha: **o Vermelho não é usado para decoração nem status comuns; ele pertence exclusivamente ao Radar Anti-Corrupção**. Quando o vermelho surge na tela, ele corta a paleta com intensidade máxima, sinalizando à sociedade indícios graves de desvio de verbas, empresas punidas pelo CEIS e sobrepreço.
+O princípio central do sistema permanece inabalável: **o Vermelho Carmesim (`#dc2626`, `#ef4444`) é de uso estrito e exclusivo para o Radar Anti-Corrupção**. No fundo branco e calmo, o surgimento do vermelho funciona como um holofote ético sobre indícios de fraude, desvio e empresas sancionadas no CEIS.
 
 **Key Characteristics:**
-- **Solenidade Cívica:** Estética republicana, livre de clichês e ruído visual desnecessário.
-- **Rigor Numérico:** Tipografia monoespaçada com numerais tabulares em todos os dados financeiros.
-- **Iconografia Vetorial Autoral:** Ícones em SVG nítidos de 1.5px/2px de espessura de traço, abolindo emojis da interface.
-- **Reserva do Vermelho:** Vermelho com sinalização semântica absoluta de corrupção.
+- **Sobriedade Luminosa:** Fundo claro com bordas de precisão de 1px e zero ruído decorativo.
+- **Leitura Impecável:** Alto contraste tipográfico (Slate-900 `#0f172a` e Slate-700 `#334155` sobre branco puro).
+- **Rigor Tabular:** Numerais monoespaçados com alinhamento tabular vertical em todas as métricas fiscais.
+- **Reserva do Vermelho:** Vermelho exclusivamente semântico para corrupção e auditoria forense.
 
 ## Colors
 
-A paleta é dividida entre as cores cívicas nacionais e a cor crítica de combate à corrupção.
+A paleta combina a sobriedade do papel branco com as cores institucionais do Brasil e a cor de alerta crítico.
 
 ### Primary
-- **Verde Bandeira** (`#009c3b`): Representa regularidade fiscal, pagamentos realizados com respaldo legal e ações confirmatórias.
-- **Verde Esmeralda Hover** (`#00b343`): Feedback tátil em botões primários e estados ativos de regularidade.
+- **Verde Bandeira Oficial** (`#00853b`): Execução orçamentária regular, pagamentos atestados e ações de pesquisa.
+- **Verde Hover** (`#006b2f`): Estado ativo de foco e interação em botões primários.
+- **Verde Superfície** (`#ecfdf5`): Tint sutil de fundo para badges e indicadores confirmatórios.
 
 ### Secondary
-- **Amarelo Ouro** (`#ffdf00`): Destaques hierárquicos, acentos de marca, avisos de restos a pagar e cabeçalhos de tabelas.
-- **Amarelo Âmbar** (`#f59e0b`): Fase orçamentária de Empenho (reserva de dotação).
+- **Azul Institucional** (`#002776`): Brasão nacional, cabeçalhos de tabela e identificador de autoridade da República.
+- **Azul Superfície** (`#eff6ff`): Fundo suave de chips e filtros governamentais.
 
-### Tertiary
-- **Azul Celeste Técnico** (`#38bdf8`): Repasses intergovernamentais (Fundo a Fundo: SUS/FPM) e fase contábil de Liquidação.
+### Tertiary & Fiscal
+- **Âmbar Ouro Legível** (`#b45309`): Fase de Empenho (NE) e destaques secundários com contraste garantido sobre branco.
+- **Azul Celeste Técnico** (`#0284c7`): Repasses intergovernamentais fundo a fundo (SUS/FPM) e Liquidações.
 
 ### Corruption Alert (Exclusivo)
-- **Vermelho Alerta** (`#ef4444`): Borda de cartões de denúncia, badges de empresas inidôneas e textos de alerta.
-- **Vermelho Profundo** (`#dc2626`): Botões de auditoria forense e ações punitivas no Radar Anti-Corrupção.
-- **Vermelho Superfície** (`rgba(239, 68, 68, 0.12)`): Fundo sutil de linhas e áreas sob suspeita contábil.
+- **Vermelho Alerta** (`#dc2626`): Borda de denúncias, badges de empresas inidôneas e botões de auditoria.
+- **Vermelho Superfície** (`#fef2f2`): Fundo claro carmesim de linhas e cartões sob suspeita no Radar de Corrupção.
+- **Vermelho Texto Forte** (`#991b1b`): Texto de alta visibilidade e peso para descrições de desvios.
 
 ### Neutral
-- **Azul Noturno Profundo** (`#030a16`): Fundo principal da aplicação (`background`).
-- **Azul Card Superfície** (`#08162b`): Superfície de cartões analíticos e tabelas.
-- **Azul Borda Contida** (`#122b52`): Delimitação sutil de blocos e divisórias (1px).
-- **Branco Puro** (`#ffffff`): Texto de alto contraste e valores numéricos em destaque.
-- **Azul Suave Muted** (`#cbd5e1` / `#94a3b8`): Texto secundário com contraste garantido ≥ 4.5:1.
+- **Branco Puro** (`#ffffff`): Fundo de cartões, tabelas e janelas de diálogo.
+- **Papel Neutro Canvas** (`#f8fafc`): Fundo geral da página.
+- **Cinza Delimitador** (`#e2e8f0`): Bordas e divisórias sutis de 1px.
+- **Texto Principal** (`#0f172a`): Títulos e valores em destaque (contraste > 14:1).
+- **Texto Secundário** (`#334155`): Textos de apoio e rótulos descritivos (contraste > 7:1).
+- **Texto de Apoio** (`#64748b`): Metadados, notas de rodapé e códigos orçamentários (contraste > 4.5:1).
 
 ### Named Rules
-**The Red Exclusivity Rule.** A cor vermelha é estritamente proibida em qualquer elemento que não seja uma ocorrência ou ferramenta do Radar Anti-Corrupção. Botões de cancelar, erros de digitação comuns e status padrão utilizam tons neutros ou âmbar. O vermelho é guardado para manter seu peso de denúncia intacto.
+**The Red Exclusivity Rule.** A cor vermelha é estritamente proibida em qualquer elemento que não seja uma ocorrência ou ferramenta do Radar Anti-Corrupção. Botões de fechar, status neutros e campos comuns utilizam cinzas ou azuis.
 
-**The Contrast Floor Rule.** Nenhum texto de apoio pode ter taxa de contraste inferior a 4.5:1 contra a superfície de fundo. Superfícies escuras utilizam texto em `#ffffff`, `#cbd5e1` ou `#94a3b8`, nunca cinzas apagados.
+**The Contrast Floor Rule.** Nenhum texto de apoio pode ter taxa de contraste inferior a 4.5:1 contra a superfície branca ou cinza de fundo.
 
 ## Typography
 
-**Display Font:** Public Sans (com fallback em `system-ui, sans-serif`)
+**Display Font:** Public Sans (com fallback em `system-ui, -apple-system, sans-serif`)
 **Body Font:** Public Sans (com fallback em `-apple-system, BlinkMacSystemFont, sans-serif`)
 **Label & Numeric Font:** JetBrains Mono (com fallback em `ui-monospace, monospace`)
 
-A tipografia combina uma fonte sem serifa contemporânea e límpida com uma fonte monoespaçada pericial para exibir identificadores contábeis, hashes SHA-256 e valores em Reais (BRL).
-
 ### Hierarchy
-- **Display** (800, clamp(1.75rem, 4vw, 2.25rem), 1.15, -0.025em): Título principal e cabeçalho de grandes seções.
+- **Display** (800, clamp(1.75rem, 4vw, 2.25rem), 1.15, -0.025em): Título principal e cabeçalho hero.
 - **Headline** (700, 1.25rem, 1.3, -0.015em): Cabeçalhos de cartões, abas e diálogos de auditoria.
-- **Title** (700, 0.875rem, 1.4, 0.05em): Títulos de tabelas, seções secundárias e cabeçalhos de grupos.
-- **Body** (400/500, 0.8125rem, 1.5, normal): Descrições explicativas, notas técnicas e glossário com largura limitada a 70ch.
+- **Title** (700, 0.875rem, 1.4, 0.05em): Títulos de tabelas e grupos analíticos.
+- **Body** (400/500, 0.875rem, 1.5, normal): Descrições explicativas, notas técnicas e glossário com largura limitada a 70ch.
 - **Label / Tabular** (600, 0.6875rem, 1.4, 0.025em): Números de notas de empenho, ordens bancárias, percentuais e valores monetários.
 
 ### Named Rules
-**The Tabular Numerals Rule.** Todo valor numérico, moeda (R$), data e código orçamentário utiliza obrigatoriamente a propriedade `font-variant-numeric: tabular-nums` e a família `JetBrains Mono` para assegurar alinhamento vertical rigoroso nas tabelas.
+**The Tabular Numerals Rule.** Todo valor numérico, moeda (R$), data e código orçamentário utiliza obrigatoriamente a propriedade `font-variant-numeric: tabular-nums` e a família `JetBrains Mono`.
 
 ## Layout
 
 O layout baseia-se em um grid responsivo com container centralizado de largura máxima de `80rem` (1280px) com padding horizontal de `1rem` a `2rem`.
 - **Rhythm:** Espaçamentos verticais de `1rem` (16px), `1.5rem` (24px) e `2rem` (32px).
-- **Densidade:** Alta densidade de informação analítica, organizada em cartões com agrupamento lógico claro.
-- **Tabelas com Rolagem Horizontal Segura:** Tabelas de dados granulares possuem container com `overflow-x: auto` e cabeçalhos sem quebra de linha.
+- **Tabelas com Rolagem Segura:** Tabelas de dados granulares possuem container com `overflow-x: auto` e divisores de linha discretos de 1px (`#f1f5f9`).
 
 ## Elevation & Depth
 
-O sistema adota uma abordagem de profundidade contida e estrutural baseada em bordas nítidas de 1px e iluminação sutil de superfície. Não são permitidas sombras duras sem desfoque (zero-blur block shadows) nem sobreposições de múltiplos contornos fantasmas.
+O sistema adota uma abordagem de profundidade contida e estrutural baseada em bordas nítidas de 1px (`#e2e8f0`) e sombras suaves com difusão leve (`rgba(0, 0, 0, 0.04)`).
 
 ### Shadow Vocabulary
-- **Sombra Institucional Superfície** (`box-shadow: 0 4px 20px -2px rgba(3, 10, 22, 0.6)`): Aplicada em cartões de métricas e tabelas.
-- **Sombra de Alerta Anti-Corrupção** (`box-shadow: 0 0 24px -4px rgba(239, 68, 68, 0.25)`): Aplicada exclusivamente em cartões sob suspeita no Radar de Corrupção.
+- **Sombra Suave Superfície** (`box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05)`): Aplicada em cartões de métricas e tabelas.
+- **Sombra de Alerta Anti-Corrupção** (`box-shadow: 0 4px 16px -2px rgba(220, 38, 38, 0.12)`): Aplicada exclusivamente em cartões sob suspeita no Radar de Corrupção.
 
 ### Named Rules
-**The Single Elevation Rule.** Cartões e contêineres declaram sua elevação através de uma borda nítida de 1px (`#122b52`) ou de uma sombra suave difusa, nunca acumulando bordas espessas de múltiplas cores.
+**The Single Elevation Rule.** Cartões declaram elevação através de uma borda nítida de 1px (`#e2e8f0`) e sombra sutil, sem acumular contornos pesados.
 
 ## Shapes
 
-- **Cantos Arredondados:** 14px a 16px para contêineres e cartões principais; 8px a 10px para botões, inputs e pequenos cards; pílulas completas (`9999px`) exclusivamente para chips de status e badges.
-- **Proibição de Bordas Laterais Espessas:** Nenhuma linha de tabela ou cartão utiliza borda lateral (`border-left` ou `border-right`) superior a 1px. Destaques são realizados com tint de fundo e badges dedicados.
+- **Cantos Arredondados:** 12px para contêineres e cartões principais; 8px para botões, inputs e pequenos cards; pílulas completas (`9999px`) exclusivamente para chips de status e badges.
+- **Proibição de Bordas Laterais Espessas:** Nenhuma linha de tabela ou cartão utiliza borda lateral superior a 1px.
 
 ## Components
 
 ### Buttons
-- **Shape:** Borda de raio 8px (sm/md).
-- **Primary (Verde Bandeira):** Fundo `#009c3b`, texto `#ffffff`, hover `#00b343`, foco visível com anel de 2px em `#ffdf00`.
-- **Corruption Audit (Vermelho):** Fundo `#dc2626`, texto `#ffffff`, hover `#ef4444`, sombra de alerta.
-- **Secondary / Ghost:** Fundo `#08162b`, borda 1px `#122b52`, texto `#cbd5e1`, hover `#122b52`.
+- **Shape:** Borda de raio 8px.
+- **Primary (Verde Bandeira):** Fundo `#00853b`, texto `#ffffff`, hover `#006b2f`.
+- **Corruption Audit (Vermelho):** Fundo `#dc2626`, texto `#ffffff`, hover `#b91c1c`.
+- **Secondary / Ghost:** Fundo `#ffffff`, borda 1px `#e2e8f0`, texto `#334155`, hover `#f8fafc`.
 
 ### Badges de Fases Orçamentárias
-- **Empenho:** Fundo `rgba(245, 158, 11, 0.15)`, texto `#fbbf24`, borda 1px `rgba(245, 158, 11, 0.4)`.
-- **Liquidação:** Fundo `rgba(59, 130, 246, 0.15)`, texto `#60a5fa`, borda 1px `rgba(59, 130, 246, 0.4)`.
-- **Pagamento:** Fundo `rgba(0, 156, 59, 0.15)`, texto `#34d399`, borda 1px `rgba(0, 156, 59, 0.4)`.
-- **Restos a Pagar:** Fundo `rgba(217, 119, 6, 0.15)`, texto `#fde68a`, borda 1px `rgba(217, 119, 6, 0.4)`.
-- **Repasse:** Fundo `rgba(14, 165, 233, 0.15)`, texto `#38bdf8`, borda 1px `rgba(14, 165, 233, 0.4)`.
-- **Corrupção / Alerta:** Fundo `rgba(239, 68, 68, 0.2)`, texto `#fca5a5`, borda 1px `#ef4444`, ícone vetorial de alerta.
+- **Empenho:** Fundo `#fffbeb`, texto `#b45309`, borda 1px `#fde68a`.
+- **Liquidação:** Fundo `#eff6ff`, texto `#1d4ed8`, borda 1px `#bfdbfe`.
+- **Pagamento:** Fundo `#ecfdf5`, texto `#065f46`, borda 1px `#a7f3d0`.
+- **Restos a Pagar:** Fundo `#fefce8`, texto `#854d0e`, borda 1px `#fef08a`.
+- **Repasse:** Fundo `#f0f9ff`, texto `#0369a1`, borda 1px `#bae6fd`.
+- **Corrupção / Alerta:** Fundo `#fef2f2`, texto `#991b1b`, borda 1px `#fca5a5`, ícone vetorial de alerta.
 
 ### Browser Surfaces
-- **Text Selection:** `::selection { background: #009c3b; color: #ffffff; }`.
-- **Scrollbar:** Trilho em `#030a16`, barra de rolagem em `#122b52`, hover em `#009c3b`.
-- **Focus Rings:** `:focus-visible { outline: 2px solid #ffdf00; outline-offset: 2px; }`.
+- **Text Selection:** `::selection { background: #00853b; color: #ffffff; }`.
+- **Scrollbar:** Trilho em `#f8fafc`, barra de rolagem em `#cbd5e1`, hover em `#00853b`.
+- **Focus Rings:** `:focus-visible { outline: 2px solid #002776; outline-offset: 2px; }`.
 
 ## Do's and Don'ts
 
 ### Do:
+- **Do** manter o fundo branco e papel claro (`#ffffff`, `#f8fafc`) sóbrio e arejado.
 - **Do** manter o Vermelho restrito 100% dos casos a situações de desvio, irregularidade grave e combate à corrupção.
 - **Do** utilizar numerais tabulares (`tabular-nums`) e `JetBrains Mono` em todos os valores monetários e códigos fiscais.
-- **Do** utilizar ícones SVG desenhados com espessura homogênea (16x16 ou 20x20).
 - **Do** manter contraste mínimo de 4.5:1 para qualquer texto informativo.
-- **Do** respeitar as três fases formais da Lei nº 4.320/64 (Empenho, Liquidação, Pagamento) sem agrupá-las arbitrariamente.
 
 ### Don't:
-- **Don't** utilizar emojis como ícones de interface (ex.: proibir 🏛️, 🇧🇷, 🚨, 📥, 🛡️, 🔍 como elementos de controle).
-- **Don't** aplicar `border-left: 4px` em linhas da tabela ou cartões; utilizar badges e tint de fundo.
-- **Don't** utilizar textos com gradiente de cor; usar hierarquia de peso e contraste.
-- **Don't** misturar valores de transferências intergovernamentais com gastos diretos do governo para evitar bitributação.
-- **Don't** utilizar sombras pretas duras sem difusão.
+- **Don't** utilizar emojis como ícones de interface.
+- **Don't** aplicar `border-left: 4px` em linhas da tabela ou cartões.
+- **Don't** utilizar textos com gradiente de cor.
+- **Don't** utilizar texto amarelo claro sobre fundo branco (usar Âmbar `#b45309`).
