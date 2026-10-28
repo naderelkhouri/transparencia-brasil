@@ -1,35 +1,52 @@
 /* ==========================================================================
-   TEMA DAS CORES DO BRASIL — TRANSPARÊNCIA PÚBLICA & AUDITORIA
-   Verde Bandeira (#009c3b), Amarelo Ouro (#ffdf00 / #f59e0b), Azul Noturno (#040d1a / #002776)
+   TEMA DAS CORES DO BRASIL — TRANSPARÊNCIA PÚBLICA & AUDITORIA CÍVICA
+   Verde Bandeira (#009c3b), Amarelo Ouro (#ffdf00), Azul Noturno (#030a16 / #08162b)
    REGRA FUNDAMENTAL: O Vermelho (#dc2626 / #ef4444) é ESTRITAMENTE EXCLUSIVO
    para sinalizar "ALERTA DE CORRUPÇÃO E IRREGULARIDADES GRAVES"!
    ========================================================================== */
 
 :root {
-  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
+  --font-sans: 'Public Sans', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
 
-  /* Cores Nacionais */
+  /* Cores Nacionais do Brasil */
   --br-azul-fundo: #030a16;
-  --br-azul-card: #08162b;
+  --br-azul-superficie: #08162b;
   --br-azul-borda: #122b52;
-  --br-verde-bandeira: #009c3b;
-  --br-verde-claro: #10b981;
-  --br-verde-brilho: rgba(0, 156, 59, 0.25);
-  --br-amarelo-ouro: #ffdf00;
-  --br-amarelo-ambar: #f59e0b;
-  --br-branco: #ffffff;
-  --br-cinza-texto: #94a3b8;
+  --br-azul-borda-hover: #1d4077;
+  --br-azul-texto-secundario: #cbd5e1;
+  --br-azul-texto-apoio: #94a3b8;
 
-  /* VERMELHO EXCLUSIVO: ALERTA DE CORRUPÇÃO */
+  --br-verde-bandeira: #009c3b;
+  --br-verde-hover: #00b343;
+  --br-verde-claro: #10b981;
+  --br-verde-superficie: rgba(0, 156, 59, 0.12);
+  --br-verde-borda: rgba(0, 156, 59, 0.4);
+
+  --br-amarelo-ouro: #ffdf00;
+  --br-amarelo-hover: #ffe433;
+  --br-amarelo-ambar: #f59e0b;
+  --br-amarelo-superficie: rgba(255, 223, 0, 0.1);
+  --br-amarelo-borda: rgba(255, 223, 0, 0.35);
+
+  --br-branco: #ffffff;
+
+  /* VERMELHO EXCLUSIVO: ALERTA DE CORRUPÇÃO & IRREGULARIDADES GRAVES */
   --corrupcao-vermelho-alerta: #ef4444;
-  --corrupcao-vermelho-escuro: #dc2626;
-  --corrupcao-vermelho-fundo: rgba(220, 38, 38, 0.12);
+  --corrupcao-vermelho-profundo: #dc2626;
+  --corrupcao-vermelho-superficie: rgba(239, 68, 68, 0.12);
   --corrupcao-vermelho-borda: rgba(239, 68, 68, 0.45);
+}
+
+/* Reset e Escala Tipográfica Rigorosa (> 1.25x entre papéis) */
+*, *::before, *::after {
+  box-sizing: border-box;
 }
 
 body {
   font-family: var(--font-sans);
+  font-size: 0.875rem; /* 14px */
+  line-height: 1.5;
   background-color: var(--br-azul-fundo);
   color: var(--br-branco);
   margin: 0;
@@ -39,150 +56,202 @@ body {
     radial-gradient(circle at 10% 20%, rgba(0, 156, 59, 0.08), transparent 40%),
     radial-gradient(circle at 90% 80%, rgba(255, 223, 0, 0.05), transparent 40%);
   background-attachment: fixed;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Custom Scrollbar nas cores do Brasil */
+h1 {
+  font-size: 1.875rem; /* 30px (1.33x de h2) */
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+  margin: 0;
+}
+
+h2 {
+  font-size: 1.375rem; /* 22px (1.22x de h3) */
+  font-weight: 800;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+h3 {
+  font-size: 1.125rem; /* 18px (1.28x de body) */
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+h4 {
+  font-size: 0.9375rem; /* 15px */
+  font-weight: 600;
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* Custom Scrollbars Tematizadas nas Cores Nacionais */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #030a16;
+  background: var(--br-azul-fundo);
 }
 ::-webkit-scrollbar-thumb {
-  background: #122b52;
+  background: var(--br-azul-borda);
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
   background: var(--br-verde-bandeira);
 }
 
-/* Identidade Visual Brasileira */
-.bg-brasil-card {
-  background-color: var(--br-azul-card);
+/* Seleção de Texto e Focus Rings */
+::selection {
+  background-color: var(--br-verde-bandeira);
+  color: var(--br-branco);
+}
+
+:focus-visible {
+  outline: 2px solid var(--br-amarelo-ouro);
+  outline-offset: 2px;
+}
+
+/* Numerais Tabulares */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Superfícies e Cartões Analíticos */
+.card-analitico {
+  background-color: var(--br-azul-superficie);
   border: 1px solid var(--br-azul-borda);
-}
-
-.text-brasil-ouro {
-  color: var(--br-amarelo-ouro);
-}
-
-.text-brasil-verde {
-  color: var(--br-verde-claro);
-}
-
-.border-brasil-verde {
-  border-color: var(--br-verde-bandeira);
-}
-
-.border-brasil-ouro {
-  border-color: rgba(255, 223, 0, 0.35);
+  border-radius: 12px;
+  padding: 1.25rem;
+  box-shadow: 0 4px 16px -2px rgba(3, 10, 22, 0.6);
 }
 
 /* Abas de Navegação */
 .tab-btn {
   border-bottom: 2px solid transparent;
-  color: #94a3b8;
-  transition: all 0.2s ease;
+  color: var(--br-azul-texto-apoio);
+  padding: 0.625rem 1rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  transition: all 0.15s ease-in-out;
 }
 
 .tab-btn:hover {
-  color: #f1f5f9;
+  color: var(--br-branco);
+  background-color: rgba(18, 43, 82, 0.4);
 }
 
 .tab-btn.active {
   border-bottom-color: var(--br-amarelo-ouro);
   color: var(--br-amarelo-ouro);
-  background-color: rgba(8, 22, 43, 0.9);
+  background-color: var(--br-azul-superficie);
+}
+
+.tab-btn-corrupcao {
+  color: #fca5a5;
+  background-color: rgba(69, 10, 10, 0.4);
+}
+
+.tab-btn-corrupcao:hover {
+  background-color: rgba(127, 29, 29, 0.4);
+  color: #ffffff;
 }
 
 .tab-btn-corrupcao.active {
   border-bottom-color: var(--corrupcao-vermelho-alerta) !important;
   color: var(--corrupcao-vermelho-alerta) !important;
-  background-color: var(--corrupcao-vermelho-fundo) !important;
+  background-color: var(--corrupcao-vermelho-superficie) !important;
 }
 
 /* ==========================================================================
-   ESTILOS EXCLUSIVOS: ALERTA DE CORRUPÇÃO (VERMELHO VIBRANTE / PULSANTE)
+   ALERTA DE CORRUPÇÃO — REGRAS CRAFT FLOOR
+   Sem border-left 4px, sem glow zero-offset (#ef4444)
    ========================================================================== */
 .card-corrupcao-alerta {
-  background-color: rgba(45, 10, 10, 0.65);
-  border: 2px solid var(--corrupcao-vermelho-alerta);
-  box-shadow: 0 0 25px rgba(239, 68, 68, 0.25);
+  background-color: rgba(45, 10, 10, 0.7);
+  border: 1px solid var(--corrupcao-vermelho-alerta);
+  border-radius: 12px;
+  padding: 1.25rem;
+  box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.6);
+  transition: transform 0.15s ease, background-color 0.15s ease;
+}
+
+.card-corrupcao-alerta:hover {
+  background-color: rgba(65, 12, 12, 0.85);
+  transform: translateY(-1px);
 }
 
 .badge-corrupcao {
-  background-color: rgba(239, 68, 68, 0.2);
+  background-color: rgba(239, 68, 68, 0.18);
   color: #fca5a5;
-  border: 1px solid #ef4444;
+  border: 1px solid var(--corrupcao-vermelho-alerta);
+  font-family: var(--font-mono);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  padding: 3px 9px;
+  padding: 3px 8px;
   border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* Linha da Tabela sob Alerta de Corrupção */
+.linha-corrupcao {
+  background-color: rgba(127, 29, 29, 0.22) !important;
+  box-shadow: inset 0 0 0 1px rgba(239, 68, 68, 0.45);
+}
+
+.linha-corrupcao:hover {
+  background-color: rgba(153, 27, 27, 0.32) !important;
+}
+
+/* Badges das Fases Orçamentárias */
+.badge-fase {
+  padding: 2px 8px;
+  border-radius: 9999px;
+  font-size: 10px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
   display: inline-flex;
   align-items: center;
   gap: 4px;
 }
 
-.linha-corrupcao {
-  background-color: rgba(127, 29, 29, 0.18) !important;
-  border-left: 4px solid var(--corrupcao-vermelho-alerta) !important;
-}
-
-.pulse-vermelho {
-  animation: pulseVermelho 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-
-@keyframes pulseVermelho {
-  0%, 100% {
-    opacity: 1;
-    transform: scale(1);
-    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
-  }
-  50% {
-    opacity: 0.85;
-    transform: scale(1.02);
-    box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
-  }
-}
-
-/* Badges de Fases Orçamentárias */
-.badge-fase {
-  padding: 2px 8px;
-  border-radius: 9999px;
-  font-size: 10px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
 .badge-pagamento {
-  background-color: rgba(0, 156, 59, 0.15);
+  background-color: rgba(0, 156, 59, 0.18);
   color: #34d399;
-  border: 1px solid rgba(0, 156, 59, 0.4);
+  border: 1px solid rgba(0, 156, 59, 0.45);
 }
 
 .badge-liquidacao {
-  background-color: rgba(59, 130, 246, 0.15);
-  color: #60a5fa;
-  border: 1px solid rgba(59, 130, 246, 0.4);
+  background-color: rgba(59, 130, 246, 0.18);
+  color: #93c5fd;
+  border: 1px solid rgba(59, 130, 246, 0.45);
 }
 
 .badge-empenho {
-  background-color: rgba(245, 158, 11, 0.15);
-  color: #fbbf24;
-  border: 1px solid rgba(245, 158, 11, 0.4);
+  background-color: rgba(245, 158, 11, 0.18);
+  color: #fcd34d;
+  border: 1px solid rgba(245, 158, 11, 0.45);
 }
 
 .badge-rap {
-  background-color: rgba(217, 119, 6, 0.15);
+  background-color: rgba(217, 119, 6, 0.18);
   color: #fde68a;
-  border: 1px solid rgba(217, 119, 6, 0.4);
+  border: 1px solid rgba(217, 119, 6, 0.45);
 }
 
 .badge-repasse {
-  background-color: rgba(14, 165, 233, 0.15);
-  color: #38bdf8;
-  border: 1px solid rgba(14, 165, 233, 0.4);
+  background-color: rgba(14, 165, 233, 0.18);
+  color: #7dd3fc;
+  border: 1px solid rgba(14, 165, 233, 0.45);
 }
