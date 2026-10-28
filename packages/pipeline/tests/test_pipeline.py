@@ -55,8 +55,7 @@ def test_deduplicacao_silver():
 
 def test_rastreabilidade_e_proveniencia():
     """Garante que cada registro recupera sua proveniência com hash SHA-256 e URL oficial."""
-    engine = GoldAnalyticsEngine()
-    engine.sincronizar_com_silver()
+    engine = GoldAnalyticsEngine(read_only=True)
 
     # Consulta por documento oficial da OB de vacinas
     doc_id = "2026OB800142"

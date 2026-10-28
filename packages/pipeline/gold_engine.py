@@ -16,12 +16,15 @@ class GoldAnalyticsEngine:
         self,
         db_path: str = "/home/nader/transparencia-brasil/data/gold/transparencia_gold.duckdb",
         silver_path: str = "/home/nader/transparencia-brasil/data/silver",
+        read_only: bool = True,
     ):
         self.db_path = Path(db_path)
         self.db_path.parent.mkdir(parents=True, exist_ok=True)
         self.silver_path = Path(silver_path)
-        self.conn = duckdb.connect(str(self.db_path))
-        self._inicializar_tabelas()
+        self.read_only = read_only
+        self.conn = duckdb.connect(str(self.db_path), read_only=read_only)
+        if not read_only:
+            self._inicializar_tabelas()
 
     def _inicializar_tabelas(self):
         """Cria tabelas analíticas materializadas no DuckDB."""
@@ -101,9 +104,9 @@ class GoldAnalyticsEngine:
                 COALESCE(SUM(CASE WHEN alerta_corrupcao = true THEN 1 ELSE 0 END), 0) AS total_alertas_corrupcao,
                 COALESCE(SUM(CASE WHEN alerta_corrupcao = true THEN valor_liquido_reais ELSE 0 END), 0) AS valor_sob_alerta_corrupcao
             FROM fato_despesa_unificada
-            WHERE ano_exercicio = {ano};
+            WHERE ano_exercicio = ?;
         """
-        res = self.conn.execute(query).fetchone()
+        res = self.conn.execute(query, [ano]).fetchone()
         (
             total_dotacao,
             total_empenhado,
@@ -136,7 +139,7 @@ class GoldAnalyticsEngine:
 
     def obter_ranking_orgaos(self, ano: int = 2026, limite: int = 10) -> List[Dict[str, Any]]:
         """Ranking de despesas por Órgão Superior (Ministério / Secretaria)."""
-        query = f"""
+        query = """
             SELECT
                 codigo_orgao_superior,
                 nome_orgao_superior,
@@ -145,12 +148,12 @@ class GoldAnalyticsEngine:
                 SUM(valor_liquido_reais) AS total_movimentado,
                 COUNT(*) as qtd_documentos
             FROM fato_despesa_unificada
-            WHERE ano_exercicio = {ano}
+            WHERE ano_exercicio = ?
             GROUP BY codigo_orgao_superior, nome_orgao_superior
             ORDER BY total_pago DESC
-            LIMIT {limite};
+            LIMIT ?;
         """
-        rows = self.conn.execute(query).fetchall()
+        rows = self.conn.execute(query, [ano, limite]).fetchall()
         return [
             {
                 "codigo": r[0],
@@ -165,17 +168,17 @@ class GoldAnalyticsEngine:
 
     def obter_gastos_por_funcao(self, ano: int = 2026) -> List[Dict[str, Any]]:
         """Distribuição de gastos por função governamental (Saúde, Educação, etc.)."""
-        query = f"""
+        query = """
             SELECT
                 funcao_governo,
                 SUM(valor_liquido_reais) AS total_valor,
                 COUNT(*) as qtd_eventos
             FROM fato_despesa_unificada
-            WHERE ano_exercicio = {ano}
+            WHERE ano_exercicio = ?
             GROUP BY funcao_governo
             ORDER BY total_valor DESC;
         """
-        rows = self.conn.execute(query).fetchall()
+        rows = self.conn.execute(query, [ano]).fetchall()
         total_geral = sum(r[1] for r in rows) or 1.0
         return [
             {
@@ -189,7 +192,7 @@ class GoldAnalyticsEngine:
 
     def obter_top_fornecedores(self, ano: int = 2026, limite: int = 10) -> List[Dict[str, Any]]:
         """Top fornecedores e credores de recursos públicos com métricas de concentração."""
-        query = f"""
+        query = """
             SELECT
                 favorecido_nome,
                 favorecido_documento,
@@ -198,12 +201,12 @@ class GoldAnalyticsEngine:
                 COUNT(*) AS qtd_pagamentos,
                 MAX(url_comprovante_oficial) AS exemplo_url
             FROM fato_despesa_unificada
-            WHERE ano_exercicio = {ano}
+            WHERE ano_exercicio = ?
             GROUP BY favorecido_nome, favorecido_documento, favorecido_tipo
             ORDER BY total_recebido DESC
-            LIMIT {limite};
+            LIMIT ?;
         """
-        rows = self.conn.execute(query).fetchall()
+        rows = self.conn.execute(query, [ano, limite]).fetchall()
         return [
             {
                 "nome": r[0],
@@ -223,28 +226,37 @@ class GoldAnalyticsEngine:
         funcao: Optional[str] = None,
         fase: Optional[str] = None,
         termo_busca: Optional[str] = None,
+        apenas_corrupcao: bool = False,
         limite: int = 50,
         offset: int = 0,
     ) -> Dict[str, Any]:
-        """Consulta paginada com múltiplos filtros."""
-        where_clauses = [f"ano_exercicio = {ano}"]
+        """Consulta avançada com filtros parametrizados e proteção estrita contra injeção SQL."""
+        where_clauses = ["ano_exercicio = ?"]
+        params: List[Any] = [ano]
 
         if orgao:
-            where_clauses.append(f"codigo_orgao_superior = '{orgao}'")
+            where_clauses.append("codigo_orgao_superior = ?")
+            params.append(orgao)
         if funcao:
-            where_clauses.append(f"funcao_governo LIKE '%{funcao}%'")
+            where_clauses.append("funcao_governo LIKE ?")
+            params.append(f"%{funcao}%")
         if fase:
-            where_clauses.append(f"fase_despesa = '{fase}'")
+            where_clauses.append("fase_despesa = ?")
+            params.append(fase)
+        if apenas_corrupcao:
+            where_clauses.append("alerta_corrupcao = true")
         if termo_busca:
-            termo = termo_busca.replace("'", "''")
             where_clauses.append(
-                f"(favorecido_nome ILIKE '%{termo}%' OR numero_documento_origem ILIKE '%{termo}%' OR acao_governamental ILIKE '%{termo}%')"
+                "(favorecido_nome ILIKE ? OR numero_documento_origem ILIKE ? OR acao_governamental ILIKE ?)"
             )
+            param_busca = f"%{termo_busca}%"
+            params.extend([param_busca, param_busca, param_busca])
 
         where_sql = " AND ".join(where_clauses)
 
         total = self.conn.execute(
-            f"SELECT COUNT(*) FROM fato_despesa_unificada WHERE {where_sql}"
+            f"SELECT COUNT(*) FROM fato_despesa_unificada WHERE {where_sql}",
+            params
         ).fetchone()[0]
 
         query = f"""
@@ -271,9 +283,10 @@ class GoldAnalyticsEngine:
             FROM fato_despesa_unificada
             WHERE {where_sql}
             ORDER BY alerta_corrupcao DESC, valor_liquido_reais DESC
-            LIMIT {limite} OFFSET {offset};
+            LIMIT ? OFFSET ?;
         """
-        rows = self.conn.execute(query).fetchall()
+        query_params = params + [limite, offset]
+        rows = self.conn.execute(query, query_params).fetchall()
 
         itens = [
             {
@@ -329,10 +342,10 @@ class GoldAnalyticsEngine:
                 hash_payload_extracao,
                 data_evento
             FROM fato_despesa_unificada
-            WHERE ano_exercicio = {ano} AND alerta_corrupcao = true
+            WHERE ano_exercicio = ? AND alerta_corrupcao = true
             ORDER BY valor_liquido_reais DESC;
         """
-        rows = self.conn.execute(query).fetchall()
+        rows = self.conn.execute(query, [ano]).fetchall()
         return [
             {
                 "id": r[0],
@@ -385,10 +398,10 @@ class GoldAnalyticsEngine:
                 motivo_alerta_corrupcao,
                 tipo_risco_corrupcao
             FROM fato_despesa_unificada
-            WHERE id = '{identificador}' OR numero_documento_origem = '{identificador}'
+            WHERE id = ? OR numero_documento_origem = ?
             LIMIT 1;
         """
-        row = self.conn.execute(query).fetchone()
+        row = self.conn.execute(query, [identificador, identificador]).fetchone()
         if not row:
             return None
 

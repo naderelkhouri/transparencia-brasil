@@ -94,6 +94,14 @@ function inicializarEventos() {
     }
   });
 
+  const checkCorrupcao = document.getElementById('checkApenasCorrupcao');
+  if (checkCorrupcao) {
+    checkCorrupcao.addEventListener('change', () => {
+      const termo = document.getElementById('campoBusca').value;
+      carregarDespesasGranulares(termo);
+    });
+  }
+
   // Fechar Modal
   document.getElementById('btnFecharModal').addEventListener('click', fecharModal);
   document.getElementById('btnFecharModalSecundario').addEventListener('click', fecharModal);
@@ -395,8 +403,17 @@ async function carregarTopFornecedores() {
 // 8. Despesas Granulares com Destaque Vermelho em Corrupção
 async function carregarDespesasGranulares(termo = '') {
   const tbody = document.getElementById('tabelaDespesas');
+  const checkCorrupcao = document.getElementById('checkApenasCorrupcao');
+  const apenasCorrupcao = checkCorrupcao ? checkCorrupcao.checked : false;
+
+  // Atualiza link de exportação de dados abertos CSV
+  const linkCsv = document.getElementById('linkExportarCsv');
+  if (linkCsv) {
+    linkCsv.href = `/api/v1/exportar/despesas.csv?ano=${state.ano}&apenas_corrupcao=${apenasCorrupcao}`;
+  }
+
   try {
-    let url = `/api/v1/despesas?ano=${state.ano}&limite=20`;
+    let url = `/api/v1/despesas?ano=${state.ano}&limite=50&apenas_corrupcao=${apenasCorrupcao}`;
     if (termo) url += `&busca=${encodeURIComponent(termo)}`;
 
     const res = await fetch(url);

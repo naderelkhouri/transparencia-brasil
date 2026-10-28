@@ -256,7 +256,10 @@
             </p>
           </div>
           <div class="flex items-center gap-2 shrink-0">
-            <span class="px-3 py-1 bg-red-600/30 text-red-200 border border-red-500 rounded-lg text-xs font-bold font-mono">
+            <a href="/api/v1/exportar/despesas.csv?ano=2026&apenas_corrupcao=true" download class="px-3 py-1.5 bg-red-700 hover:bg-red-600 text-white border border-red-500 rounded-lg text-xs font-bold font-mono transition-all flex items-center gap-1.5 shadow-lg">
+              📥 Baixar Dossiê (CSV)
+            </a>
+            <span class="px-3 py-1.5 bg-red-600/30 text-red-200 border border-red-500 rounded-lg text-xs font-bold font-mono">
               Fase 5 • Controle Social
             </span>
           </div>
@@ -391,16 +394,23 @@
     <!-- TAB 5: BUSCA GRANULAR COM RASTREABILIDADE 1-CLICK -->
     <section id="tabGranular" class="tab-content hidden space-y-6">
       <div class="bg-[#08182f] border border-blue-900 rounded-2xl p-5 shadow-lg space-y-4">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-blue-900 pb-4">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3 border-b border-blue-900 pb-4">
           <div>
             <h3 class="text-sm font-bold text-yellow-400 uppercase tracking-wider">Consulta Granular de Despesas</h3>
             <p class="text-xs text-blue-200/70">Linhas em vermelho indicam alerta de corrupção ou indício de sobrepreço</p>
           </div>
-          <div class="flex items-center gap-2">
-            <input type="text" id="campoBusca" placeholder="Pesquisar favorecido, documento..." class="bg-[#030a16] border border-blue-800 rounded-lg px-3 py-1.5 text-xs text-white placeholder-blue-300/50 focus:outline-none focus:border-yellow-400 w-64">
+          <div class="flex flex-wrap items-center gap-2">
+            <label class="flex items-center gap-1.5 px-2.5 py-1.5 bg-red-950/60 border border-red-500/50 rounded-lg text-xs text-red-200 font-bold cursor-pointer hover:bg-red-900/40 transition-colors">
+              <input type="checkbox" id="checkApenasCorrupcao" class="accent-red-500 rounded">
+              <span>🚨 Apenas Alertas de Corrupção</span>
+            </label>
+            <input type="text" id="campoBusca" placeholder="Pesquisar favorecido, documento..." class="bg-[#030a16] border border-blue-800 rounded-lg px-3 py-1.5 text-xs text-white placeholder-blue-300/50 focus:outline-none focus:border-yellow-400 w-56">
             <button id="btnBuscar" class="px-3.5 py-1.5 bg-green-600 hover:bg-green-500 text-white rounded-lg text-xs font-bold transition-colors">
               Buscar
             </button>
+            <a href="/api/v1/exportar/despesas.csv?ano=2026" download id="linkExportarCsv" class="px-3 py-1.5 bg-blue-950 hover:bg-blue-900 text-yellow-300 border border-yellow-400/40 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 shadow">
+              📥 Dados Abertos (CSV)
+            </a>
           </div>
         </div>
 
@@ -421,6 +431,31 @@
               <tr><td colspan="7" class="py-4 text-center text-slate-400">Carregando despesas granulares...</td></tr>
             </tbody>
           </table>
+        </div>
+
+        <!-- MICRO-GLOSSÁRIO CONTÁBIL & FISCAL (LEI 4.320/64) -->
+        <div class="bg-blue-950/40 border border-blue-800/80 rounded-xl p-4 text-xs space-y-2 mt-4">
+          <div class="font-bold text-yellow-400 uppercase tracking-wider text-[11px] flex items-center gap-1.5">
+            <span>📖 Micro-Glossário Cidadão: Entenda o Ciclo da Despesa</span>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-3 text-blue-100 text-[11px] pt-1">
+            <div class="bg-[#030a16] p-2.5 rounded-lg border border-blue-900">
+              <strong class="text-yellow-300 block mb-1">1. Empenho (NE):</strong>
+              Reserva orçamentária do Estado para um fornecedor antes da compra.
+            </div>
+            <div class="bg-[#030a16] p-2.5 rounded-lg border border-blue-900">
+              <strong class="text-blue-300 block mb-1">2. Liquidação (NL):</strong>
+              Verificação do direito do credor após o serviço prestado ou produto entregue.
+            </div>
+            <div class="bg-[#030a16] p-2.5 rounded-lg border border-blue-900">
+              <strong class="text-green-300 block mb-1">3. Pagamento (OB):</strong>
+              Emissão da Ordem Bancária e débito da Conta Única do Tesouro para o favorecido.
+            </div>
+            <div class="bg-[#030a16] p-2.5 rounded-lg border border-blue-900">
+              <strong class="text-amber-300 block mb-1">4. Restos a Pagar (RAP):</strong>
+              Despesas empenhadas em anos anteriores e pagas no exercício atual.
+            </div>
+          </div>
         </div>
       </div>
     </section>

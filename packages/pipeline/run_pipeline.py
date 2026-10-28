@@ -46,7 +46,7 @@ def executar_pipeline(ano: int = 2026):
 
     # 3. Camada Gold: Carga Analítica
     print("\n[3/3] 🏛️  Carregando tabelas analíticas materializadas (Gold)...")
-    engine = GoldAnalyticsEngine()
+    engine = GoldAnalyticsEngine(read_only=False)
     total_carregado = engine.sincronizar_com_silver()
     print(f"  ✓ Total de registros analíticos sincronizados na Gold: {total_carregado}")
 

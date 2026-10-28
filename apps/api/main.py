@@ -3,12 +3,14 @@ API REST Oficial da Plataforma de Transparência de Gastos Públicos Brasileiros
 Arquitetura de alta performance com FastAPI, DuckDB e documentação OpenAPI 3.1.
 """
 
+import csv
+import io
 from pathlib import Path
 from typing import Optional, List, Dict, Any
-from fastapi import FastAPI, Query, HTTPException, status
+from fastapi import FastAPI, Query, HTTPException, status, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, StreamingResponse
 from pydantic import BaseModel
 
 from packages.pipeline.gold_engine import GoldAnalyticsEngine
@@ -37,6 +39,15 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Middleware de Hardening e Security Headers
+@app.middleware("http")
+async def adicionar_security_headers(request: Request, call_next):
+    response = await call_next(request)
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["X-Frame-Options"] = "SAMEORIGIN"
+    response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+    return response
+
 # Servir Frontend Web Estático
 static_dir = Path("/home/nader/transparencia-brasil/apps/web/static")
 if static_dir.exists():
@@ -50,7 +61,7 @@ def index_web():
         return FileResponse(html_file)
     return {"mensagem": "Plataforma Transparência Brasil - API ativa. Acesse /docs para documentação."}
 
-engine = GoldAnalyticsEngine()
+engine = GoldAnalyticsEngine(read_only=True)
 extrator_siconfi = ExtratorSiconfi()
 extrator_pncp = ExtratorPNCP()
 
@@ -86,18 +97,73 @@ def listar_despesas(
     funcao: Optional[str] = Query(None, description="Função governamental (ex: 'Saúde', 'Educação')"),
     fase: Optional[str] = Query(None, description="Fase contábil: 'DOTACAO', 'EMPENHO', 'LIQUIDACAO', 'PAGAMENTO'"),
     busca: Optional[str] = Query(None, description="Termo livre (favorecido, número de documento, etc.)"),
+    apenas_corrupcao: bool = Query(False, description="Filtrar apenas despesas sob alerta de irregularidade/corrupção"),
     limite: int = Query(50, ge=1, le=500),
     offset: int = Query(0, ge=0),
 ):
-    """Consulta avançada de despesas com filtros múltiplos e paginação."""
+    """Consulta avançada de despesas com filtros múltiplos, paginação e proteção SQL."""
     return engine.buscar_despesas(
         ano=ano,
         orgao=orgao,
         funcao=funcao,
         fase=fase,
         termo_busca=busca,
+        apenas_corrupcao=apenas_corrupcao,
         limite=limite,
         offset=offset,
+    )
+
+
+@app.get("/api/v1/exportar/despesas.csv", tags=["Dados Abertos (LAI)"])
+def exportar_despesas_csv(
+    ano: int = Query(2026, description="Ano do exercício"),
+    apenas_corrupcao: bool = Query(False, description="Exportar apenas despesas sob alerta"),
+):
+    """
+    Exportação em lote de despesas públicas em formato CSV aberto,
+    em conformidade com a Lei de Acesso à Informação (Lei 12.527/11, art. 8º).
+    """
+    resultado = engine.buscar_despesas(ano=ano, apenas_corrupcao=apenas_corrupcao, limite=5000)
+    itens = resultado.get("itens", [])
+
+    output = io.StringIO()
+    writer = csv.writer(output, delimiter=";", quoting=csv.QUOTE_MINIMAL)
+    
+    # Cabeçalho CSV
+    writer.writerow([
+        "ID", "Documento", "Tipo_Doc", "Data_Evento", "Orgao", "Unidade_Gestora",
+        "Funcao", "Acao", "Fase_Despesa", "Valor_Liquido_Reais", "Is_Repasse",
+        "Favorecido_Nome", "Favorecido_Documento", "Alerta_Corrupcao", "Tipo_Risco", "Motivo_Alerta", "URL_Oficial"
+    ])
+
+    for item in itens:
+        writer.writerow([
+            item.get("id"),
+            item.get("numero_documento"),
+            item.get("tipo_documento"),
+            item.get("data_evento"),
+            item.get("orgao"),
+            item.get("unidade_gestora"),
+            item.get("funcao"),
+            item.get("acao"),
+            item.get("fase_despesa"),
+            f"{item.get('valor_liquido_reais', 0):.2f}".replace(".", ","),
+            "SIM" if item.get("is_transferencia") else "NAO",
+            item.get("favorecido_nome"),
+            item.get("favorecido_documento"),
+            "SIM" if item.get("alerta_corrupcao") else "NAO",
+            item.get("tipo_risco") or "",
+            item.get("motivo_corrupcao") or "",
+            item.get("url_oficial"),
+        ])
+
+    output.seek(0)
+    nome_arquivo = f"despesas_publicas_{ano}{'_corrupcao' if apenas_corrupcao else ''}.csv"
+
+    return StreamingResponse(
+        iter([output.getvalue()]),
+        media_type="text/csv",
+        headers={"Content-Disposition": f"attachment; filename={nome_arquivo}"}
     )
 
 

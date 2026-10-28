@@ -94,3 +94,29 @@ def test_api_pncp_contratos():
     assert len(data) > 0
     assert "objeto" in data[0]
     assert "fornecedor_cnpj" in data[0]
+
+
+def test_api_exportar_csv():
+    response = client.get("/api/v1/exportar/despesas.csv?ano=2026")
+    assert response.status_code == 200
+    assert "text/csv" in response.headers["content-type"]
+    assert "attachment; filename=" in response.headers["content-disposition"]
+    linhas = response.text.split("\r\n")
+    assert len(linhas) > 1
+    assert "Favorecido_Nome" in linhas[0]
+
+
+def test_api_security_headers():
+    response = client.get("/health")
+    assert response.headers.get("x-content-type-options") == "nosniff"
+    assert response.headers.get("x-frame-options") == "SAMEORIGIN"
+
+
+def test_api_sql_injection_protection():
+    # Tenta injeção clássica no filtro orgao
+    payload_malicioso = "36000' OR '1'='1"
+    response = client.get(f"/api/v1/despesas?ano=2026&orgao={payload_malicioso}")
+    assert response.status_code == 200
+    data = response.json()
+    # Graças à parametrização, não causa erro 500 nem vazamento
+    assert data["total_encontrado"] == 0
