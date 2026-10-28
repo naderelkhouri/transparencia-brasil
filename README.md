@@ -1,5 +1,9 @@
 # 🏛️ Transparência Brasil — Plataforma de Gastos Públicos Confiáveis
 
+> 🌐 **Acesso Online ao Vivo:** [https://beverages-slowly-gabriel-laboratory.trycloudflare.com](https://beverages-slowly-gabriel-laboratory.trycloudflare.com)  
+> 📚 **Documentação da API Swagger:** [https://beverages-slowly-gabriel-laboratory.trycloudflare.com/docs](https://beverages-slowly-gabriel-laboratory.trycloudflare.com/docs)  
+> 🚨 **Radar Anti-Corrupção:** [https://beverages-slowly-gabriel-laboratory.trycloudflare.com/#radar](https://beverages-slowly-gabriel-laboratory.trycloudflare.com/)
+
 Plataforma aberta para consolidação, conciliação e rastreabilidade dos gastos públicos brasileiros (União, Estados e Municípios), desenvolvida em estrita conformidade com as normas financeiras brasileiras:
 - **Lei nº 4.320/1964** (Estatuto das Finanças Públicas e Ciclo Orçamentário)
 - **Lei Complementar nº 101/2000** (Lei de Responsabilidade Fiscal - LRF)
