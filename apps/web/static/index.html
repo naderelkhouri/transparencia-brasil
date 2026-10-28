@@ -13,13 +13,13 @@
 </head>
 <body class="min-h-screen font-sans antialiased bg-[#f8fafc] text-slate-900">
 
-  <!-- CABEÇALHO INSTITUCIONAL SÓBRIO (FUNDO BRANCO) -->
+  <!-- CABEÇALHO INSTITUCIONAL EM LARGURA TOTAL -->
   <header class="border-b border-slate-200 bg-white sticky top-0 z-40">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 py-3 flex flex-wrap items-center justify-between gap-4">
-      <div class="flex items-center gap-3">
+    <div class="w-full px-4 sm:px-6 lg:px-8 xl:px-10 h-16 flex items-center justify-between gap-4">
+      <div class="flex items-center gap-3.5">
         <!-- Brasão / Insígnia Vetorial Brasil -->
-        <div class="h-11 w-11 rounded-xl bg-[#00853b] flex items-center justify-center border border-slate-200 shrink-0">
-          <svg class="w-8 h-6" viewBox="0 0 72 50" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Bandeira do Brasil">
+        <div class="h-10 w-10 rounded-xl bg-[#00853b] flex items-center justify-center border border-slate-200 shrink-0">
+          <svg class="w-7 h-5" viewBox="0 0 72 50" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Bandeira do Brasil">
             <rect width="72" height="50" rx="4" fill="#00853B"/>
             <polygon points="36,4 67,25 36,46 5,25" fill="#FFDF00"/>
             <circle cx="36" cy="25" r="13" fill="#002776"/>
@@ -28,7 +28,7 @@
         </div>
         <div>
           <div class="flex items-center gap-2">
-            <h1 class="text-base sm:text-xl font-extrabold text-slate-900 tracking-tight flex items-center gap-1.5">
+            <h1 class="text-base sm:text-lg font-extrabold text-slate-900 tracking-tight flex items-center gap-1.5">
               <span>Transparência</span>
               <span class="text-[#002776]">Brasil</span>
             </h1>
@@ -36,20 +36,20 @@
               Oficial & Auditado
             </span>
           </div>
-          <p class="text-xs text-slate-500 hidden sm:block">
-            Portal da Transparência (CGU) • SICONFI (Tesouro Nacional) • PNCP • Radar Anti-Corrupção
+          <p class="text-xs text-slate-600 hidden md:block">
+            Portal da Transparência (CGU) • SICONFI (Tesouro Nacional) • PNCP • Lei nº 4.320/64
           </p>
         </div>
       </div>
 
-      <!-- ALERTA VERMELHO DE CORRUPÇÃO NO HEADER & CONTROLES -->
+      <!-- CONTROLES SUPERIORES & ALERTA VERMELHO DE CORRUPÇÃO -->
       <div class="flex items-center gap-2 sm:gap-3">
         <!-- Pílula Vermelha de Alerta de Corrupção -->
         <button id="btnIrParaRadar" class="flex items-center gap-2 px-3 py-1.5 bg-red-50 hover:bg-red-100 border border-red-300 rounded-lg text-xs font-bold text-red-800 transition-all group">
           <svg class="w-4 h-4 text-red-600 shrink-0 animate-pulse" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
           </svg>
-          <span>Radar de Corrupção:</span>
+          <span class="hidden sm:inline">Radar de Corrupção:</span>
           <span class="bg-[#dc2626] text-white px-2 py-0.5 rounded font-mono text-[11px] tabular-nums font-bold" id="headerQtdCorrupcao">3 Indícios</span>
         </button>
 
@@ -59,11 +59,11 @@
             Visão Cidadã
           </button>
           <button id="btnModoAuditor" class="px-3 py-1.5 bg-white text-slate-600 hover:text-slate-900 transition-colors">
-            Controle Social & Funil
+            Modo Auditor
           </button>
         </div>
 
-        <button id="btnExecutarPipeline" class="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 bg-white hover:bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-700 rounded-lg transition-colors">
+        <button id="btnExecutarPipeline" class="hidden lg:inline-flex items-center gap-1.5 px-3 py-1.5 bg-white hover:bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-700 rounded-lg transition-colors">
           <span class="inline-block w-2 h-2 rounded-full bg-[#00853b]"></span>
           Sincronizar
         </button>
@@ -71,31 +71,33 @@
     </div>
   </header>
 
-  <!-- CONTEÚDO PRINCIPAL (FUNDO CLARO E SÓBRIO) -->
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+  <!-- CONTEÚDO PRINCIPAL EM LARGURA TOTAL E LAYOUT LIMPO -->
+  <main class="w-full px-4 sm:px-6 lg:px-8 xl:px-10 py-5 space-y-5">
 
-    <!-- HERO EDITORIAL SÓBRIO -->
-    <section class="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs relative overflow-hidden">
-      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div class="space-y-2 max-w-3xl">
-          <h2 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
-            Fiscalização dos Gastos Públicos Brasileiros em Tempo Real
-          </h2>
-          <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
-            Mapeamento unificado do orçamento federal, estadual e municipal. Os dados oficiais são submetidos a conciliação contábil (Lei nº 4.320/64), isolamento de transferências fundo a fundo (anti-bitributação) e rastreabilidade até o documento oficial. <strong class="text-red-700 font-bold">Todos os indícios de desvio, sobrepreço ou corrupção são alertados exclusivamente em Vermelho.</strong>
-          </p>
+    <!-- FAIXA EXECUTIVA LIMPA (SEM HERO BULKY) -->
+    <section class="flex flex-col md:flex-row md:items-center justify-between gap-3 pb-2 border-b border-slate-200">
+      <div class="space-y-0.5">
+        <h2 class="text-lg sm:text-xl font-extrabold text-slate-900 tracking-tight">
+          Painel de Execução Orçamentária e Fiscalização Cívica
+        </h2>
+        <p class="text-xs text-slate-600">
+          Dados consolidados de despesas da União, Estados e Municípios com rastreabilidade SHA-256 e isolamento contra dupla contagem. <strong class="text-red-700 font-bold">Indícios de irregularidade e empresas do CEIS/CGU sinalizados exclusivamente em Vermelho.</strong>
+        </p>
+      </div>
+      <div class="flex items-center gap-4 shrink-0">
+        <div class="flex items-center gap-2 text-xs text-slate-600">
+          <span class="inline-block w-2 h-2 rounded-full bg-emerald-500"></span>
+          <span>Base Analítica Conciliada</span>
         </div>
-        <div class="flex items-center gap-3 shrink-0">
-          <div class="text-right">
-            <div class="text-[11px] uppercase tracking-wider text-slate-500 font-bold">Exercício Orçamentário</div>
-            <div class="text-2xl font-black text-[#002776] font-mono tabular-nums">2026</div>
-          </div>
+        <div class="text-right pl-4 border-l border-slate-200">
+          <span class="text-[10px] uppercase font-bold text-slate-400 block tracking-wider">Exercício</span>
+          <span class="text-base font-extrabold text-[#002776] font-mono tabular-nums leading-none">2026</span>
         </div>
       </div>
     </section>
 
-    <!-- SCORECARDS / KPIS EM FUNDO BRANCO -->
-    <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4" id="kpiContainer">
+    <!-- SCORECARDS / KPIS EM LARGURA TOTAL (5 COLUNAS FLUIDAS) -->
+    <section class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3.5" id="kpiContainer">
       
       <!-- Card 1: Gasto Efetivo Real (Verde Institucional) -->
       <div class="card-analitico relative overflow-hidden group">
@@ -109,7 +111,7 @@
           Carregando...
         </div>
         <div class="mt-1 text-[11px] text-emerald-700 font-medium">
-          Pagamento final sem dupla contagem
+          Pagamento líquido sem repasses duplicados
         </div>
       </div>
 
@@ -118,10 +120,10 @@
         <div class="text-xs font-bold text-slate-700 uppercase tracking-wider">
           Total Pago (Exercício)
         </div>
-        <div class="mt-2 text-lg sm:text-xl font-bold text-slate-900 font-mono tabular-nums" id="kpiTotalPago">
+        <div class="mt-2 text-xl sm:text-2xl font-black text-slate-900 font-mono tabular-nums tracking-tight" id="kpiTotalPago">
           ...
         </div>
-        <div class="mt-1 text-[11px] text-slate-500">
+        <div class="mt-1 text-[11px] text-slate-600">
           Ordens Bancárias (OBs) liquidadas
         </div>
       </div>
@@ -131,7 +133,7 @@
         <div class="text-xs font-bold text-amber-800 uppercase tracking-wider">
           Restos a Pagar (RAP)
         </div>
-        <div class="mt-2 text-lg sm:text-xl font-bold text-amber-900 font-mono tabular-nums" id="kpiRapPagos">
+        <div class="mt-2 text-xl sm:text-2xl font-black text-amber-900 font-mono tabular-nums tracking-tight" id="kpiRapPagos">
           ...
         </div>
         <div class="mt-1 text-[11px] text-amber-700">
@@ -144,7 +146,7 @@
         <div class="text-xs font-bold text-sky-800 uppercase tracking-wider">
           Repasses / Fundo a Fundo
         </div>
-        <div class="mt-2 text-lg sm:text-xl font-bold text-slate-900 font-mono tabular-nums" id="kpiTransferencias">
+        <div class="mt-2 text-xl sm:text-2xl font-black text-slate-900 font-mono tabular-nums tracking-tight" id="kpiTransferencias">
           ...
         </div>
         <div class="mt-1 text-[11px] text-sky-700">
@@ -175,51 +177,51 @@
     </section>
 
     <!-- FUNIL ORÇAMENTÁRIO (LEI 4.320/64) - NO MODO AUDITOR -->
-    <section id="funilOrcamentarioSection" class="hidden space-y-4">
-      <div class="flex items-center justify-between border-b border-slate-200 pb-3">
+    <section id="funilOrcamentarioSection" class="hidden space-y-3">
+      <div class="flex items-center justify-between border-b border-slate-200 pb-2">
         <div>
-          <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
-            <svg class="w-5 h-5 text-[#002776]" viewBox="0 0 20 20" fill="currentColor">
+          <h3 class="text-sm sm:text-base font-bold text-slate-900 flex items-center gap-2">
+            <svg class="w-4 h-4 text-[#002776]" viewBox="0 0 20 20" fill="currentColor">
               <path fill-rule="evenodd" d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z" clip-rule="evenodd"/>
             </svg>
             <span>Funil do Ciclo da Despesa Pública (Lei 4.320/1964)</span>
           </h3>
-          <p class="text-xs text-slate-500">Fases sequenciais do orçamento público federal sem mistura de métricas</p>
+          <p class="text-xs text-slate-600">Métricas sequenciais: Empenho Líquido &rarr; Liquidação Atestada &rarr; Pagamento Direto &rarr; Repasses</p>
         </div>
-        <span class="text-xs px-2.5 py-1 bg-blue-50 text-[#002776] border border-blue-200 rounded-full font-mono font-semibold">
-          Modo Auditor Ativo
+        <span class="text-xs px-2.5 py-0.5 bg-blue-50 text-[#002776] border border-blue-200 rounded-full font-mono font-semibold">
+          Filtro Contábil
         </span>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
         <div class="card-analitico">
           <div class="text-[11px] text-amber-800 font-bold uppercase">1. Empenho Líquido (NE)</div>
-          <div class="text-xl font-bold font-mono tabular-nums text-slate-900 mt-1" id="funilEmpenho">...</div>
-          <p class="text-[11px] text-slate-500 mt-2">Dotação reservada por Nota de Empenho.</p>
+          <div class="text-lg font-bold font-mono tabular-nums text-slate-900 mt-1" id="funilEmpenho">...</div>
+          <p class="text-[11px] text-slate-600 mt-1">Dotação reservada por Nota de Empenho.</p>
         </div>
 
         <div class="card-analitico">
           <div class="text-[11px] text-blue-700 font-bold uppercase">2. Liquidação Atestada (NL)</div>
-          <div class="text-xl font-bold font-mono tabular-nums text-slate-900 mt-1" id="funilLiquidado">...</div>
-          <p class="text-[11px] text-slate-500 mt-2">Entrega atestada e obrigação reconhecida.</p>
+          <div class="text-lg font-bold font-mono tabular-nums text-slate-900 mt-1" id="funilLiquidado">...</div>
+          <p class="text-[11px] text-slate-600 mt-1">Entrega atestada e obrigação reconhecida.</p>
         </div>
 
         <div class="card-analitico">
           <div class="text-[11px] text-emerald-700 font-bold uppercase">3. Pagamento Direto (OB)</div>
-          <div class="text-xl font-bold font-mono tabular-nums text-slate-900 mt-1" id="funilPago">...</div>
-          <p class="text-[11px] text-slate-500 mt-2">Saída de caixa para fornecedor do serviço.</p>
+          <div class="text-lg font-bold font-mono tabular-nums text-slate-900 mt-1" id="funilPago">...</div>
+          <p class="text-[11px] text-slate-600 mt-1">Saída de caixa para fornecedor do serviço.</p>
         </div>
 
         <div class="card-analitico">
           <div class="text-[11px] text-sky-700 font-bold uppercase">4. Repasses (FNS/FPM)</div>
-          <div class="text-xl font-bold font-mono tabular-nums text-slate-900 mt-1" id="funilRepasses">...</div>
-          <p class="text-[11px] text-slate-500 mt-2">Transferidos aos fundos municipais/estaduais.</p>
+          <div class="text-lg font-bold font-mono tabular-nums text-slate-900 mt-1" id="funilRepasses">...</div>
+          <p class="text-[11px] text-slate-600 mt-1">Transferidos aos fundos municipais/estaduais.</p>
         </div>
       </div>
     </section>
 
-    <!-- NAVEGAÇÃO EM ABAS -->
-    <div class="border-b border-slate-200 flex gap-2 overflow-x-auto pb-1" id="tabNav">
+    <!-- NAVEGAÇÃO EM ABAS (LARGURA TOTAL) -->
+    <div class="border-b border-slate-200 flex gap-1 overflow-x-auto pb-0.5" id="tabNav">
       <!-- ABA VERMELHA DE ALERTA DE CORRUPÇÃO EM DESTAQUE MÁXIMO -->
       <button data-tab="tabRadarCorrupcao" class="tab-btn tab-btn-corrupcao rounded-t-lg border-b-2 border-red-600 text-red-700 bg-red-50 flex items-center gap-2 font-bold">
         <svg class="w-4 h-4 text-red-600 shrink-0" viewBox="0 0 20 20" fill="currentColor">
@@ -230,7 +232,7 @@
       </button>
 
       <button data-tab="tabGeral" class="tab-btn active rounded-t-lg border-b-2 border-[#002776] text-[#002776] bg-white flex items-center gap-2 font-bold">
-        <svg class="w-4 h-4 text-slate-500" viewBox="0 0 20 20" fill="currentColor">
+        <svg class="w-4 h-4 text-slate-600" viewBox="0 0 20 20" fill="currentColor">
           <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 110 2h-3a1 1 0 01-1-1v-2a1 1 0 00-1-1H9a1 1 0 00-1 1v2a1 1 0 01-1 1H4a1 1 0 110-2V4zm3 1h2v2H7V5zm2 4H7v2h2V9zm2-4h2v2h-2V5zm2 4h-2v2h2V9z" clip-rule="evenodd"/>
         </svg>
         <span>Ministérios & Funções</span>
@@ -266,19 +268,19 @@
     </div>
 
     <!-- TAB 0: RADAR ANTI-CORRUPÇÃO (DESTAQUE VERMELHO) -->
-    <section id="tabRadarCorrupcao" class="tab-content space-y-6">
-      <div class="border-b border-red-200 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <div class="space-y-1">
+    <section id="tabRadarCorrupcao" class="tab-content space-y-4">
+      <div class="border-b border-red-200 pb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div class="space-y-0.5">
           <div class="flex items-center gap-2">
-            <svg class="w-6 h-6 text-red-600 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+            <svg class="w-5 h-5 text-red-600 shrink-0" viewBox="0 0 20 20" fill="currentColor">
               <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
             </svg>
-            <h3 class="text-base sm:text-lg font-black text-red-900 tracking-tight uppercase">
+            <h3 class="text-base font-black text-red-900 tracking-tight uppercase">
               Radar de Indícios de Irregularidade e Suspeita de Corrupção
             </h3>
           </div>
-          <p class="text-xs text-slate-600 max-w-3xl">
-            Despesas e contratações sinalizadas com indícios graves: empresas punidas no CEIS/CGU, sobrepreço atípico em relação ao mercado e fracionamento ilegal de despesa pública.
+          <p class="text-xs text-slate-600">
+            Casos sinalizados pelo motor analítico: empresas punidas no CEIS/CGU, sobrepreço atípico e fracionamento ilegal.
           </p>
         </div>
         <div class="flex items-center gap-2 shrink-0">
@@ -294,21 +296,21 @@
         </div>
       </div>
 
-      <!-- Cards de Casos de Corrupção -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-5" id="gridCasosCorrupcao">
+      <!-- Grid de Casos de Corrupção em Largura Total -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="gridCasosCorrupcao">
         <div class="col-span-3 py-8 text-center text-xs text-red-600">Carregando alertas do Radar Anti-Corrupção...</div>
       </div>
     </section>
 
-    <!-- TAB 1: GERAL & MINISTÉRIOS -->
-    <section id="tabGeral" class="tab-content hidden space-y-6">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- TAB 1: GERAL & MINISTÉRIOS (EM 2 COLUNAS LARGAS) -->
+    <section id="tabGeral" class="tab-content hidden space-y-4">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
         <!-- Ranking de Órgãos Superiores -->
         <div class="card-analitico space-y-4">
           <div class="flex items-center justify-between border-b border-slate-200 pb-3">
             <div>
               <h3 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Top Ministérios & Órgãos</h3>
-              <p class="text-xs text-slate-500">Classificação por despesas pagas no ano</p>
+              <p class="text-xs text-slate-600">Classificação por despesas pagas no ano</p>
             </div>
             <span class="text-[11px] font-mono text-emerald-700 font-semibold">Fonte: CGU / SIAFI</span>
           </div>
@@ -322,7 +324,7 @@
           <div class="flex items-center justify-between border-b border-slate-200 pb-3">
             <div>
               <h3 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Distribuição por Área</h3>
-              <p class="text-xs text-slate-500">Saúde, Educação, Infraestrutura e Segurança</p>
+              <p class="text-xs text-slate-600">Saúde, Educação, Infraestrutura e Segurança</p>
             </div>
             <span class="text-[11px] font-mono text-[#002776] font-semibold">Classificação Funcional</span>
           </div>
@@ -333,13 +335,13 @@
       </div>
     </section>
 
-    <!-- TAB 2: ESTADOS E MUNICÍPIOS (SICONFI) -->
-    <section id="tabMunicipios" class="tab-content hidden space-y-6">
+    <!-- TAB 2: ESTADOS E MUNICÍPIOS (SICONFI EM LARGURA TOTAL) -->
+    <section id="tabMunicipios" class="tab-content hidden space-y-4">
       <div class="card-analitico space-y-4">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200 pb-3">
           <div>
             <h3 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Comparador Fiscal e Gasto per Capita</h3>
-            <p class="text-xs text-slate-500">Dados oficiais enviados ao Tesouro Nacional (RREO/RGF) cruzados com o IBGE</p>
+            <p class="text-xs text-slate-600">Demonstrativos fiscais enviados ao Tesouro Nacional (RREO/RGF) cruzados com a população do IBGE</p>
           </div>
           <span class="text-[11px] font-mono text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-200 font-semibold">
             Cobertura SICONFI: 100% Capitais
@@ -347,16 +349,16 @@
         </div>
 
         <div class="overflow-x-auto">
-          <table class="w-full text-left text-xs">
-            <thead class="text-slate-600 bg-slate-50 border-b border-slate-200 uppercase text-[11px]">
+          <table class="tabela-limpa">
+            <thead>
               <tr>
-                <th class="py-3 px-3">Município / UF</th>
-                <th class="py-3 px-3">População (IBGE)</th>
-                <th class="py-3 px-3">Gasto per Capita</th>
-                <th class="py-3 px-3">Gasto em Saúde</th>
-                <th class="py-3 px-3">Gasto em Educação</th>
-                <th class="py-3 px-3">Total Pago</th>
-                <th class="py-3 px-3 text-right">Comprovante</th>
+                <th>Município / UF</th>
+                <th class="text-right">População (IBGE)</th>
+                <th class="text-right">Gasto per Capita</th>
+                <th class="text-right">Gasto em Saúde</th>
+                <th class="text-right">Gasto em Educação</th>
+                <th class="text-right">Total Pago</th>
+                <th class="text-right">Comprovante</th>
               </tr>
             </thead>
             <tbody id="tabelaMunicipios" class="divide-y divide-slate-100">
@@ -367,30 +369,30 @@
       </div>
     </section>
 
-    <!-- TAB 3: CONTRATAÇÕES PÚBLICAS (PNCP) -->
+    <!-- TAB 3: CONTRATAÇÕES PÚBLICAS (PNCP EM LARGURA TOTAL) -->
     <section id="tabContratos" class="tab-content hidden space-y-4">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200 pb-3">
         <div>
           <h3 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Contratos Registrados no PNCP</h3>
-          <p class="text-xs text-slate-500">Editais, licitações homologadas e valores contratados (Lei nº 14.133/2021)</p>
+          <p class="text-xs text-slate-600">Editais homologados e valores contratados sob a Nova Lei de Licitações (Lei nº 14.133/2021)</p>
         </div>
         <span class="text-[11px] font-mono text-[#002776] bg-blue-50 px-2.5 py-1 rounded-md border border-blue-200 font-semibold">
           API PNCP Oficial
         </span>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="cardsContratos">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="cardsContratos">
         <div class="col-span-3 py-4 text-center text-xs text-slate-400">Carregando contratos do PNCP...</div>
       </div>
     </section>
 
-    <!-- TAB 4: FORNECEDORES & CREDORES -->
-    <section id="tabFornecedores" class="tab-content hidden space-y-6">
+    <!-- TAB 4: FORNECEDORES & CREDORES (LARGURA TOTAL) -->
+    <section id="tabFornecedores" class="tab-content hidden space-y-4">
       <div class="card-analitico space-y-4">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200 pb-3">
           <div>
             <h3 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Top Recebedores de Recursos Públicos</h3>
-            <p class="text-xs text-slate-500">Concentração de contratos e pagamentos emitidos pelo governo</p>
+            <p class="text-xs text-slate-600">Maiores credores em volume financeiro pago pelo Tesouro Nacional</p>
           </div>
           <span class="text-[11px] font-mono text-amber-800 bg-amber-50 px-2.5 py-1 rounded-md border border-amber-200 font-semibold">
             Controle Social & Compliance
@@ -398,15 +400,15 @@
         </div>
 
         <div class="overflow-x-auto">
-          <table class="w-full text-left text-xs">
-            <thead class="text-slate-600 bg-slate-50 border-b border-slate-200 uppercase text-[11px]">
+          <table class="tabela-limpa">
+            <thead>
               <tr>
-                <th class="py-3 px-3">Razão Social / Nome</th>
-                <th class="py-3 px-3">CNPJ / CPF</th>
-                <th class="py-3 px-3">Tipo</th>
-                <th class="py-3 px-3">Ordens Bancárias</th>
-                <th class="py-3 px-3">Total Recebido</th>
-                <th class="py-3 px-3 text-right">Rastrear</th>
+                <th>Razão Social / Nome</th>
+                <th>CNPJ / CPF</th>
+                <th>Tipo</th>
+                <th class="text-right">Ordens Bancárias</th>
+                <th class="text-right">Total Recebido</th>
+                <th class="text-right">Rastrear</th>
               </tr>
             </thead>
             <tbody id="tabelaFornecedores" class="divide-y divide-slate-100">
@@ -417,24 +419,24 @@
       </div>
     </section>
 
-    <!-- TAB 5: BUSCA GRANULAR COM RASTREABILIDADE 1-CLICK -->
-    <section id="tabGranular" class="tab-content hidden space-y-6">
+    <!-- TAB 5: BUSCA GRANULAR (LARGURA TOTAL E BARRA DE BUSCA EXPANDIDA) -->
+    <section id="tabGranular" class="tab-content hidden space-y-4">
       <div class="card-analitico space-y-4">
-        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3 border-b border-slate-200 pb-4">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3 border-b border-slate-200 pb-3">
           <div>
             <h3 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Consulta Granular de Despesas</h3>
-            <p class="text-xs text-slate-500">Linhas sob suspeita do Radar Anti-Corrupção exibem badge exclusivo em Vermelho</p>
+            <p class="text-xs text-slate-600">Linhas sob suspeita do Radar Anti-Corrupção exibem badge exclusivo em Vermelho</p>
           </div>
-          <div class="flex flex-wrap items-center gap-2">
-            <label class="flex items-center gap-1.5 px-2.5 py-1.5 bg-red-50 border border-red-300 rounded-lg text-xs text-red-800 font-bold cursor-pointer hover:bg-red-100 transition-colors">
+          <div class="flex flex-wrap items-center gap-2.5">
+            <label class="flex items-center gap-1.5 px-3 py-1.5 bg-red-50 border border-red-300 rounded-lg text-xs text-red-800 font-bold cursor-pointer hover:bg-red-100 transition-colors shrink-0">
               <input type="checkbox" id="checkApenasCorrupcao" class="accent-red-600 rounded">
               <span>Apenas Alertas de Corrupção</span>
             </label>
-            <input type="text" id="campoBusca" placeholder="Pesquisar favorecido, documento..." class="bg-white border border-slate-300 rounded-lg px-3 py-1.5 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#002776] w-56">
-            <button id="btnBuscar" class="px-3.5 py-1.5 bg-[#00853b] hover:bg-[#006b2f] text-white rounded-lg text-xs font-bold transition-colors">
+            <input type="text" id="campoBusca" placeholder="Pesquisar favorecido, documento..." class="bg-white border border-slate-300 rounded-lg px-3 py-1.5 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#002776] w-64 md:w-80">
+            <button id="btnBuscar" class="px-4 py-1.5 bg-[#00853b] hover:bg-[#006b2f] text-white rounded-lg text-xs font-bold transition-colors shrink-0">
               Buscar
             </button>
-            <a href="/api/v1/exportar/despesas.csv?ano=2026" download id="linkExportarCsv" class="px-3 py-1.5 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 shadow-xs">
+            <a href="/api/v1/exportar/despesas.csv?ano=2026" download id="linkExportarCsv" class="px-3.5 py-1.5 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 shadow-xs shrink-0">
               <svg class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"/>
               </svg>
@@ -444,16 +446,16 @@
         </div>
 
         <div class="overflow-x-auto">
-          <table class="w-full text-left text-xs">
-            <thead class="text-slate-600 bg-slate-50 border-b border-slate-200 uppercase text-[11px]">
+          <table class="tabela-limpa">
+            <thead>
               <tr>
-                <th class="py-3 px-3">Doc / Tipo</th>
-                <th class="py-3 px-3">Data</th>
-                <th class="py-3 px-3">Órgão / UG</th>
-                <th class="py-3 px-3">Favorecido</th>
-                <th class="py-3 px-3">Fase & Alerta</th>
-                <th class="py-3 px-3">Valor Líquido</th>
-                <th class="py-3 px-3 text-right">Proveniência</th>
+                <th>Doc / Tipo</th>
+                <th>Data</th>
+                <th>Órgão / UG</th>
+                <th>Favorecido</th>
+                <th>Fase & Alerta</th>
+                <th class="text-right">Valor Líquido</th>
+                <th class="text-right">Proveniência</th>
               </tr>
             </thead>
             <tbody id="tabelaDespesas" class="divide-y divide-slate-100">
@@ -463,7 +465,7 @@
         </div>
 
         <!-- MICRO-GLOSSÁRIO CONTÁBIL & FISCAL (LEI 4.320/64) -->
-        <div class="pt-4 border-t border-slate-200 space-y-3">
+        <div class="pt-4 border-t border-slate-200 space-y-2.5">
           <div class="font-bold text-[#002776] uppercase tracking-wider text-[11px] flex items-center gap-1.5">
             <svg class="w-4 h-4 text-[#002776]" viewBox="0 0 20 20" fill="currentColor">
               <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29-3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z"/>
@@ -471,19 +473,19 @@
             <span>Micro-Glossário Cidadão: Entenda o Ciclo da Despesa</span>
           </div>
           <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-slate-800 text-xs">
-            <div class="space-y-1">
+            <div class="space-y-0.5">
               <strong class="text-amber-800 block">1. Empenho (NE)</strong>
               <p class="text-slate-600 text-[11px] leading-relaxed">Reserva orçamentária do Estado para um fornecedor antes da compra.</p>
             </div>
-            <div class="space-y-1">
+            <div class="space-y-0.5">
               <strong class="text-blue-800 block">2. Liquidação (NL)</strong>
               <p class="text-slate-600 text-[11px] leading-relaxed">Verificação do direito do credor após o serviço prestado ou produto entregue.</p>
             </div>
-            <div class="space-y-1">
+            <div class="space-y-0.5">
               <strong class="text-emerald-800 block">3. Pagamento (OB)</strong>
               <p class="text-slate-600 text-[11px] leading-relaxed">Emissão da Ordem Bancária e débito da Conta Única para o favorecido.</p>
             </div>
-            <div class="space-y-1">
+            <div class="space-y-0.5">
               <strong class="text-amber-900 block">4. Restos a Pagar (RAP)</strong>
               <p class="text-slate-600 text-[11px] leading-relaxed">Despesas empenhadas em anos anteriores e pagas no exercício atual.</p>
             </div>
@@ -506,7 +508,7 @@
           </div>
           <div>
             <h3 class="text-base font-bold text-slate-900">Contrato de Proveniência & Rastreabilidade</h3>
-            <p class="text-xs text-slate-500">Origem oficial e conferência de integridade (Lei nº 12.527 / LAI)</p>
+            <p class="text-xs text-slate-600">Origem oficial e conferência de integridade (Lei nº 12.527 / LAI)</p>
           </div>
         </div>
         <button id="btnFecharModal" class="text-slate-400 hover:text-slate-700 p-1 rounded-lg hover:bg-slate-100 transition-colors" aria-label="Fechar modal">

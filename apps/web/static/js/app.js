@@ -329,16 +329,16 @@ async function carregarMunicipios() {
 
     tbody.innerHTML = munics.map((m) => `
       <tr class="hover:bg-slate-50 transition-colors">
-        <td class="py-3 px-3 font-semibold text-slate-900">
+        <td class="py-3 px-4 font-semibold text-slate-900">
           ${m.municipio} - <span class="text-[#002776] font-bold">${m.uf}</span>
           <div class="text-[10px] text-slate-500 font-mono tabular-nums">IBGE: ${m.codigo_ibge}</div>
         </td>
-        <td class="py-3 px-3 font-mono tabular-nums text-slate-700">${formatarNumero(m.populacao_ibge)} hab.</td>
-        <td class="py-3 px-3 font-mono tabular-nums font-bold text-emerald-800">${formatarMoeda(m.gasto_per_capita)} / hab</td>
-        <td class="py-3 px-3 font-mono tabular-nums text-slate-600">${formatarMoeda(m.gasto_saude)}</td>
-        <td class="py-3 px-3 font-mono tabular-nums text-slate-600">${formatarMoeda(m.gasto_educacao)}</td>
-        <td class="py-3 px-3 font-mono tabular-nums font-semibold text-slate-900">${formatarMoeda(m.despesa_paga)}</td>
-        <td class="py-3 px-3 text-right">
+        <td class="py-3 px-4 font-mono tabular-nums text-slate-700 text-right">${formatarNumero(m.populacao_ibge)} hab.</td>
+        <td class="py-3 px-4 font-mono tabular-nums font-bold text-emerald-800 text-right">${formatarMoeda(m.gasto_per_capita)} / hab</td>
+        <td class="py-3 px-4 font-mono tabular-nums text-slate-600 text-right">${formatarMoeda(m.gasto_saude)}</td>
+        <td class="py-3 px-4 font-mono tabular-nums text-slate-600 text-right">${formatarMoeda(m.gasto_educacao)}</td>
+        <td class="py-3 px-4 font-mono tabular-nums font-semibold text-slate-900 text-right">${formatarMoeda(m.despesa_paga)}</td>
+        <td class="py-3 px-4 text-right">
           <a href="${m.fonte_url}" target="_blank" rel="noopener noreferrer" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-[#002776] border border-slate-200 rounded text-[11px] font-semibold transition-colors inline-flex items-center">
             SICONFI ${svgExternalLink}
           </a>
@@ -400,16 +400,16 @@ async function carregarTopFornecedores() {
 
     tbody.innerHTML = fornecedores.map((f) => `
       <tr class="hover:bg-slate-50 transition-colors">
-        <td class="py-3 px-3 font-semibold text-slate-900">${f.nome}</td>
-        <td class="py-3 px-3 font-mono tabular-nums text-slate-600">${f.documento}</td>
-        <td class="py-3 px-3">
+        <td class="py-3 px-4 font-semibold text-slate-900">${f.nome}</td>
+        <td class="py-3 px-4 font-mono tabular-nums text-slate-600">${f.documento}</td>
+        <td class="py-3 px-4">
           <span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-slate-100 text-slate-700 border border-slate-200">
             ${f.tipo}
           </span>
         </td>
-        <td class="py-3 px-3 font-mono tabular-nums text-slate-700">${f.qtd_pagamentos}</td>
-        <td class="py-3 px-3 font-mono tabular-nums font-bold text-emerald-800">${formatarMoeda(f.total_recebido)}</td>
-        <td class="py-3 px-3 text-right">
+        <td class="py-3 px-4 text-right font-mono tabular-nums text-slate-700">${f.qtd_pagamentos}</td>
+        <td class="py-3 px-4 text-right font-mono tabular-nums font-bold text-emerald-800">${formatarMoeda(f.total_recebido)}</td>
+        <td class="py-3 px-4 text-right">
           <a href="${f.url_comprovante}" target="_blank" rel="noopener noreferrer" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-[#002776] border border-slate-200 rounded text-[11px] font-semibold transition-colors inline-flex items-center">
             Consultar ${svgExternalLink}
           </a>
@@ -456,20 +456,20 @@ async function carregarDespesasGranulares(termo = '') {
 
       return `
         <tr class="${linhaClasse} transition-colors">
-          <td class="py-3 px-3">
+          <td class="py-3 px-4">
             <span class="font-mono tabular-nums font-bold text-slate-900">${d.numero_documento}</span>
             <div class="text-[10px] text-slate-500 font-mono">${d.tipo_documento}</div>
           </td>
-          <td class="py-3 px-3 font-mono tabular-nums text-slate-600 text-[11px]">${d.data_evento}</td>
-          <td class="py-3 px-3">
+          <td class="py-3 px-4 font-mono tabular-nums text-slate-600 text-[11px]">${d.data_evento}</td>
+          <td class="py-3 px-4">
             <div class="font-semibold text-slate-900">${d.orgao}</div>
             <div class="text-[11px] text-slate-500 line-clamp-1">${d.unidade_gestora}</div>
           </td>
-          <td class="py-3 px-3">
+          <td class="py-3 px-4">
             <div class="font-semibold text-slate-900">${d.favorecido_nome}</div>
             <div class="text-[11px] text-amber-800 font-mono tabular-nums">${d.favorecido_documento}</div>
           </td>
-          <td class="py-3 px-3">
+          <td class="py-3 px-4">
             <div class="flex items-center gap-1.5 flex-wrap">
               <span class="badge-fase ${badgeClass}">${d.fase_despesa}</span>
               ${d.is_transferencia ? '<span class="badge-fase badge-repasse">REPASSE</span>' : ''}
@@ -481,10 +481,10 @@ async function carregarDespesasGranulares(termo = '') {
               ` : ''}
             </div>
           </td>
-          <td class="py-3 px-3 font-mono tabular-nums font-bold ${d.alerta_corrupcao ? 'text-red-700' : 'text-emerald-800'}">
+          <td class="py-3 px-4 text-right font-mono tabular-nums font-bold ${d.alerta_corrupcao ? 'text-red-700' : 'text-emerald-800'}">
             ${formatarMoeda(d.valor_liquido_reais)}
           </td>
-          <td class="py-3 px-3 text-right">
+          <td class="py-3 px-4 text-right">
             <button onclick="abrirModalRastreabilidade('${d.numero_documento}')" class="px-2.5 py-1 ${d.alerta_corrupcao ? 'bg-[#dc2626] hover:bg-[#b91c1c] text-white border-red-600' : 'bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border-emerald-300'} border rounded text-[11px] font-bold transition-colors">
               ${d.alerta_corrupcao ? 'Auditar' : 'Rastrear'}
             </button>

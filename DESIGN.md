@@ -131,7 +131,7 @@ A paleta combina a sobriedade do papel branco com as cores institucionais do Bra
 - **Cinza Delimitador** (`#e2e8f0`): Bordas e divisórias sutis de 1px.
 - **Texto Principal** (`#0f172a`): Títulos e valores em destaque (contraste > 14:1).
 - **Texto Secundário** (`#334155`): Textos de apoio e rótulos descritivos (contraste > 7:1).
-- **Texto de Apoio** (`#64748b`): Metadados, notas de rodapé e códigos orçamentários (contraste > 4.5:1).
+- **Texto de Apoio** (`#475569`): Metadados, notas de rodapé e códigos orçamentários (contraste > 6.8:1 contra branco).
 
 ### Named Rules
 **The Red Exclusivity Rule.** A cor vermelha é estritamente proibida em qualquer elemento que não seja uma ocorrência ou ferramenta do Radar Anti-Corrupção. Botões de fechar, status neutros e campos comuns utilizam cinzas ou azuis.
@@ -156,9 +156,10 @@ A paleta combina a sobriedade do papel branco com as cores institucionais do Bra
 
 ## Layout
 
-O layout baseia-se em um grid responsivo com container centralizado de largura máxima de `80rem` (1280px) com padding horizontal de `1rem` a `2rem`.
-- **Rhythm:** Espaçamentos verticais de `1rem` (16px), `1.5rem` (24px) e `2rem` (32px).
-- **Tabelas com Rolagem Segura:** Tabelas de dados granulares possuem container com `overflow-x: auto` e divisores de linha discretos de 1px (`#f1f5f9`).
+O layout baseia-se em um modelo de bancada analítica fluida e limpa (*full-width clean workbench*), que aproveita a largura total do monitor sem margens vazias desnecessárias, com padding horizontal responsivo de `1rem` (mobile) a `2.5rem` (desktops amplos: `w-full px-4 sm:px-6 lg:px-8 xl:px-10`).
+- **Rhythm & Whitespace:** Espaçamentos verticais de `1.5rem` (24px) entre seções, conferindo leveza e clareza visual sem sobrecarga.
+- **Tabelas de Dados em Largura Total:** As tabelas de despesas, municípios e credores ocupam 100% da largura útil, permitindo visualização confortável de todas as colunas sem estrangulamento de dados.
+- **Alinhamento Numérico:** Colunas com valores monetários e quantidades são alinhadas à direita com numerais tabulares (`tabular-nums`), enquanto identificadores e textos descritivos são alinhados à esquerda.
 
 ## Elevation & Depth
 

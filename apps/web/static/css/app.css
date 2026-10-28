@@ -21,7 +21,7 @@
   /* Tipografia de Alto Contraste */
   --br-texto-primario: #0f172a;
   --br-texto-secundario: #334155;
-  --br-texto-apoio: #64748b;
+  --br-texto-apoio: #475569;
 
   /* Cores Institucionais do Brasil */
   --br-azul-institucional: #002776;
@@ -138,6 +138,36 @@ h4 {
   border-radius: 12px;
   padding: 1.25rem;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
+}
+
+/* Tabelas Limpas em Largura Total */
+.tabela-limpa {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8125rem;
+}
+
+.tabela-limpa th {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--br-texto-apoio);
+  background-color: var(--br-superficie-subtil);
+  border-bottom: 1px solid var(--br-borda);
+  white-space: nowrap;
+}
+
+.tabela-limpa td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #f1f5f9;
+  vertical-align: middle;
+}
+
+.tabela-limpa tr:hover td {
+  background-color: #f8fafc;
 }
 
 /* Abas de Navegação */

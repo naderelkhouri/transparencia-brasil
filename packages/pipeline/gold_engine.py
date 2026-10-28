@@ -26,6 +26,10 @@ class GoldAnalyticsEngine:
         if not read_only:
             self._inicializar_tabelas()
 
+    def _cursor(self):
+        """Retorna um cursor isolado para execução concorrente e thread-safe."""
+        return self.conn.cursor()
+
     def _inicializar_tabelas(self):
         """Cria tabelas analíticas materializadas no DuckDB."""
         self.conn.execute("""
@@ -106,7 +110,7 @@ class GoldAnalyticsEngine:
             FROM fato_despesa_unificada
             WHERE ano_exercicio = ?;
         """
-        res = self.conn.execute(query, [ano]).fetchone()
+        res = self._cursor().execute(query, [ano]).fetchone()
         (
             total_dotacao,
             total_empenhado,
@@ -153,7 +157,7 @@ class GoldAnalyticsEngine:
             ORDER BY total_pago DESC
             LIMIT ?;
         """
-        rows = self.conn.execute(query, [ano, limite]).fetchall()
+        rows = self._cursor().execute(query, [ano, limite]).fetchall()
         return [
             {
                 "codigo": r[0],
@@ -178,7 +182,7 @@ class GoldAnalyticsEngine:
             GROUP BY funcao_governo
             ORDER BY total_valor DESC;
         """
-        rows = self.conn.execute(query, [ano]).fetchall()
+        rows = self._cursor().execute(query, [ano]).fetchall()
         total_geral = sum(r[1] for r in rows) or 1.0
         return [
             {
@@ -206,7 +210,7 @@ class GoldAnalyticsEngine:
             ORDER BY total_recebido DESC
             LIMIT ?;
         """
-        rows = self.conn.execute(query, [ano, limite]).fetchall()
+        rows = self._cursor().execute(query, [ano, limite]).fetchall()
         return [
             {
                 "nome": r[0],
@@ -254,7 +258,8 @@ class GoldAnalyticsEngine:
 
         where_sql = " AND ".join(where_clauses)
 
-        total = self.conn.execute(
+        cur = self._cursor()
+        total = cur.execute(
             f"SELECT COUNT(*) FROM fato_despesa_unificada WHERE {where_sql}",
             params
         ).fetchone()[0]
@@ -286,7 +291,7 @@ class GoldAnalyticsEngine:
             LIMIT ? OFFSET ?;
         """
         query_params = params + [limite, offset]
-        rows = self.conn.execute(query, query_params).fetchall()
+        rows = cur.execute(query, query_params).fetchall()
 
         itens = [
             {
@@ -345,7 +350,7 @@ class GoldAnalyticsEngine:
             WHERE ano_exercicio = ? AND alerta_corrupcao = true
             ORDER BY valor_liquido_reais DESC;
         """
-        rows = self.conn.execute(query, [ano]).fetchall()
+        rows = self._cursor().execute(query, [ano]).fetchall()
         return [
             {
                 "id": r[0],
@@ -401,7 +406,7 @@ class GoldAnalyticsEngine:
             WHERE id = ? OR numero_documento_origem = ?
             LIMIT 1;
         """
-        row = self.conn.execute(query, [identificador, identificador]).fetchone()
+        row = self._cursor().execute(query, [identificador, identificador]).fetchone()
         if not row:
             return None
 
