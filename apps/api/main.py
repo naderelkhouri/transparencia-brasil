@@ -10,7 +10,7 @@ from typing import Optional, List, Dict, Any
 from fastapi import FastAPI, Query, HTTPException, status, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse, StreamingResponse
+from fastapi.responses import FileResponse, StreamingResponse, Response
 from pydantic import BaseModel
 
 from packages.pipeline.gold_engine import GoldAnalyticsEngine
@@ -70,7 +70,7 @@ extrator_pncp = ExtratorPNCP()
 def health_check():
     """Verifica a integridade do serviço e da base analítica."""
     try:
-        count = engine.conn.execute("SELECT COUNT(*) FROM fato_despesa_unificada").fetchone()[0]
+        count = engine._cursor().execute("SELECT COUNT(*) FROM fato_despesa_unificada").fetchone()[0]
         return {
             "status": "online",
             "banco_analitico": "conectado",
@@ -78,6 +78,34 @@ def health_check():
         }
     except Exception as e:
         return {"status": "degradado", "erro": str(e)}
+
+
+@app.get("/robots.txt", include_in_schema=False)
+def robots_txt():
+    conteudo = (
+        "User-agent: *\n"
+        "Allow: /\n"
+        "Sitemap: https://transparencia.admx.tech/sitemap.xml\n"
+    )
+    return Response(content=conteudo, media_type="text/plain")
+
+
+@app.get("/sitemap.xml", include_in_schema=False)
+def sitemap_xml():
+    conteudo = """<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://transparencia.admx.tech/</loc>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://gastospublicos.admx.tech/</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+</urlset>"""
+    return Response(content=conteudo, media_type="application/xml")
 
 
 @app.get("/api/v1/resumo", tags=["Métricas Nacionais"])
