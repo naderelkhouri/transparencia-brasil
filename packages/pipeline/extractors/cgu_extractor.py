@@ -21,6 +21,7 @@ from ..models import (
 )
 from .pncp_extractor import ExtratorPNCP
 from .siconfi_extractor import ExtratorSiconfi
+from .economia_extractor import ExtratorEconomia
 
 
 class ExtratorCGU:
@@ -102,6 +103,7 @@ class ExtratorCGU:
             else extrator_siconfi.obter_dados_municipios_reais(ano=ano)
         )
 
+        contratos_pncp.sort(key=lambda x: float(x.get("valor_homologado") or 0.0), reverse=True)
         inidoneos_tcu, hash_tcu = self.extrair_inidoneos_tcu_reais(forcar_atualizacao=forcar_atualizacao)
         cnpjs_inidoneos = {
             "".join(ch for ch in str(item.get("cpf_cnpj") or "") if ch.isdigit()): item
@@ -291,7 +293,66 @@ class ExtratorCGU:
                 )
             )
 
-        # 3. Incorpora Registros Reais de Restos a Pagar e Transferências/Execução Municipal do SICONFI/STN
+        # 3. Incorpora Auditoria Bilionária do Balanço da União (SICONFI id_ente=1 - RREO Anexo 02)
+        extrator_eco = ExtratorEconomia()
+        dados_eco = extrator_eco.extrair_economia_real(ano=ano, forcar_atualizacao=forcar_atualizacao)
+        hash_uniao = dados_eco["hash_sha256_uniao"]
+        url_uniao_siconfi = "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo%2002&id_ente=1"
+
+        for idx_setor, setor in enumerate(dados_eco["comparativo_setorial"]):
+            func_nome = setor["funcao"]
+            rap_uniao = float(setor["travado_restos_a_pagar_reais"] or 0.0)
+            liq_uniao = float(setor["executado_efetivo_reais"] or 0.0)
+            plan_uniao = float(setor["orcamento_planejado_reais"] or 0.0)
+            taxa_pct = float(setor["taxa_execucao_pct"] or 0.0)
+
+            if rap_uniao > 0 and setor["alerta_grave"]:
+                risco_uniao = (
+                    "SOBREPRECO_ATIPICO"
+                    if func_nome == "Encargos Especiais"
+                    else "FRACIONAMENTO_ILEGAL"
+                )
+                doc_uniao = f"STN-UNIAO-RREO2-{idx_setor+1:02d}"
+                registros.append(
+                    RegistroDespesaCanonica(
+                        id=str(uuid.uuid5(uuid.NAMESPACE_DNS, f"stn-uniao-{func_nome}-{ano}")),
+                        ente_federativo="UNIÃO FEDERAL (GOVERNO CENTRAL)",
+                        esfera=EsferaGoverno.FEDERAL,
+                        poder=PoderGoverno.EXECUTIVO,
+                        codigo_orgao_superior="17000",
+                        nome_orgao_superior=f"Governo Federal — Função {func_nome} (Balanço SICONFI/STN)",
+                        codigo_unidade_gestora="STN-0001",
+                        nome_unidade_gestora="TESOURO NACIONAL - RREO UNIÃO ANEXO 02",
+                        ano_exercicio=ano,
+                        data_evento=date(ano, 1, 31),
+                        data_competencia=date(2025, 12, 31),
+                        funcao_governo=func_nome,
+                        subfuncao_governo="Execução Orçamentária Federal (Plano vs. Realidade)",
+                        programa_governo=setor["promessa_plano"],
+                        acao_governamental=f"Planejado: R$ {plan_uniao/1e9:,.2f}B | Executado: R$ {liq_uniao/1e9:,.2f}B ({taxa_pct}%) | Retido em RAP: R$ {rap_uniao/1e9:,.2f}B",
+                        elemento_despesa="Restos a Pagar Não Processados / Desvio de Execução Orçamentária",
+                        fase_despesa=FaseDespesa.RESTOS_A_PAGAR_PAGOS,
+                        valor_bruto_centavos=int(round(rap_uniao * 100)),
+                        valor_anulacoes_centavos=0,
+                        is_transferencia_intergovernamental=False,
+                        ente_destinatario=None,
+                        tipo_documento="RREO",
+                        numero_documento_origem=doc_uniao,
+                        favorecido_tipo=TipoFavorecido.ENTE_PUBLICO,
+                        favorecido_documento="00.394.460/0001-41",
+                        favorecido_nome=f"ORÇAMENTO DA UNIÃO — FUNÇÃO {func_nome.upper()} (RETIDO / RAP)",
+                        fonte_identificador="SICONFI_TESOURO_NACIONAL_UNIAO",
+                        url_comprovante_oficial=url_uniao_siconfi,
+                        hash_payload_extracao=hash_uniao,
+                        data_ingestao=datetime.now(timezone.utc),
+                        versao_registro=1,
+                        alerta_corrupcao=True,
+                        motivo_alerta_corrupcao=setor["diagnostico_auditoria"],
+                        tipo_risco_corrupcao=risco_uniao,
+                    )
+                )
+
+        # 4. Incorpora Registros Reais de Restos a Pagar e Transferências/Execução Municipal do SICONFI/STN
         for mun in municipios_siconfi[:3]:
             cod_ibge = mun["codigo_ibge"]
             nome_mun = mun["municipio"]
@@ -379,4 +440,5 @@ class ExtratorCGU:
                     )
                 )
 
+        registros.sort(key=lambda r: r.valor_liquido_centavos, reverse=True)
         return registros

@@ -16,6 +16,7 @@ from pydantic import BaseModel
 from packages.pipeline.gold_engine import GoldAnalyticsEngine
 from packages.pipeline.extractors.siconfi_extractor import ExtratorSiconfi
 from packages.pipeline.extractors.pncp_extractor import ExtratorPNCP
+from packages.pipeline.extractors.economia_extractor import ExtratorEconomia
 from packages.pipeline.run_pipeline import executar_pipeline
 
 app = FastAPI(
@@ -64,6 +65,7 @@ def index_web():
 engine = GoldAnalyticsEngine(read_only=True)
 extrator_siconfi = ExtratorSiconfi()
 extrator_pncp = ExtratorPNCP()
+extrator_economia = ExtratorEconomia()
 
 
 @app.get("/health", tags=["Sistema"])
@@ -258,6 +260,16 @@ def listar_dados_municipais(ano: int = Query(2026, description="Ano de exercíci
 def listar_contratos_pncp(ano: int = Query(2026, description="Ano do contrato")):
     """Retorna contratos públicos reais extraídos da API do Portal Nacional de Contratações Públicas (Lei 14.133/21)."""
     return extrator_pncp.obter_contratos_reais(ano=ano)
+
+
+@app.get("/api/v1/economia/plano-vs-realidade", tags=["Inteligência Econômica & Metas"])
+def obter_economia_plano_vs_realidade(ano: int = Query(2026, description="Ano de exercício")):
+    """
+    Confronta o Plano de Governo / Metas LDO-LOA com o que foi efetivamente executado
+    segundo o Banco Central do Brasil (SGS) e o Balanço da União no SICONFI/Tesouro Nacional (id_ente=1),
+    ordenado pelos valores mais elevados.
+    """
+    return extrator_economia.extrair_economia_real(ano=ano)
 
 
 @app.post("/api/v1/pipeline/executar", tags=["Administração"])

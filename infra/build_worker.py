@@ -28,6 +28,7 @@ def main():
     despesas_full = client.get("/api/v1/despesas?ano=2026&limite=200").json()
     municipios = client.get("/api/v1/siconfi/municipios?ano=2026").json()
     contratos = client.get("/api/v1/pncp/contratos?ano=2026").json()
+    economia = client.get("/api/v1/economia/plano-vs-realidade?ano=2026").json()
     csv_all = client.get("/api/v1/exportar/despesas.csv?ano=2026&apenas_corrupcao=false").text
     csv_corr = client.get("/api/v1/exportar/despesas.csv?ano=2026&apenas_corrupcao=true").text
     sitemap_xml = client.get("/sitemap.xml").text
@@ -55,6 +56,7 @@ const DATA_FORNECEDORES = {json.dumps(fornecedores, ensure_ascii=False)};
 const DATA_DESPESAS = {json.dumps(despesas_full["itens"], ensure_ascii=False)};
 const DATA_MUNICIPIOS = {json.dumps(municipios, ensure_ascii=False)};
 const DATA_CONTRATOS = {json.dumps(contratos, ensure_ascii=False)};
+const DATA_ECONOMIA = {json.dumps(economia, ensure_ascii=False)};
 const DATA_RASTRO = {json.dumps(rastreabilidade_map, ensure_ascii=False)};
 const CSV_ALL = {json.dumps(csv_all, ensure_ascii=False)};
 const CSV_CORR = {json.dumps(csv_corr, ensure_ascii=False)};
@@ -131,6 +133,9 @@ export default {{
     }}
     if (path === "/api/v1/pncp/contratos") {{
       return jsonResp(DATA_CONTRATOS);
+    }}
+    if (path === "/api/v1/economia/plano-vs-realidade") {{
+      return jsonResp(DATA_ECONOMIA);
     }}
     if (path === "/api/v1/despesas") {{
       const busca = (url.searchParams.get("busca") || "").toLowerCase();

@@ -247,15 +247,23 @@
     <!-- NAVEGAÇÃO EM ABAS (LARGURA TOTAL) -->
     <div class="border-b border-slate-200 flex gap-1 overflow-x-auto pb-0.5" id="tabNav">
       <!-- ABA VERMELHA DE ALERTA DE CORRUPÇÃO EM DESTAQUE MÁXIMO -->
-      <button data-tab="tabRadarCorrupcao" class="tab-btn tab-btn-corrupcao rounded-t-lg border-b-2 border-red-600 text-red-700 bg-red-50 flex items-center gap-2 font-bold">
+      <button data-tab="tabRadarCorrupcao" class="tab-btn active tab-btn-corrupcao rounded-t-lg border-b-2 border-red-600 text-red-700 bg-red-50 flex items-center gap-2 font-bold">
         <svg class="w-4 h-4 text-red-600 shrink-0" viewBox="0 0 20 20" fill="currentColor">
           <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
         </svg>
-        <span>Radar Anti-Corrupção</span>
+        <span>Radar Anti-Corrupção (Maiores Valores)</span>
         <span id="tabQtdCorrupcao" class="bg-[#dc2626] text-white text-[10px] px-1.5 py-0.2 rounded-full font-mono tabular-nums font-bold">...</span>
       </button>
 
-      <button data-tab="tabGeral" class="tab-btn active rounded-t-lg border-b-2 border-[#002776] text-[#002776] bg-white flex items-center gap-2 font-bold">
+      <!-- ABA ECONOMIA: PLANO DE GOVERNO VS. REALIDADE EXECUTADA -->
+      <button data-tab="tabEconomia" class="tab-btn rounded-t-lg border-b-2 border-transparent text-slate-600 hover:text-slate-900 flex items-center gap-2 font-bold">
+        <svg class="w-4 h-4 text-[#002776] shrink-0" viewBox="0 0 20 20" fill="currentColor">
+          <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"/>
+        </svg>
+        <span>Economia: Plano vs. Realidade</span>
+      </button>
+
+      <button data-tab="tabGeral" class="tab-btn rounded-t-lg border-b-2 border-transparent text-slate-600 hover:text-slate-900 flex items-center gap-2">
         <svg class="w-4 h-4 text-slate-600" viewBox="0 0 20 20" fill="currentColor">
           <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 110 2h-3a1 1 0 01-1-1v-2a1 1 0 00-1-1H9a1 1 0 00-1 1v2a1 1 0 01-1 1H4a1 1 0 110-2V4zm3 1h2v2H7V5zm2 4H7v2h2V9zm2-4h2v2h-2V5zm2 4h-2v2h2V9z" clip-rule="evenodd"/>
         </svg>
@@ -323,6 +331,63 @@
       <!-- Grid de Casos de Corrupção em Largura Total -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="gridCasosCorrupcao">
         <div class="col-span-3 py-8 text-center text-xs text-red-600">Carregando alertas do Radar Anti-Corrupção...</div>
+      </div>
+    </section>
+
+    <!-- TAB ECONOMIA: PLANO DE GOVERNO VS. REALIDADE EXECUTADA (BCB + SICONFI UNIÃO) -->
+    <section id="tabEconomia" class="tab-content hidden space-y-5">
+      <div class="border-b border-slate-200 pb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div class="space-y-0.5">
+          <h3 class="text-base font-black text-slate-900 tracking-tight uppercase">
+            Auditoria Econômica: Plano Prometido (LDO/LOA) vs. Eficazmente Colocado em Prática
+          </h3>
+          <p class="text-xs text-slate-600">
+            Confronto direto entre as metas oficiais do governo e os dados reais do Banco Central do Brasil (SGS) e do Balanço da União no Tesouro Nacional (SICONFI), ordenado pelos valores mais elevados.
+          </p>
+        </div>
+        <span class="px-3 py-1.5 bg-red-50 text-red-800 border border-red-200 rounded-lg text-xs font-bold font-mono shrink-0">
+          Fonte: BCB (SGS) + SICONFI União (id_ente=1)
+        </span>
+      </div>
+
+      <!-- Grid de Indicadores Macroeconômicos (Plano vs. Realidade) -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" id="gridIndicadoresEconomia">
+        <div class="col-span-4 py-6 text-center text-xs text-slate-600">Carregando indicadores oficiais do Banco Central e Tesouro Nacional...</div>
+      </div>
+
+      <!-- Tabela Comparativa de Execução Orçamentária da União (Do Maior para o Menor Valor) -->
+      <div class="card-analitico space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200 pb-3">
+          <div>
+            <h3 class="text-sm font-bold text-slate-900 uppercase tracking-wider">
+              Orçamento Prometido vs. Efetivamente Entregue por Área (União Federal)
+            </h3>
+            <p class="text-xs text-slate-600">
+              Ordenado rigorosamente pelos valores mais elevados (RREO Anexo 02 da União — Tesouro Nacional). Em vermelho: áreas com paralisia de execução ou retenção bilionária em Restos a Pagar.
+            </p>
+          </div>
+          <span class="text-[11px] font-mono text-red-800 bg-red-50 px-2.5 py-1 rounded-md border border-red-200 font-semibold shrink-0">
+            Ordem: Maiores Valores Primeiro
+          </span>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="tabela-limpa">
+            <thead>
+              <tr>
+                <th>Função / Promessa no Plano de Governo</th>
+                <th class="text-right">Planejado (LOA)</th>
+                <th class="text-right">Efetivamente Executado</th>
+                <th class="text-right">% Entregue</th>
+                <th class="text-right">Travado em RAP (Não Entregue)</th>
+                <th>Diagnóstico Forense de Execução</th>
+              </tr>
+            </thead>
+            <tbody id="tabelaEconomiaSetorial" class="divide-y divide-slate-100">
+              <tr><td colspan="6" class="py-4 text-center text-slate-600">Carregando balanço de execução da União...</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </section>
 

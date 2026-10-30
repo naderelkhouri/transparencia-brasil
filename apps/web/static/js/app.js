@@ -159,6 +159,7 @@ async function carregarDadosCompletos() {
   await carregarResumoNacional();
   await Promise.all([
     carregarAlertasCorrupcao(),
+    carregarEconomiaPlanoVsRealidade(),
     carregarOrgaos(),
     carregarFuncoes(),
     carregarMunicipios(),
@@ -214,10 +215,13 @@ async function carregarAlertasCorrupcao() {
       return;
     }
 
-    container.innerHTML = alertas.map((a) => {
+    // Ordena rigorosamente pelos valores mais elevados primeiro
+    alertas.sort((x, y) => (Number(y.valor_liquido_reais) || 0) - (Number(x.valor_liquido_reais) || 0));
+
+    container.innerHTML = alertas.map((a, idx) => {
       let badgeRisco = 'EMPRESA INIDÔNEA (CEIS)';
-      if (a.tipo_risco === 'SOBREPRECO_ATIPICO') badgeRisco = 'SOBREPREÇO ATÍPICO';
-      if (a.tipo_risco === 'FRACIONAMENTO_ILEGAL') badgeRisco = 'FRACIONAMENTO ILEGAL';
+      if (a.tipo_risco === 'SOBREPRECO_ATIPICO') badgeRisco = 'SOBREPREÇO / DESVIO FISCAL';
+      if (a.tipo_risco === 'FRACIONAMENTO_ILEGAL') badgeRisco = 'FRACIONAMENTO / RETENÇÃO';
 
       return `
         <div class="bg-white border border-red-200 hover:border-red-400 rounded-xl p-4 flex flex-col justify-between space-y-3 transition-all shadow-xs">
@@ -225,7 +229,7 @@ async function carregarAlertasCorrupcao() {
             <div class="flex items-center justify-between text-[11px]">
               <span class="badge-corrupcao">
                 ${svgAlertTriangle}
-                <span>${badgeRisco}</span>
+                <span>#${idx + 1} • ${badgeRisco}</span>
               </span>
               <span class="text-red-700 font-mono text-[10px] tabular-nums font-semibold">${a.data_evento}</span>
             </div>
@@ -259,6 +263,89 @@ async function carregarAlertasCorrupcao() {
     }).join('');
   } catch (err) {
     container.innerHTML = '<div class="col-span-3 py-4 text-center text-xs text-red-600">Erro ao carregar radar anti-corrupção.</div>';
+  }
+}
+
+// 2B. ECONOMIA: PLANO DE GOVERNO VS. REALIDADE EXECUTADA (BCB + SICONFI UNIÃO)
+async function carregarEconomiaPlanoVsRealidade() {
+  const gridMacro = document.getElementById('gridIndicadoresEconomia');
+  const tbodySetorial = document.getElementById('tabelaEconomiaSetorial');
+  if (!gridMacro || !tbodySetorial) return;
+
+  try {
+    const res = await fetch(`/api/v1/economia/plano-vs-realidade?ano=${state.ano}`);
+    const data = await res.json();
+
+    // Renderiza Indicadores Macroeconômicos (BCB SGS + Tesouro)
+    const macro = data.indicadores_macro || [];
+    gridMacro.innerHTML = macro.map((m) => `
+      <div class="bg-white border border-red-200 rounded-xl p-4 flex flex-col justify-between space-y-3 shadow-xs">
+        <div class="space-y-2">
+          <div class="flex items-center justify-between text-[10px]">
+            <span class="badge-corrupcao">${svgAlertTriangle}<span>DESVIO DE META</span></span>
+            <span class="font-mono text-slate-600 tabular-nums">${m.data_referencia}</span>
+          </div>
+          <h4 class="text-xs font-bold text-slate-900 leading-snug">${m.indicador}</h4>
+          <div class="space-y-1 pt-1 text-xs">
+            <div class="flex items-center justify-between">
+              <span class="text-slate-600">Plano Prometido:</span>
+              <span class="font-mono font-semibold text-emerald-800 tabular-nums">${m.plano_prometido}</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="text-slate-600">Realidade em Prática:</span>
+              <span class="font-mono font-black text-red-700 tabular-nums text-sm">${m.realidade_pratica}</span>
+            </div>
+            <div class="text-[11px] font-mono font-bold text-red-800 pt-0.5">
+              ${m.desvio_critico}
+            </div>
+          </div>
+          <p class="text-[11px] text-slate-700 leading-relaxed pt-1">
+            ${m.impacto_real}
+          </p>
+        </div>
+        <div class="border-t border-red-100 pt-2 flex items-center justify-between text-[10px]">
+          <span class="font-mono text-slate-600 truncate max-w-[180px]">${m.fonte_oficial}</span>
+          <a href="${m.url_comprovante}" target="_blank" rel="noopener noreferrer" class="text-[#002776] font-bold hover:underline inline-flex items-center">
+            Fonte Oficial ${svgExternalLink}
+          </a>
+        </div>
+      </div>
+    `).join('');
+
+    // Renderiza Comparativo Setorial da União (Ordenado pelos Valores Mais Elevados)
+    const setores = (data.comparativo_setorial || []).sort(
+      (a, b) => (Number(b.orcamento_planejado_reais) || 0) - (Number(a.orcamento_planejado_reais) || 0)
+    );
+
+    tbodySetorial.innerHTML = setores.map((s) => {
+      const linhaClasse = s.alerta_grave ? 'linha-corrupcao' : 'hover:bg-slate-50';
+      const corPct = s.alerta_grave ? 'text-red-700 font-black' : 'text-emerald-800 font-bold';
+      return `
+        <tr class="${linhaClasse} transition-colors">
+          <td class="py-3 px-4">
+            <div class="font-bold text-slate-900">${s.funcao}</div>
+            <div class="text-[11px] text-slate-600">${s.promessa_plano}</div>
+          </td>
+          <td class="py-3 px-4 text-right font-mono tabular-nums font-semibold text-slate-900">
+            ${formatarMoeda(s.orcamento_planejado_reais)}
+          </td>
+          <td class="py-3 px-4 text-right font-mono tabular-nums font-bold text-emerald-800">
+            ${formatarMoeda(s.executado_efetivo_reais)}
+          </td>
+          <td class="py-3 px-4 text-right font-mono tabular-nums ${corPct}">
+            ${s.taxa_execucao_pct.toFixed(1)}%
+          </td>
+          <td class="py-3 px-4 text-right font-mono tabular-nums font-bold ${s.alerta_grave ? 'text-red-700' : 'text-amber-800'}">
+            ${formatarMoeda(s.travado_restos_a_pagar_reais)}
+          </td>
+          <td class="py-3 px-4 text-xs ${s.alerta_grave ? 'text-red-800 font-semibold' : 'text-slate-700'}">
+            ${s.diagnostico_auditoria}
+          </td>
+        </tr>
+      `;
+    }).join('');
+  } catch (err) {
+    console.error('Erro ao carregar economia plano vs realidade:', err);
   }
 }
 

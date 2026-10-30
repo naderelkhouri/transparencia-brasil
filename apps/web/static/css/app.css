@@ -198,12 +198,12 @@ h4 {
 
 .tab-btn-corrupcao:hover {
   background-color: #fee2e2;
-  color: var(--corrupcao-vermelho);
+  color: var(--corrupcao-vermelho-texto);
 }
 
 .tab-btn-corrupcao.active {
   border-bottom-color: var(--corrupcao-vermelho) !important;
-  color: var(--corrupcao-vermelho) !important;
+  color: var(--corrupcao-vermelho-texto) !important;
   background-color: var(--corrupcao-vermelho-superficie) !important;
 }
 

@@ -104,6 +104,9 @@ class ExtratorPNCP:
                 }
             )
 
+        # Ordena estritamente pelos MAIORES VALORES HOMOLOGADOS (do maior para o menor)
+        contratos_processados.sort(key=lambda x: x["valor_homologado"], reverse=True)
+
         # Salva na camada Bronze para auditoria e leitura rápida
         arquivo_bronze = self.BRONZE_DIR / f"pncp_contratos_{ano}.json"
         arquivo_bronze.write_text(
@@ -114,12 +117,13 @@ class ExtratorPNCP:
 
     def obter_contratos_reais(self, ano: int = 2026) -> List[Dict[str, Any]]:
         """
-        Retorna os contratos públicos reais extraídos do PNCP.
+        Retorna os contratos públicos reais extraídos do PNCP, ordenados pelos valores mais elevados.
         Lê do cache persistido na camada Bronze ou consulta a API do PNCP em tempo real.
         """
         arquivo_bronze = self.BRONZE_DIR / f"pncp_contratos_{ano}.json"
         if arquivo_bronze.exists():
             dados = json.loads(arquivo_bronze.read_text(encoding="utf-8"))
             if dados:
+                dados.sort(key=lambda x: float(x.get("valor_homologado") or 0.0), reverse=True)
                 return dados
         return self.extrair_contratos_reais(ano=ano)

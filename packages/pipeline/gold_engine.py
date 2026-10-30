@@ -287,7 +287,7 @@ class GoldAnalyticsEngine:
                 tipo_risco_corrupcao
             FROM fato_despesa_unificada
             WHERE {where_sql}
-            ORDER BY alerta_corrupcao DESC, valor_liquido_reais DESC
+            ORDER BY valor_liquido_reais DESC
             LIMIT ? OFFSET ?;
         """
         query_params = params + [limite, offset]

@@ -122,3 +122,25 @@ def test_api_sql_injection_protection():
     data = response.json()
     # Graças à parametrização, não causa erro 500 nem vazamento
     assert data["total_encontrado"] == 0
+
+
+def test_api_auditorias_ordenadas_por_maiores_valores():
+    response = client.get("/api/v1/alertas-corrupcao?ano=2026")
+    assert response.status_code == 200
+    alertas = response.json()
+    assert len(alertas) >= 3
+    valores = [a["valor_liquido_reais"] for a in alertas]
+    assert valores == sorted(valores, reverse=True)
+
+
+def test_api_economia_plano_vs_realidade():
+    response = client.get("/api/v1/economia/plano-vs-realidade?ano=2026")
+    assert response.status_code == 200
+    data = response.json()
+    assert "indicadores_macro" in data
+    assert "comparativo_setorial" in data
+    assert len(data["indicadores_macro"]) >= 4
+    setores = data["comparativo_setorial"]
+    assert len(setores) > 0
+    valores_planejados = [s["orcamento_planejado_reais"] for s in setores]
+    assert valores_planejados == sorted(valores_planejados, reverse=True)
