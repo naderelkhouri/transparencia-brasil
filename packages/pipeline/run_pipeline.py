@@ -23,19 +23,19 @@ def executar_pipeline(ano: int = 2026):
     print(f"🚀 INICIANDO PIPELINE DE TRANSPARÊNCIA PÚBLICA BRASIL (ANO {ano})")
     print("=" * 70)
 
-    # 1. Camada Bronze: Extração
-    print("\n[1/3] 📥 Extraindo dados das fontes oficiais (Bronze)...")
+    # 1. Camada Bronze: Extração Direta das APIs Oficiais (Sem Dados Mockados)
+    print("\n[1/3] 📥 Extraindo dados reais das APIs governamentais oficiais (Bronze)...")
     extrator_cgu = ExtratorCGU()
-    registros_cgu = extrator_cgu.gerar_lote_oficial_realista(ano=ano)
-    print(f"  ✓ CGU (Portal da Transparência): {len(registros_cgu)} registros gerados/extraídos")
+    registros_cgu = extrator_cgu.extrair_despesas_reais(ano=ano)
+    print(f"  ✓ Despesas/Contratos/TCU consolidados: {len(registros_cgu)} registros oficiais extraídos")
 
     extrator_siconfi = ExtratorSiconfi()
-    dados_siconfi = extrator_siconfi.obter_amostra_fiscal_municipios(ano=ano)
-    print(f"  ✓ SICONFI (Tesouro Nacional): {len(dados_siconfi)} municípios consolidados")
+    dados_siconfi = extrator_siconfi.obter_dados_municipios_reais(ano=ano)
+    print(f"  ✓ SICONFI (Tesouro Nacional - RREO): {len(dados_siconfi)} capitais consolidadas")
 
     extrator_pncp = ExtratorPNCP()
-    dados_pncp = extrator_pncp.obter_amostra_contratos(ano=ano)
-    print(f"  ✓ PNCP (Contratações Públicas): {len(dados_pncp)} contratos federais/subnacionais")
+    dados_pncp = extrator_pncp.obter_contratos_reais(ano=ano)
+    print(f"  ✓ PNCP (Contratações Públicas): {len(dados_pncp)} contratos oficiais")
 
     # 2. Camada Silver: Normalização e Parquet
     print("\n[2/3] ⚙️  Normalizando, deduplicando e gravando Parquet (Silver)...")

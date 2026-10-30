@@ -220,16 +220,16 @@ def obter_rastreabilidade(
 @app.get("/api/v1/siconfi/municipios", tags=["Estados e Municípios (SICONFI)"])
 def listar_dados_municipais(ano: int = Query(2026, description="Ano de exercício")):
     """
-    Retorna comparativo fiscal de municípios e estados consolidados via SICONFI,
-    incluindo gastos em Saúde, Educação e Gasto por Habitante (per capita) cruzado com o IBGE.
+    Retorna comparativo fiscal real de municípios consolidados via API SICONFI/STN,
+    incluindo gastos em Saúde, Educação e Gasto por Habitante (per capita) do RREO Oficial.
     """
-    return extrator_siconfi.obter_amostra_fiscal_municipios(ano=ano)
+    return extrator_siconfi.obter_dados_municipios_reais(ano=ano)
 
 
 @app.get("/api/v1/pncp/contratos", tags=["Contratações Públicas (PNCP)"])
 def listar_contratos_pncp(ano: int = Query(2026, description="Ano do contrato")):
-    """Retorna contratos registrados no Portal Nacional de Contratações Públicas (Lei 14.133/21)."""
-    return extrator_pncp.obter_amostra_contratos(ano=ano)
+    """Retorna contratos públicos reais extraídos da API do Portal Nacional de Contratações Públicas (Lei 14.133/21)."""
+    return extrator_pncp.obter_contratos_reais(ano=ano)
 
 
 @app.post("/api/v1/pipeline/executar", tags=["Administração"])

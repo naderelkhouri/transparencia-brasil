@@ -63,7 +63,9 @@ def test_api_ranking_orgaos():
 
 
 def test_api_rastreabilidade_sucesso():
-    doc_id = "2026OB800142"
+    res_lista = client.get("/api/v1/despesas?ano=2026&limite=1")
+    assert res_lista.status_code == 200
+    doc_id = res_lista.json()["itens"][0]["numero_documento"]
     response = client.get(f"/api/v1/rastreabilidade/{doc_id}")
     assert response.status_code == 200
     data = response.json()

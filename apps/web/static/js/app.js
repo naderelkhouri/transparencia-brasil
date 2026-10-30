@@ -188,6 +188,8 @@ async function carregarResumoNacional() {
     document.getElementById('kpiTotalAlertasCorrupcao').textContent = `${totalCorrupcao} Casos`;
     document.getElementById('kpiValorCorrupcao').textContent = formatarMoeda(valorCorrupcao);
     document.getElementById('headerQtdCorrupcao').textContent = `${totalCorrupcao} Indícios`;
+    const tabQtd = document.getElementById('tabQtdCorrupcao');
+    if (tabQtd) tabQtd.textContent = `${totalCorrupcao} Casos`;
 
     // Atualiza Funil Orçamentário
     document.getElementById('funilEmpenho').textContent = formatarMoeda(data.total_empenhado_liquido);

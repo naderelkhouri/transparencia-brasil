@@ -1,137 +1,168 @@
 """
 Extrator de Dados Fiscais Subnacionais - SICONFI / Secretaria do Tesouro Nacional (STN).
-Integra com a API Datalake do Tesouro Nacional para dados de Estados, DF e Municípios.
+Integra diretamente com a API Datalake do Tesouro Nacional (RREO Anexo 01 e Anexo 02),
+sem uso de dados mockados ou fictícios.
 """
 
 import hashlib
 import json
-from typing import List, Dict, Any, Optional
+from concurrent.futures import ThreadPoolExecutor
+from pathlib import Path
+from typing import List, Dict, Any
 import httpx
 
 
 class ExtratorSiconfi:
     BASE_URL_DATALAKE = "https://apidatalake.tesouro.gov.br/ords/siconfi/tt"
+    BRONZE_DIR = Path("/home/nader/transparencia-brasil/data/bronze")
+
+    CAPITAIS_MONITORADAS = [
+        (3550308, "São Paulo", "SP"),
+        (3304557, "Rio de Janeiro", "RJ"),
+        (3106200, "Belo Horizonte", "MG"),
+        (2927408, "Salvador", "BA"),
+        (4106902, "Curitiba", "PR"),
+        (4314902, "Porto Alegre", "RS"),
+    ]
 
     def __init__(self):
         self.headers = {
             "Accept": "application/json",
-            "User-Agent": "PlataformaTransparenciaBrasil/1.0",
+            "User-Agent": "PlataformaTransparenciaBrasil/1.0 (Auditoria Civica; Dados Abertos)",
         }
+        self.BRONZE_DIR.mkdir(parents=True, exist_ok=True)
 
     def calcular_hash_sha256(self, payload: bytes) -> str:
+        """Gera checksum SHA-256 do payload bruto oficial recebido do SICONFI/STN."""
         return hashlib.sha256(payload).hexdigest()
 
-    async def consultar_rreo_municipio(self, cod_ibge: int, exercicio: int, bimestre: int) -> Dict[str, Any]:
-        """Consulta o RREO (Relatório Resumido de Execução Orçamentária) do SICONFI."""
-        url = f"{self.BASE_URL_DATALAKE}/rreo"
-        params = {
-            "an_exercicio": exercicio,
-            "nr_periodo": bimestre,
-            "co_tipo_demonstrativo": "RREO",
-            "id_ente": cod_ibge,
-        }
-        try:
-            async with httpx.AsyncClient(timeout=30.0) as client:
-                resp = await client.get(url, headers=self.headers, params=params)
-                if resp.status_code == 200:
-                    return {
-                        "status": "sucesso",
-                        "hash_sha256": self.calcular_hash_sha256(resp.content),
-                        "items": resp.json().get("items", []),
-                    }
-        except Exception as e:
-            pass
-        return {"status": "offline_fallback", "items": []}
+    def _extrair_capital_siconfi(self, args: tuple) -> Dict[str, Any]:
+        cod_ibge, nome_municipio, uf, ano = args
+        # Consulta o exercício solicitado; se o 6º bimestre do exercício em curso ainda não foi
+        # homologado no SICONFI, utiliza o último RREO anual fechado homologado pelo Tesouro (2025/6º bim).
+        exercicios_tentativa = [(ano, 1), (2025, 6), (2024, 6)]
+        items_a1: List[Dict[str, Any]] = []
+        items_a2: List[Dict[str, Any]] = []
+        hash_a1 = ""
+        exercicio_efetivo = 2025
+        periodo_efetivo = 6
 
-    def obter_amostra_fiscal_municipios(self, ano: int = 2026) -> List[Dict[str, Any]]:
+        with httpx.Client(timeout=20.0, headers=self.headers) as client:
+            for ex, per in exercicios_tentativa:
+                r1 = client.get(
+                    f"{self.BASE_URL_DATALAKE}/rreo",
+                    params={
+                        "an_exercicio": ex,
+                        "nr_periodo": per,
+                        "co_tipo_demonstrativo": "RREO",
+                        "no_anexo": "RREO-Anexo 01",
+                        "id_ente": cod_ibge,
+                    },
+                )
+                if r1.status_code == 200:
+                    dados1 = r1.json().get("items", [])
+                    if dados1:
+                        items_a1 = dados1
+                        hash_a1 = self.calcular_hash_sha256(r1.content)
+                        exercicio_efetivo = ex
+                        periodo_efetivo = per
+                        break
+
+            r2 = client.get(
+                f"{self.BASE_URL_DATALAKE}/rreo",
+                params={
+                    "an_exercicio": exercicio_efetivo,
+                    "nr_periodo": periodo_efetivo,
+                    "co_tipo_demonstrativo": "RREO",
+                    "no_anexo": "RREO-Anexo 02",
+                    "id_ente": cod_ibge,
+                },
+            )
+            if r2.status_code == 200:
+                items_a2 = r2.json().get("items", [])
+
+        populacao_ibge = int(items_a1[0].get("populacao") or 1) if items_a1 else 1
+        dotacao_atualizada = 0.0
+        despesa_empenhada = 0.0
+        despesa_liquidada = 0.0
+        despesa_paga = 0.0
+        restos_a_pagar = 0.0
+
+        for row in items_a1:
+            if row.get("cod_conta") == "DespesasExcetoIntraOrcamentarias":
+                col = str(row.get("coluna") or "").upper()
+                val = float(row.get("valor") or 0.0)
+                if "DOTAÇÃO ATUALIZADA" in col:
+                    dotacao_atualizada = val
+                elif "DESPESAS EMPENHADAS ATÉ O BIMESTRE" in col:
+                    despesa_empenhada = val
+                elif "DESPESAS LIQUIDADAS ATÉ O BIMESTRE" in col:
+                    despesa_liquidada = val
+                elif "DESPESAS PAGAS ATÉ O BIMESTRE" in col:
+                    despesa_paga = val
+                elif "RESTOS A PAGAR" in col:
+                    restos_a_pagar = val
+
+        gasto_saude = 0.0
+        gasto_educacao = 0.0
+        for row in items_a2:
+            rotulo = str(row.get("rotulo") or "")
+            col = str(row.get("coluna") or "").upper()
+            conta = str(row.get("conta") or "")
+            if "Exceto Intra-Orçamentárias" in rotulo and "DESPESAS LIQUIDADAS ATÉ O BIMESTRE" in col:
+                if conta == "Saúde":
+                    gasto_saude = float(row.get("valor") or 0.0)
+                elif conta == "Educação":
+                    gasto_educacao = float(row.get("valor") or 0.0)
+
+        base_calculo_paga = despesa_paga if despesa_paga > 0 else despesa_liquidada
+        gasto_per_capita = round(base_calculo_paga / max(1, populacao_ibge), 2)
+
+        return {
+            "codigo_ibge": cod_ibge,
+            "municipio": nome_municipio,
+            "uf": uf,
+            "exercicio_rreo": exercicio_efetivo,
+            "bimestre_rreo": periodo_efetivo,
+            "populacao_ibge": populacao_ibge,
+            "orcamento_aprovado": round(dotacao_atualizada, 2),
+            "despesa_empenhada": round(despesa_empenhada, 2),
+            "despesa_liquidada": round(despesa_liquidada, 2),
+            "despesa_paga": round(base_calculo_paga, 2),
+            "restos_a_pagar": round(restos_a_pagar, 2),
+            "gasto_saude": round(gasto_saude, 2),
+            "gasto_educacao": round(gasto_educacao, 2),
+            "gasto_per_capita": gasto_per_capita,
+            "hash_sha256": hash_a1,
+            "fonte_url": f"https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio={exercicio_efetivo}&nr_periodo={periodo_efetivo}&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo%2001&id_ente={cod_ibge}",
+        }
+
+    def extrair_dados_municipios_reais(self, ano: int = 2026) -> List[Dict[str, Any]]:
         """
-        Retorna conjunto consolidado oficial das principais capitais e cidades
-        com gastos por habitante (per capita) cruzados com projeções do IBGE.
+        Consulta em paralelo os demonstrativos RREO Anexo 01 e Anexo 02 na API oficial
+        do SICONFI/Tesouro Nacional para as capitais brasileiras e salva na camada Bronze.
         """
-        amostra = [
-            {
-                "codigo_ibge": 3550308,
-                "municipio": "São Paulo",
-                "uf": "SP",
-                "populacao_ibge": 11_451_245,
-                "orcamento_aprovado": 111_800_000_000.0,
-                "despesa_liquidada": 98_450_000_000.0,
-                "despesa_paga": 94_200_000_000.0,
-                "gasto_saude": 21_500_000_000.0,
-                "gasto_educacao": 22_100_000_000.0,
-                "gasto_per_capita": round(94_200_000_000.0 / 11_451_245, 2),
-                "indice_cobertura_siconfi": 99.4,
-                "fonte_url": f"https://siconfi.tesouro.gov.br/siconfi/pages/public/declaracao/declaracao_list.jsf?idEnte=3550308&ano={ano}",
-            },
-            {
-                "codigo_ibge": 3304557,
-                "municipio": "Rio de Janeiro",
-                "uf": "RJ",
-                "populacao_ibge": 6_211_423,
-                "orcamento_aprovado": 45_200_000_000.0,
-                "despesa_liquidada": 41_300_000_000.0,
-                "despesa_paga": 39_800_000_000.0,
-                "gasto_saude": 9_800_000_000.0,
-                "gasto_educacao": 9_400_000_000.0,
-                "gasto_per_capita": round(39_800_000_000.0 / 6_211_423, 2),
-                "indice_cobertura_siconfi": 98.7,
-                "fonte_url": f"https://siconfi.tesouro.gov.br/siconfi/pages/public/declaracao/declaracao_list.jsf?idEnte=3304557&ano={ano}",
-            },
-            {
-                "codigo_ibge": 3106200,
-                "municipio": "Belo Horizonte",
-                "uf": "MG",
-                "populacao_ibge": 2_315_560,
-                "orcamento_aprovado": 19_600_000_000.0,
-                "despesa_liquidada": 17_900_000_000.0,
-                "despesa_paga": 17_150_000_000.0,
-                "gasto_saude": 5_100_000_000.0,
-                "gasto_educacao": 4_600_000_000.0,
-                "gasto_per_capita": round(17_150_000_000.0 / 2_315_560, 2),
-                "indice_cobertura_siconfi": 99.1,
-                "fonte_url": f"https://siconfi.tesouro.gov.br/siconfi/pages/public/declaracao/declaracao_list.jsf?idEnte=3106200&ano={ano}",
-            },
-            {
-                "codigo_ibge": 2927408,
-                "municipio": "Salvador",
-                "uf": "BA",
-                "populacao_ibge": 2_418_005,
-                "orcamento_aprovado": 12_800_000_000.0,
-                "despesa_liquidada": 11_750_000_000.0,
-                "despesa_paga": 11_200_000_000.0,
-                "gasto_saude": 2_900_000_000.0,
-                "gasto_educacao": 2_850_000_000.0,
-                "gasto_per_capita": round(11_200_000_000.0 / 2_418_005, 2),
-                "indice_cobertura_siconfi": 97.9,
-                "fonte_url": f"https://siconfi.tesouro.gov.br/siconfi/pages/public/declaracao/declaracao_list.jsf?idEnte=2927408&ano={ano}",
-            },
-            {
-                "codigo_ibge": 4106902,
-                "municipio": "Curitiba",
-                "uf": "PR",
-                "populacao_ibge": 1_773_733,
-                "orcamento_aprovado": 13_900_000_000.0,
-                "despesa_liquidada": 12_800_000_000.0,
-                "despesa_paga": 12_400_000_000.0,
-                "gasto_saude": 3_250_000_000.0,
-                "gasto_educacao": 3_100_000_000.0,
-                "gasto_per_capita": round(12_400_000_000.0 / 1_773_733, 2),
-                "indice_cobertura_siconfi": 99.8,
-                "fonte_url": f"https://siconfi.tesouro.gov.br/siconfi/pages/public/declaracao/declaracao_list.jsf?idEnte=4106902&ano={ano}",
-            },
-            {
-                "codigo_ibge": 5300108,
-                "municipio": "Brasília (Distrito Federal)",
-                "uf": "DF",
-                "populacao_ibge": 2_817_068,
-                "orcamento_aprovado": 61_200_000_000.0,  # Inclui Fundo Constitucional do DF (FCDF)
-                "despesa_liquidada": 57_400_000_000.0,
-                "despesa_paga": 55_900_000_000.0,
-                "gasto_saude": 12_100_000_000.0,
-                "gasto_educacao": 11_800_000_000.0,
-                "gasto_per_capita": round(55_900_000_000.0 / 2_817_068, 2),
-                "indice_cobertura_siconfi": 99.9,
-                "fonte_url": f"https://siconfi.tesouro.gov.br/siconfi/pages/public/declaracao/declaracao_list.jsf?idEnte=5300108&ano={ano}",
-            },
-        ]
-        return amostra
+        tarefas = [(cod, nome, uf, ano) for (cod, nome, uf) in self.CAPITAIS_MONITORADAS]
+        with ThreadPoolExecutor(max_workers=6) as executor:
+            resultados = list(executor.map(self._extrair_capital_siconfi, tarefas))
+
+        resultados = [r for r in resultados if r["despesa_paga"] > 0]
+        resultados.sort(key=lambda x: x["despesa_paga"], reverse=True)
+
+        arquivo_bronze = self.BRONZE_DIR / f"siconfi_municipios_{ano}.json"
+        arquivo_bronze.write_text(
+            json.dumps(resultados, ensure_ascii=False, indent=2),
+            encoding="utf-8",
+        )
+        return resultados
+
+    def obter_dados_municipios_reais(self, ano: int = 2026) -> List[Dict[str, Any]]:
+        """
+        Retorna os dados fiscais reais de municípios extraídos da API SICONFI/STN.
+        """
+        arquivo_bronze = self.BRONZE_DIR / f"siconfi_municipios_{ano}.json"
+        if arquivo_bronze.exists():
+            dados = json.loads(arquivo_bronze.read_text(encoding="utf-8"))
+            if dados:
+                return dados
+        return self.extrair_dados_municipios_reais(ano=ano)
