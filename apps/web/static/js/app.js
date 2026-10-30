@@ -244,7 +244,33 @@ async function carregarResumoNacional() {
   }
 }
 
-// 2. RADAR ANTI-CORRUPÇÃO (DESTAQUE VERMELHO EM FUNDO BRANCO)
+// 2. Mapeador de Enquadramento Legal e Órgãos Competentes (Legal Compliance Checker)
+function obterEnquadramentoLegal(tipoRisco) {
+  if (tipoRisco === 'EMPRESA_PUNIDA_CEIS') {
+    return {
+      badge: 'EMPRESA INIDÔNEA (CEIS/TCU)',
+      leiCurta: 'Lei nº 14.133/2021 (Art. 156, IV) & Lei nº 12.846/2013',
+      fundamentoCompleto: 'Art. 156, inciso IV da Lei nº 14.133/2021 (Nova Lei de Licitações - Declaração de Inidoneidade), Lei nº 12.846/2013 (Lei Anticorrupção Empresarial) e Art. 46 da Lei nº 8.443/1992 (Lei Orgânica do TCU).',
+      orgaosDestino: 'TCU (Ouvidoria), CGU (Fala.BR) e MPF (2ª/5ª Câmara)',
+    };
+  }
+  if (tipoRisco === 'FRACIONAMENTO_ILEGAL') {
+    return {
+      badge: 'RETENÇÃO / PARALISIA ORÇAMENTÁRIA',
+      leiCurta: 'LC nº 101/2000 (LRF Art. 9º e 42) & Lei nº 4.320/1964',
+      fundamentoCompleto: 'Lei Complementar nº 101/2000 (Lei de Responsabilidade Fiscal - Art. 9º e Art. 42 sobre limitação de empenho e inscrição atípica em Restos a Pagar), Art. 36 da Lei nº 4.320/1964 e Art. 37 da Constituição Federal (Princípio da Eficiência Administrativa).',
+      orgaosDestino: 'TCU (Contas da União), MPF (Procuradoria dos Direitos do Cidadão) e Congresso Nacional (CMO)',
+    };
+  }
+  return {
+    badge: 'DESVIO FISCAL / EXECUÇÃO CRÍTICA',
+    leiCurta: 'Lei nº 8.429/1992 (Art. 10/11) & CF/88 Art. 70/74 § 2º',
+    fundamentoCompleto: 'Art. 70 e Art. 74, § 2º da Constituição Federal de 1988, Lei Complementar nº 101/2000 (LRF - Responsabilidade na Gestão Fiscal) e Lei nº 8.429/1992 (Improbidade Administrativa e Lesão ao Erário).',
+    orgaosDestino: 'MPF (5ª Câmara - Patrimônio Público), TCU e CGU',
+  };
+}
+
+// 2A. RADAR ANTI-CORRUPÇÃO (DESTAQUE VERMELHO EM FUNDO BRANCO)
 async function carregarAlertasCorrupcao() {
   const container = document.getElementById('gridCasosCorrupcao');
   try {
@@ -261,29 +287,38 @@ async function carregarAlertasCorrupcao() {
     alertas.sort((x, y) => (Number(y.valor_liquido_reais) || 0) - (Number(x.valor_liquido_reais) || 0));
 
     container.innerHTML = alertas.map((a, idx) => {
-      let badgeRisco = 'EMPRESA INIDÔNEA (CEIS)';
-      if (a.tipo_risco === 'SOBREPRECO_ATIPICO') badgeRisco = 'SOBREPREÇO / DESVIO FISCAL';
-      if (a.tipo_risco === 'FRACIONAMENTO_ILEGAL') badgeRisco = 'FRACIONAMENTO / RETENÇÃO';
+      const legal = obterEnquadramentoLegal(a.tipo_risco);
 
       return `
         <div class="bg-white border border-red-200 hover:border-red-400 rounded-xl p-4 flex flex-col justify-between space-y-3 transition-all shadow-xs">
-          <div class="space-y-2">
+          <div class="space-y-2.5">
             <div class="flex items-center justify-between gap-2 text-xs">
               <span class="badge-corrupcao">
                 ${svgAlertTriangle}
-                <span>#${idx + 1} • ${badgeRisco}</span>
+                <span>#${idx + 1} • ${legal.badge}</span>
               </span>
               <span class="text-red-800 font-mono text-xs tabular-nums font-bold whitespace-nowrap">${a.data_evento}</span>
             </div>
 
-            <div class="pt-1">
-              <div class="text-xs uppercase tracking-wider text-red-800 font-bold">Valor sob Suspeita</div>
+            <div class="pt-0.5">
+              <div class="text-xs uppercase tracking-wider text-red-800 font-bold">Valor sob Auditoria / Suspeita</div>
               <div class="text-xl font-black font-mono tabular-nums text-red-700 whitespace-nowrap">${formatarMoeda(a.valor_liquido_reais)}</div>
             </div>
 
-            <p class="text-xs text-slate-700 leading-relaxed font-medium">
+            <p class="text-xs text-slate-800 leading-relaxed font-medium">
               ${a.motivo_corrupcao}
             </p>
+
+            <!-- Pílula de Tipificação Legal e Órgão Competente -->
+            <div class="p-2.5 rounded-lg bg-red-50 border border-red-200 space-y-1 text-xs">
+              <div class="font-bold text-red-900 flex items-center gap-1.5">
+                <span>⚖️ Base Legal:</span>
+                <span class="font-mono font-semibold text-red-800">${legal.leiCurta}</span>
+              </div>
+              <div class="text-red-800">
+                <strong>Reportar a:</strong> ${legal.orgaosDestino}
+              </div>
+            </div>
 
             <div class="text-xs space-y-0.5 text-slate-600">
               <div class="font-bold text-slate-900 text-balance">${a.orgao}</div>
@@ -297,7 +332,7 @@ async function carregarAlertasCorrupcao() {
           <div class="border-t border-red-100 pt-3 flex items-center justify-between gap-2">
             <span class="font-mono text-xs text-red-800 font-bold tabular-nums whitespace-nowrap">${a.tipo_documento} nº ${a.numero_documento}</span>
             <button onclick="abrirModalRastreabilidade('${a.numero_documento}')" class="min-h-9 px-3.5 py-1.5 bg-[#dc2626] hover:bg-[#b91c1c] text-white rounded-lg text-xs font-bold transition-all shadow-xs whitespace-nowrap">
-              Auditar
+              Denunciar / Auditar
             </button>
           </div>
         </div>
@@ -665,6 +700,40 @@ async function abrirModalRastreabilidade(docId) {
     const rastro = await res.json();
 
     const temAlertaCorrupcao = rastro.auditoria_corrupcao && rastro.auditoria_corrupcao.alerta_ativo;
+    const legal = obterEnquadramentoLegal(temAlertaCorrupcao ? rastro.auditoria_corrupcao.tipo_risco : 'REGULAR');
+
+    const textoPeticao = [
+      'EXCELENTÍSSIMO(A) SENHOR(A) PROCURADOR(A) DA REPÚBLICA (MPF) / AUDITOR(A) DO TRIBUNAL DE CONTAS DA UNIÃO (TCU) / OUVIDORIA-GERAL DA UNIÃO (CGU)',
+      '',
+      'ASSUNTO: REPRESENTAÇÃO CIDADÃ E NOTÍCIA DE FATO — INDÍCIO DE IRREGULARIDADE / DESVIO NA EXECUÇÃO DA DESPESA PÚBLICA',
+      '',
+      '1. LEGITIMIDADE CONSTITUCIONAL:',
+      'Nos termos do Art. 5º, inciso XXXIV, alínea "a", e do Art. 74, § 2º da Constituição Federal de 1988 ("qualquer cidadão, partido político, associação ou sindicato é parte legítima para, na forma da lei, denunciar irregularidades ou ilegalidades perante o Tribunal de Contas da União"), apresento a presente Notícia de Fato instruída com prova criptográfica de dados abertos governamentais.',
+      '',
+      '2. IDENTIFICAÇÃO DO REGISTRO AUDITADO:',
+      `• Documento Oficial: ${rastro.documento.tipo} nº ${rastro.documento.numero} (Exercício ${rastro.documento.ano})`,
+      `• Valor Auditado: ${formatarMoeda(rastro.valor_liquido)} (${rastro.fase})`,
+      `• Órgão / Unidade Gestora: ${rastro.orgao} — ${rastro.ug}`,
+      `• Favorecido / Credor: ${rastro.favorecido.nome} (CNPJ/CPF: ${rastro.favorecido.documento})`,
+      '',
+      '3. FATO / ANOMALIA DETECTADA:',
+      `${temAlertaCorrupcao ? rastro.auditoria_corrupcao.motivo : 'Solicitação de verificação de conformidade da execução física e financeira do gasto público.'}`,
+      '',
+      '4. ENQUADRAMENTO E TIPIFICAÇÃO LEGAL:',
+      `• ${legal.fundamentoCompleto}`,
+      '• Lei nº 12.527/2011 (Lei de Acesso à Informação - Art. 7º, VI e Art. 8º) e Lei nº 4.320/1964 (arts. 62 e 63 - Liquidação e Pagamento).',
+      '',
+      '5. PROVA DE INTEGRIDADE E RASTREABILIDADE (CADEIA DE CUSTÓDIA):',
+      `• Fonte Oficial Primária: ${rastro.auditoria_proveniencia.fonte_oficial}`,
+      `• URL de Verificação Pública: ${rastro.auditoria_proveniencia.url_oficial}`,
+      `• Hash Criptográfico SHA-256: ${rastro.auditoria_proveniencia.hash_sha256}`,
+      `• Timestamp de Extração: ${rastro.auditoria_proveniencia.data_ingestao}`,
+      '',
+      '6. PEDIDO:',
+      'Requer-se a instauração de procedimento apuratório / auditoria especial para verificação da regularidade da aplicação dos recursos públicos acima identificados, bem como a responsabilização dos agentes públicos e terceiros beneficiados em caso de confirmação de lesão ao erário (Lei nº 8.429/1992 e Lei nº 12.846/2013).',
+    ].join('\n');
+
+    window.__ultimaPeticaoTexto = textoPeticao;
 
     conteudo.innerHTML = `
       <div class="space-y-4">
@@ -682,11 +751,51 @@ async function abrirModalRastreabilidade(docId) {
             <p class="text-red-900 text-xs font-semibold leading-relaxed">
               ${rastro.auditoria_corrupcao.motivo}
             </p>
-            <div class="text-xs text-red-800 font-mono font-semibold">
-              Classificação do Risco: <strong>${rastro.auditoria_corrupcao.tipo_risco}</strong> • Encaminhar denúncia aos órgãos de controle (TCU / CGU / MPF)
+            <div class="text-xs text-red-800 font-mono font-semibold pt-1 border-t border-red-200">
+              <strong>⚖️ Enquadramento Legal:</strong> ${legal.fundamentoCompleto}
             </div>
           </div>
         ` : ''}
+
+        <!-- GERADOR AUTOMÁTICO DE REPRESENTAÇÃO / NOTÍCIA DE FATO (ZERO ATRITO PARA O CIDADÃO) -->
+        <div class="bg-white border-2 border-[#002776] p-4 rounded-xl space-y-3 shadow-xs">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <div class="text-xs font-extrabold uppercase tracking-wider text-[#002776]">
+                ⚡ Passo 2 & 3: Peça de Denúncia Pronta para Protocolo
+              </div>
+              <p class="text-xs text-slate-600">
+                Copie a Notícia de Fato abaixo (já com base legal e Hash SHA-256) e cole no canal oficial escolhido:
+              </p>
+            </div>
+            <button type="button" id="btnCopiarPeticao" onclick="copiarPeticaoAtual()" class="min-h-10 px-4 py-2 bg-[#dc2626] hover:bg-[#b91c1c] text-white font-bold rounded-lg text-xs transition-all shadow-xs whitespace-nowrap">
+              📋 Copiar Denúncia Formal
+            </button>
+          </div>
+
+          <textarea id="textareaPeticaoLegal" readonly rows="7" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-3 font-mono text-base sm:text-xs text-slate-800 leading-relaxed focus:outline-none">${textoPeticao}</textarea>
+
+          <!-- Botões Diretos para os 3 Órgãos Públicos Responsáveis -->
+          <div class="space-y-1.5 pt-1">
+            <div class="text-xs font-bold text-slate-800">
+              Canais Oficiais de Recebimento de Denúncia (Clique para abrir o protocolo):
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+              <a href="https://www.mpf.mp.br/mpfservicos" target="_blank" rel="noopener noreferrer" class="min-h-10 px-3 py-2 bg-[#002776] hover:bg-blue-900 text-white rounded-lg text-xs font-bold flex items-center justify-center gap-1.5 transition-colors whitespace-nowrap">
+                <span>1. Protocolar no MPF</span>
+                ${svgExternalLink}
+              </a>
+              <a href="https://falabr.cgu.gov.br/" target="_blank" rel="noopener noreferrer" class="min-h-10 px-3 py-2 bg-[#00853b] hover:bg-[#006b2f] text-white rounded-lg text-xs font-bold flex items-center justify-center gap-1.5 transition-colors whitespace-nowrap">
+                <span>2. Ouvidoria CGU (Fala.BR)</span>
+                ${svgExternalLink}
+              </a>
+              <a href="https://contas.tcu.gov.br/ouvidoria/" target="_blank" rel="noopener noreferrer" class="min-h-10 px-3 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-lg text-xs font-bold flex items-center justify-center gap-1.5 transition-colors whitespace-nowrap">
+                <span>3. Denunciar ao TCU</span>
+                ${svgExternalLink}
+              </a>
+            </div>
+          </div>
+        </div>
 
         <!-- Resumo do Documento -->
         <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-2">
@@ -737,8 +846,8 @@ async function abrirModalRastreabilidade(docId) {
 
         <!-- Ação Oficial -->
         <div class="pt-1">
-          <a href="${rastro.auditoria_proveniencia.url_oficial}" target="_blank" rel="noopener noreferrer" class="min-h-11 w-full flex items-center justify-center gap-2 py-2.5 px-4 bg-[#00853b] hover:bg-[#006b2f] text-white font-bold rounded-xl transition-all shadow-xs text-xs whitespace-nowrap">
-            <span>Ver Comprovante no Portal da Transparência</span>
+          <a href="${rastro.auditoria_proveniencia.url_oficial}" target="_blank" rel="noopener noreferrer" class="min-h-11 w-full flex items-center justify-center gap-2 py-2.5 px-4 bg-slate-800 hover:bg-slate-900 text-white font-bold rounded-xl transition-all shadow-xs text-xs whitespace-nowrap">
+            <span>Conferir Registro Bruto na Fonte Oficial do Governo</span>
             ${svgExternalLink}
           </a>
         </div>
@@ -753,6 +862,31 @@ function fecharModal() {
   document.getElementById('modalRastreabilidade').classList.add('hidden');
 }
 
+function copiarPeticaoAtual() {
+  const texto = window.__ultimaPeticaoTexto || '';
+  const btn = document.getElementById('btnCopiarPeticao');
+  if (navigator.clipboard && texto) {
+    navigator.clipboard.writeText(texto).then(() => {
+      if (btn) {
+        const original = btn.innerHTML;
+        btn.innerHTML = '✓ Denúncia Copiada! Escolha o Órgão Abaixo';
+        btn.className = 'min-h-10 px-4 py-2 bg-[#00853b] text-white font-bold rounded-lg text-xs transition-all shadow-xs whitespace-nowrap';
+        setTimeout(() => {
+          btn.innerHTML = original;
+          btn.className = 'min-h-10 px-4 py-2 bg-[#dc2626] hover:bg-[#b91c1c] text-white font-bold rounded-lg text-xs transition-all shadow-xs whitespace-nowrap';
+        }, 3000);
+      }
+    });
+  } else {
+    const area = document.getElementById('textareaPeticaoLegal');
+    if (area) {
+      area.select();
+      document.execCommand('copy');
+    }
+  }
+}
+
 // Expõe funções globais para manipulação de eventos inline
 window.abrirModalRastreabilidade = abrirModalRastreabilidade;
 window.navegarParaAba = navegarParaAba;
+window.copiarPeticaoAtual = copiarPeticaoAtual;
