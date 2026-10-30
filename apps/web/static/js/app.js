@@ -71,7 +71,7 @@ function inicializarEventos() {
     navegarParaAba('tabRadarCorrupcao');
   });
 
-  // Abas de Navegação
+  // Abas de Navegação (Sidebar)
   const tabBtns = document.querySelectorAll('.tab-btn');
   tabBtns.forEach((btn) => {
     btn.addEventListener('click', () => {
@@ -79,6 +79,26 @@ function inicializarEventos() {
       navegarParaAba(targetTab);
     });
   });
+
+  // Abas da Barra Inferior Mobile
+  const mobileBtns = document.querySelectorAll('[data-mobile-tab]');
+  mobileBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const targetTab = btn.getAttribute('data-mobile-tab');
+      navegarParaAba(targetTab);
+    });
+  });
+
+  // Controle do Drawer Lateral Mobile
+  const btnAbrirSidebar = document.getElementById('btnAbrirSidebar');
+  const btnFecharSidebar = document.getElementById('btnFecharSidebar');
+  const btnMenuMobileInferior = document.getElementById('btnMenuMobileInferior');
+  const sidebarBackdrop = document.getElementById('sidebarBackdrop');
+
+  if (btnAbrirSidebar) btnAbrirSidebar.addEventListener('click', abrirSidebarMobile);
+  if (btnMenuMobileInferior) btnMenuMobileInferior.addEventListener('click', abrirSidebarMobile);
+  if (btnFecharSidebar) btnFecharSidebar.addEventListener('click', fecharSidebarMobile);
+  if (sidebarBackdrop) sidebarBackdrop.addEventListener('click', fecharSidebarMobile);
 
   // Botão Sincronizar Fontes
   document.getElementById('btnExecutarPipeline').addEventListener('click', async () => {
@@ -128,31 +148,53 @@ function inicializarEventos() {
   document.getElementById('btnFecharModalSecundario').addEventListener('click', fecharModal);
 }
 
+function abrirSidebarMobile() {
+  const sidebar = document.getElementById('appSidebar');
+  const backdrop = document.getElementById('sidebarBackdrop');
+  if (sidebar) sidebar.classList.remove('-translate-x-full');
+  if (backdrop) backdrop.classList.remove('hidden');
+}
+
+function fecharSidebarMobile() {
+  const sidebar = document.getElementById('appSidebar');
+  const backdrop = document.getElementById('sidebarBackdrop');
+  if (sidebar) sidebar.classList.add('-translate-x-full');
+  if (backdrop) backdrop.classList.add('hidden');
+}
+
 function navegarParaAba(targetTab) {
   const tabBtns = document.querySelectorAll('.tab-btn');
   tabBtns.forEach((b) => {
     const isCorrupcao = b.getAttribute('data-tab') === 'tabRadarCorrupcao';
-    b.classList.remove('active', 'border-[#002776]', 'text-[#002776]', 'bg-white', 'border-red-600', 'text-red-700', 'font-bold');
+    b.classList.remove('active', 'font-bold');
     if (!isCorrupcao) {
-      b.classList.add('border-transparent', 'text-slate-600');
+      b.classList.add('text-slate-600');
     }
   });
 
   const activeBtn = document.querySelector(`.tab-btn[data-tab="${targetTab}"]`);
   if (activeBtn) {
-    if (targetTab === 'tabRadarCorrupcao') {
-      activeBtn.classList.add('active', 'border-red-600', 'text-red-700', 'bg-red-50', 'font-bold');
-    } else {
-      activeBtn.classList.add('active', 'border-[#002776]', 'text-[#002776]', 'bg-white', 'font-bold');
-      activeBtn.classList.remove('border-transparent', 'text-slate-600');
-    }
+    activeBtn.classList.add('active', 'font-bold');
+    activeBtn.classList.remove('text-slate-600');
   }
+
+  // Sincroniza Barra Inferior Mobile
+  const mobileBtns = document.querySelectorAll('[data-mobile-tab]');
+  mobileBtns.forEach((mb) => {
+    mb.classList.remove('active');
+    if (mb.getAttribute('data-mobile-tab') === targetTab) {
+      mb.classList.add('active');
+    }
+  });
 
   document.querySelectorAll('.tab-content').forEach((sec) => sec.classList.add('hidden'));
   const targetSec = document.getElementById(targetTab);
   if (targetSec) {
     targetSec.classList.remove('hidden');
   }
+
+  // Fecha o drawer caso esteja aberto no mobile
+  fecharSidebarMobile();
 }
 
 async function carregarDadosCompletos() {
@@ -322,24 +364,26 @@ async function carregarEconomiaPlanoVsRealidade() {
       const corPct = s.alerta_grave ? 'text-red-700 font-black' : 'text-emerald-800 font-bold';
       return `
         <tr class="${linhaClasse} transition-colors">
-          <td class="py-3 px-4">
-            <div class="font-bold text-slate-900 text-balance">${s.funcao}</div>
-            <div class="text-xs text-slate-600">${s.promessa_plano}</div>
+          <td data-label="Função / Promessa" class="py-3 px-4">
+            <div>
+              <div class="font-bold text-slate-900 text-balance">${s.funcao}</div>
+              <div class="text-xs text-slate-600">${s.promessa_plano}</div>
+            </div>
           </td>
-          <td class="py-3 px-4 text-right font-mono tabular-nums font-semibold text-slate-900 whitespace-nowrap">
+          <td data-label="Planejado (LOA)" class="py-3 px-4 text-right font-mono tabular-nums font-semibold text-slate-900 whitespace-nowrap">
             ${formatarMoeda(s.orcamento_planejado_reais)}
           </td>
-          <td class="py-3 px-4 text-right font-mono tabular-nums font-bold text-emerald-800 whitespace-nowrap">
+          <td data-label="Executado" class="py-3 px-4 text-right font-mono tabular-nums font-bold text-emerald-800 whitespace-nowrap">
             ${formatarMoeda(s.executado_efetivo_reais)}
           </td>
-          <td class="py-3 px-4 text-right font-mono tabular-nums whitespace-nowrap ${corPct}">
+          <td data-label="% Entregue" class="py-3 px-4 text-right font-mono tabular-nums whitespace-nowrap ${corPct}">
             ${s.taxa_execucao_pct.toFixed(1)}%
           </td>
-          <td class="py-3 px-4 text-right font-mono tabular-nums font-bold whitespace-nowrap ${s.alerta_grave ? 'text-red-700' : 'text-amber-800'}">
+          <td data-label="Travado em RAP" class="py-3 px-4 text-right font-mono tabular-nums font-bold whitespace-nowrap ${s.alerta_grave ? 'text-red-700' : 'text-amber-800'}">
             ${formatarMoeda(s.travado_restos_a_pagar_reais)}
           </td>
-          <td class="py-3 px-4 text-xs leading-relaxed ${s.alerta_grave ? 'text-red-800 font-semibold' : 'text-slate-700'}">
-            ${s.diagnostico_auditoria}
+          <td data-label="Diagnóstico" class="py-3 px-4 text-xs leading-relaxed ${s.alerta_grave ? 'text-red-800 font-semibold' : 'text-slate-700'}">
+            <span>${s.diagnostico_auditoria}</span>
           </td>
         </tr>
       `;
@@ -418,21 +462,23 @@ async function carregarMunicipios() {
 
     tbody.innerHTML = munics.map((m) => `
       <tr class="hover:bg-slate-50 transition-colors">
-        <td class="py-3 px-4 font-semibold text-slate-900 whitespace-nowrap">
-          ${m.municipio} - <span class="text-[#002776] font-bold">${m.uf}</span>
-          <div class="text-xs text-slate-600 font-mono tabular-nums">IBGE: ${m.codigo_ibge}</div>
+        <td data-label="Município / UF" class="py-3 px-4 font-semibold text-slate-900 whitespace-nowrap">
+          <div>
+            ${m.municipio} - <span class="text-[#002776] font-bold">${m.uf}</span>
+            <div class="text-xs text-slate-600 font-mono tabular-nums">IBGE: ${m.codigo_ibge}</div>
+          </div>
         </td>
-        <td class="py-3 px-4 font-mono tabular-nums text-slate-700 text-right whitespace-nowrap">${formatarNumero(m.populacao_ibge)} hab.</td>
-        <td class="py-3 px-4 text-right">
+        <td data-label="População" class="py-3 px-4 font-mono tabular-nums text-slate-700 text-right whitespace-nowrap">${formatarNumero(m.populacao_ibge)} hab.</td>
+        <td data-label="Gasto per Capita" class="py-3 px-4 text-right">
           <div class="inline-flex items-baseline justify-end gap-1 whitespace-nowrap font-mono tabular-nums">
             <span class="font-extrabold text-sm text-emerald-800">${formatarMoeda(m.gasto_per_capita)}</span>
             <span class="text-xs font-semibold text-slate-600">/hab</span>
           </div>
         </td>
-        <td class="py-3 px-4 font-mono tabular-nums text-slate-700 text-right whitespace-nowrap">${formatarMoeda(m.gasto_saude)}</td>
-        <td class="py-3 px-4 font-mono tabular-nums text-slate-700 text-right whitespace-nowrap">${formatarMoeda(m.gasto_educacao)}</td>
-        <td class="py-3 px-4 font-mono tabular-nums font-bold text-slate-900 text-right whitespace-nowrap">${formatarMoeda(m.despesa_paga)}</td>
-        <td class="py-3 px-4 text-right">
+        <td data-label="Saúde" class="py-3 px-4 font-mono tabular-nums text-slate-700 text-right whitespace-nowrap">${formatarMoeda(m.gasto_saude)}</td>
+        <td data-label="Educação" class="py-3 px-4 font-mono tabular-nums text-slate-700 text-right whitespace-nowrap">${formatarMoeda(m.gasto_educacao)}</td>
+        <td data-label="Total Pago" class="py-3 px-4 font-mono tabular-nums font-bold text-slate-900 text-right whitespace-nowrap">${formatarMoeda(m.despesa_paga)}</td>
+        <td data-label="Comprovante" class="py-3 px-4 text-right">
           <a href="${m.fonte_url}" target="_blank" rel="noopener noreferrer" class="min-h-8 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-[#002776] border border-slate-200 rounded-lg text-xs font-bold transition-colors inline-flex items-center whitespace-nowrap">
             SICONFI ${svgExternalLink}
           </a>
@@ -494,16 +540,16 @@ async function carregarTopFornecedores() {
 
     tbody.innerHTML = fornecedores.map((f) => `
       <tr class="hover:bg-slate-50 transition-colors">
-        <td class="py-3 px-4 font-semibold text-slate-900">${f.nome}</td>
-        <td class="py-3 px-4 font-mono tabular-nums text-slate-700 whitespace-nowrap">${f.documento}</td>
-        <td class="py-3 px-4 whitespace-nowrap">
+        <td data-label="Credor / Nome" class="py-3 px-4 font-semibold text-slate-900"><span>${f.nome}</span></td>
+        <td data-label="CNPJ / CPF" class="py-3 px-4 font-mono tabular-nums text-slate-700 whitespace-nowrap">${f.documento}</td>
+        <td data-label="Tipo" class="py-3 px-4 whitespace-nowrap">
           <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-slate-100 text-slate-700 border border-slate-200 whitespace-nowrap">
             ${f.tipo}
           </span>
         </td>
-        <td class="py-3 px-4 text-right font-mono tabular-nums text-slate-700 whitespace-nowrap">${f.qtd_pagamentos}</td>
-        <td class="py-3 px-4 text-right font-mono tabular-nums font-bold text-emerald-800 whitespace-nowrap">${formatarMoeda(f.total_recebido)}</td>
-        <td class="py-3 px-4 text-right">
+        <td data-label="Ordens Bancárias" class="py-3 px-4 text-right font-mono tabular-nums text-slate-700 whitespace-nowrap">${f.qtd_pagamentos}</td>
+        <td data-label="Total Recebido" class="py-3 px-4 text-right font-mono tabular-nums font-bold text-emerald-800 whitespace-nowrap">${formatarMoeda(f.total_recebido)}</td>
+        <td data-label="Rastrear" class="py-3 px-4 text-right">
           <a href="${f.url_comprovante}" target="_blank" rel="noopener noreferrer" class="min-h-8 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-[#002776] border border-slate-200 rounded-lg text-xs font-bold transition-colors inline-flex items-center whitespace-nowrap">
             Consultar ${svgExternalLink}
           </a>
@@ -550,21 +596,27 @@ async function carregarDespesasGranulares(termo = '') {
 
       return `
         <tr class="${linhaClasse} transition-colors">
-          <td class="py-3 px-4 whitespace-nowrap">
-            <span class="font-mono tabular-nums font-bold text-slate-900">${d.numero_documento}</span>
-            <div class="text-xs text-slate-600 font-mono font-semibold">${d.tipo_documento}</div>
+          <td data-label="Doc / Tipo" class="py-3 px-4 whitespace-nowrap">
+            <div>
+              <span class="font-mono tabular-nums font-bold text-slate-900">${d.numero_documento}</span>
+              <div class="text-xs text-slate-600 font-mono font-semibold">${d.tipo_documento}</div>
+            </div>
           </td>
-          <td class="py-3 px-4 font-mono tabular-nums text-slate-700 text-xs whitespace-nowrap">${d.data_evento}</td>
-          <td class="py-3 px-4">
-            <div class="font-semibold text-slate-900 text-balance">${d.orgao}</div>
-            <div class="text-xs text-slate-600 line-clamp-1">${d.unidade_gestora}</div>
+          <td data-label="Data" class="py-3 px-4 font-mono tabular-nums text-slate-700 text-xs whitespace-nowrap">${d.data_evento}</td>
+          <td data-label="Órgão / UG" class="py-3 px-4">
+            <div>
+              <div class="font-semibold text-slate-900 text-balance">${d.orgao}</div>
+              <div class="text-xs text-slate-600 line-clamp-1">${d.unidade_gestora}</div>
+            </div>
           </td>
-          <td class="py-3 px-4">
-            <div class="font-semibold text-slate-900">${d.favorecido_nome}</div>
-            <div class="text-xs text-amber-800 font-mono tabular-nums whitespace-nowrap">${d.favorecido_documento}</div>
+          <td data-label="Favorecido" class="py-3 px-4">
+            <div>
+              <div class="font-semibold text-slate-900">${d.favorecido_nome}</div>
+              <div class="text-xs text-amber-800 font-mono tabular-nums whitespace-nowrap">${d.favorecido_documento}</div>
+            </div>
           </td>
-          <td class="py-3 px-4">
-            <div class="flex items-center gap-1.5 flex-wrap">
+          <td data-label="Fase & Alerta" class="py-3 px-4">
+            <div class="flex items-center justify-end md:justify-start gap-1.5 flex-wrap">
               <span class="badge-fase ${badgeClass}">${d.fase_despesa}</span>
               ${d.is_transferencia ? '<span class="badge-fase badge-repasse">REPASSE</span>' : ''}
               ${d.alerta_corrupcao ? `
@@ -575,10 +627,10 @@ async function carregarDespesasGranulares(termo = '') {
               ` : ''}
             </div>
           </td>
-          <td class="py-3 px-4 text-right font-mono tabular-nums font-bold whitespace-nowrap ${d.alerta_corrupcao ? 'text-red-700' : 'text-emerald-800'}">
+          <td data-label="Valor Líquido" class="py-3 px-4 text-right font-mono tabular-nums font-bold whitespace-nowrap ${d.alerta_corrupcao ? 'text-red-700' : 'text-emerald-800'}">
             ${formatarMoeda(d.valor_liquido_reais)}
           </td>
-          <td class="py-3 px-4 text-right">
+          <td data-label="Proveniência" class="py-3 px-4 text-right">
             <button onclick="abrirModalRastreabilidade('${d.numero_documento}')" class="min-h-8 px-3 py-1.5 ${d.alerta_corrupcao ? 'bg-[#dc2626] hover:bg-[#b91c1c] text-white border-red-600' : 'bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border-emerald-300'} border rounded-lg text-xs font-bold transition-colors whitespace-nowrap">
               ${d.alerta_corrupcao ? 'Auditar' : 'Rastrear'}
             </button>

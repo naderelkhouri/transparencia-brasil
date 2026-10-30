@@ -192,16 +192,19 @@ h4 {
   background-color: #f8fafc;
 }
 
-/* Abas de Navegação (Touch Target >= 36px + whitespace-nowrap) */
+/* Abas e Navegação Sidebar / Bottom Bar (Touch Target >= 44px + whitespace-nowrap) */
 .tab-btn {
-  border-bottom: 2px solid transparent;
+  border-left: 3px solid transparent;
   color: var(--br-texto-apoio);
-  padding: 0.625rem 1rem;
-  min-height: 2.5rem; /* 40px touch safety zone */
+  padding: 0.625rem 0.875rem;
+  min-height: 2.75rem; /* 44px thumb safety zone */
   font-size: 0.8125rem;
   font-weight: 600;
   white-space: nowrap;
+  border-radius: 0.5rem;
   transition: all 0.15s ease-in-out;
+  width: 100%;
+  text-align: left;
 }
 
 .tab-btn:hover {
@@ -210,14 +213,16 @@ h4 {
 }
 
 .tab-btn.active {
-  border-bottom-color: var(--br-azul-institucional);
+  border-left-color: var(--br-azul-institucional);
   color: var(--br-azul-institucional);
-  background-color: var(--br-superficie);
+  background-color: #eff6ff;
+  font-weight: 700;
 }
 
 .tab-btn-corrupcao {
   color: var(--corrupcao-vermelho-texto);
   background-color: var(--corrupcao-vermelho-superficie);
+  border-left-color: var(--corrupcao-vermelho);
 }
 
 .tab-btn-corrupcao:hover {
@@ -226,9 +231,81 @@ h4 {
 }
 
 .tab-btn-corrupcao.active {
-  border-bottom-color: var(--corrupcao-vermelho) !important;
+  border-left-color: var(--corrupcao-vermelho) !important;
   color: var(--corrupcao-vermelho-texto) !important;
-  background-color: var(--corrupcao-vermelho-superficie) !important;
+  background-color: #fee2e2 !important;
+  font-weight: 800;
+}
+
+/* Botões da Barra Inferior Mobile (5 itens ergonômicos) */
+.mobile-bottom-btn {
+  min-height: 3.25rem; /* 52px thumb target */
+  color: var(--br-texto-apoio);
+  font-size: 0.75rem; /* 12px mínimo */
+  font-weight: 600;
+  white-space: nowrap;
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.mobile-bottom-btn.active {
+  color: var(--br-azul-institucional);
+  font-weight: 800;
+}
+
+.mobile-bottom-btn-corrupcao.active {
+  color: var(--corrupcao-vermelho-texto) !important;
+  background-color: var(--corrupcao-vermelho-superficie);
+  font-weight: 800;
+}
+
+/* Tabelas Responsivas: Card Layout no Mobile (< 768px) e Tabela no Desktop (>= 768px) */
+@media (max-width: 767px) {
+  .tabela-responsiva thead {
+    display: none;
+  }
+  .tabela-responsiva,
+  .tabela-responsiva tbody,
+  .tabela-responsiva tr,
+  .tabela-responsiva td {
+    display: block;
+    width: 100%;
+  }
+  .tabela-responsiva tr {
+    background-color: var(--br-superficie);
+    border: 1px solid var(--br-borda);
+    border-radius: 0.75rem;
+    padding: 0.75rem 0.875rem;
+    margin-bottom: 0.75rem;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
+  }
+  .tabela-responsiva tr.linha-corrupcao {
+    background-color: #fef2f2 !important;
+    border-color: var(--corrupcao-vermelho-borda) !important;
+  }
+  .tabela-responsiva td {
+    padding: 0.375rem 0 !important;
+    border-bottom: 1px dashed #e2e8f0;
+    text-align: right !important;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.75rem;
+    white-space: normal !important;
+  }
+  .tabela-responsiva td:last-child {
+    border-bottom: none;
+    padding-bottom: 0.125rem !important;
+  }
+  .tabela-responsiva td::before {
+    content: attr(data-label);
+    font-size: 0.75rem; /* 12px mínimo */
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--br-texto-apoio);
+    text-align: left;
+    flex-shrink: 0;
+  }
 }
 
 /* ==========================================================================
