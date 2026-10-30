@@ -47,9 +47,27 @@
   --corrupcao-vermelho-texto: #991b1b;
 }
 
-/* Reset e Escala Tipográfica Rigorosa */
+/* Reset e Escala Tipográfica Rigorosa (Mobile Typography & Readability Contract) */
 *, *::before, *::after {
   box-sizing: border-box;
+}
+
+html, body {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* Safe area utilities para iPhone / Android gesture bars */
+.safe-area-bottom {
+  padding-bottom: max(env(safe-area-inset-bottom), 16px);
+}
+.safe-area-top {
+  padding-top: max(env(safe-area-inset-top), 16px);
+}
+
+/* Balanceamento harmônico de títulos e cabeçalhos contra palavras órfãs */
+.text-balance {
+  text-wrap: balance;
 }
 
 body {
@@ -70,6 +88,7 @@ h1 {
   line-height: 1.2;
   letter-spacing: -0.025em;
   color: var(--br-texto-primario);
+  text-wrap: balance;
   margin: 0;
 }
 
@@ -79,6 +98,7 @@ h2 {
   line-height: 1.25;
   letter-spacing: -0.02em;
   color: var(--br-texto-primario);
+  text-wrap: balance;
   margin: 0;
 }
 
@@ -88,6 +108,7 @@ h3 {
   line-height: 1.35;
   letter-spacing: -0.01em;
   color: var(--br-texto-primario);
+  text-wrap: balance;
   margin: 0;
 }
 
@@ -96,6 +117,7 @@ h4 {
   font-weight: 600;
   line-height: 1.4;
   color: var(--br-texto-primario);
+  text-wrap: balance;
   margin: 0;
 }
 
@@ -150,7 +172,7 @@ h4 {
 .tabela-limpa th {
   padding: 0.75rem 1rem;
   text-align: left;
-  font-size: 0.6875rem;
+  font-size: 0.75rem; /* 12px mínimo (Mobile Typography Contract) */
   font-weight: 700;
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -170,13 +192,15 @@ h4 {
   background-color: #f8fafc;
 }
 
-/* Abas de Navegação */
+/* Abas de Navegação (Touch Target >= 36px + whitespace-nowrap) */
 .tab-btn {
   border-bottom: 2px solid transparent;
   color: var(--br-texto-apoio);
   padding: 0.625rem 1rem;
+  min-height: 2.5rem; /* 40px touch safety zone */
   font-size: 0.8125rem;
   font-weight: 600;
+  white-space: nowrap;
   transition: all 0.15s ease-in-out;
 }
 
@@ -230,6 +254,7 @@ h4 {
   color: var(--corrupcao-vermelho-texto);
   border: 1px solid var(--corrupcao-vermelho-borda);
   font-family: var(--font-mono);
+  font-size: 0.75rem; /* 12px mínimo */
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -238,6 +263,7 @@ h4 {
   display: inline-flex;
   align-items: center;
   gap: 5px;
+  white-space: nowrap;
 }
 
 /* Linha da Tabela sob Alerta de Corrupção */
@@ -250,11 +276,11 @@ h4 {
   background-color: #fee2e2 !important;
 }
 
-/* Badges das Fases Orçamentárias em Fundo Claro */
+/* Badges das Fases Orçamentárias em Fundo Claro (12px mínimo + nowrap) */
 .badge-fase {
   padding: 2px 8px;
   border-radius: 9999px;
-  font-size: 10px;
+  font-size: 0.75rem; /* 12px mínimo (Mobile Typography Contract) */
   font-weight: 700;
   font-family: var(--font-mono);
   text-transform: uppercase;
@@ -262,6 +288,7 @@ h4 {
   display: inline-flex;
   align-items: center;
   gap: 4px;
+  white-space: nowrap;
 }
 
 .badge-pagamento {

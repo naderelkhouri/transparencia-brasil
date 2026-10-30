@@ -54,15 +54,15 @@ function inicializarEventos() {
 
   btnCidadao.addEventListener('click', () => {
     state.modo = 'cidadao';
-    btnCidadao.className = 'px-3 py-1.5 bg-slate-900 text-white font-bold transition-colors';
-    btnAuditor.className = 'px-3 py-1.5 bg-white text-slate-600 hover:text-slate-900 transition-colors';
+    btnCidadao.className = 'min-h-9 px-3 py-1.5 bg-slate-900 text-white font-bold transition-colors whitespace-nowrap';
+    btnAuditor.className = 'min-h-9 px-3 py-1.5 bg-white text-slate-700 hover:text-slate-900 font-semibold transition-colors whitespace-nowrap';
     funilSection.classList.add('hidden');
   });
 
   btnAuditor.addEventListener('click', () => {
     state.modo = 'auditor';
-    btnAuditor.className = 'px-3 py-1.5 bg-[#002776] text-white font-bold transition-colors';
-    btnCidadao.className = 'px-3 py-1.5 bg-white text-slate-600 hover:text-slate-900 transition-colors';
+    btnAuditor.className = 'min-h-9 px-3 py-1.5 bg-[#002776] text-white font-bold transition-colors whitespace-nowrap';
+    btnCidadao.className = 'min-h-9 px-3 py-1.5 bg-white text-slate-700 hover:text-slate-900 font-semibold transition-colors whitespace-nowrap';
     funilSection.classList.remove('hidden');
   });
 
@@ -226,35 +226,35 @@ async function carregarAlertasCorrupcao() {
       return `
         <div class="bg-white border border-red-200 hover:border-red-400 rounded-xl p-4 flex flex-col justify-between space-y-3 transition-all shadow-xs">
           <div class="space-y-2">
-            <div class="flex items-center justify-between text-[11px]">
+            <div class="flex items-center justify-between gap-2 text-xs">
               <span class="badge-corrupcao">
                 ${svgAlertTriangle}
                 <span>#${idx + 1} • ${badgeRisco}</span>
               </span>
-              <span class="text-red-700 font-mono text-[10px] tabular-nums font-semibold">${a.data_evento}</span>
+              <span class="text-red-800 font-mono text-xs tabular-nums font-bold whitespace-nowrap">${a.data_evento}</span>
             </div>
 
             <div class="pt-1">
-              <div class="text-[10px] uppercase tracking-wider text-red-700 font-bold">Valor sob Suspeita</div>
-              <div class="text-xl font-black font-mono tabular-nums text-red-700">${formatarMoeda(a.valor_liquido_reais)}</div>
+              <div class="text-xs uppercase tracking-wider text-red-800 font-bold">Valor sob Suspeita</div>
+              <div class="text-xl font-black font-mono tabular-nums text-red-700 whitespace-nowrap">${formatarMoeda(a.valor_liquido_reais)}</div>
             </div>
 
             <p class="text-xs text-slate-700 leading-relaxed font-medium">
               ${a.motivo_corrupcao}
             </p>
 
-            <div class="text-[11px] space-y-0.5 text-slate-600">
-              <div class="font-bold text-slate-900">${a.orgao}</div>
-              <div class="text-slate-500 line-clamp-1">${a.unidade_gestora}</div>
-              <div class="font-mono text-[10px] text-amber-800 font-semibold pt-1">
-                Credor: ${a.favorecido_nome} (${a.favorecido_documento})
+            <div class="text-xs space-y-0.5 text-slate-600">
+              <div class="font-bold text-slate-900 text-balance">${a.orgao}</div>
+              <div class="text-slate-600 line-clamp-1">${a.unidade_gestora}</div>
+              <div class="font-mono text-xs text-amber-800 font-semibold pt-1">
+                Credor: ${a.favorecido_nome} <span class="whitespace-nowrap">(${a.favorecido_documento})</span>
               </div>
             </div>
           </div>
 
-          <div class="border-t border-red-100 pt-3 flex items-center justify-between">
-            <span class="font-mono text-[11px] text-red-800 font-bold tabular-nums">${a.tipo_documento} nº ${a.numero_documento}</span>
-            <button onclick="abrirModalRastreabilidade('${a.numero_documento}')" class="px-3 py-1.5 bg-[#dc2626] hover:bg-[#b91c1c] text-white rounded-lg text-xs font-bold transition-all shadow-xs">
+          <div class="border-t border-red-100 pt-3 flex items-center justify-between gap-2">
+            <span class="font-mono text-xs text-red-800 font-bold tabular-nums whitespace-nowrap">${a.tipo_documento} nº ${a.numero_documento}</span>
+            <button onclick="abrirModalRastreabilidade('${a.numero_documento}')" class="min-h-9 px-3.5 py-1.5 bg-[#dc2626] hover:bg-[#b91c1c] text-white rounded-lg text-xs font-bold transition-all shadow-xs whitespace-nowrap">
               Auditar
             </button>
           </div>
@@ -281,31 +281,31 @@ async function carregarEconomiaPlanoVsRealidade() {
     gridMacro.innerHTML = macro.map((m) => `
       <div class="bg-white border border-red-200 rounded-xl p-4 flex flex-col justify-between space-y-3 shadow-xs">
         <div class="space-y-2">
-          <div class="flex items-center justify-between text-[10px]">
+          <div class="flex items-center justify-between gap-2 text-xs">
             <span class="badge-corrupcao">${svgAlertTriangle}<span>DESVIO DE META</span></span>
-            <span class="font-mono text-slate-600 tabular-nums">${m.data_referencia}</span>
+            <span class="font-mono text-xs font-semibold text-slate-600 tabular-nums whitespace-nowrap">${m.data_referencia}</span>
           </div>
-          <h4 class="text-xs font-bold text-slate-900 leading-snug">${m.indicador}</h4>
-          <div class="space-y-1 pt-1 text-xs">
-            <div class="flex items-center justify-between">
-              <span class="text-slate-600">Plano Prometido:</span>
-              <span class="font-mono font-semibold text-emerald-800 tabular-nums">${m.plano_prometido}</span>
+          <h4 class="text-sm font-bold text-slate-900 leading-snug text-balance">${m.indicador}</h4>
+          <div class="space-y-1.5 pt-1 text-xs">
+            <div class="flex items-baseline justify-between gap-2">
+              <span class="text-slate-600 font-medium">Plano Prometido:</span>
+              <span class="font-mono font-bold text-emerald-800 tabular-nums whitespace-nowrap">${m.plano_prometido}</span>
             </div>
-            <div class="flex items-center justify-between">
-              <span class="text-slate-600">Realidade em Prática:</span>
-              <span class="font-mono font-black text-red-700 tabular-nums text-sm">${m.realidade_pratica}</span>
+            <div class="flex items-baseline justify-between gap-2">
+              <span class="text-slate-600 font-medium">Realidade em Prática:</span>
+              <span class="font-mono font-black text-red-700 tabular-nums text-sm whitespace-nowrap">${m.realidade_pratica}</span>
             </div>
-            <div class="text-[11px] font-mono font-bold text-red-800 pt-0.5">
+            <div class="text-xs font-mono font-bold text-red-800 pt-0.5">
               ${m.desvio_critico}
             </div>
           </div>
-          <p class="text-[11px] text-slate-700 leading-relaxed pt-1">
+          <p class="text-xs text-slate-700 leading-relaxed pt-1">
             ${m.impacto_real}
           </p>
         </div>
-        <div class="border-t border-red-100 pt-2 flex items-center justify-between text-[10px]">
-          <span class="font-mono text-slate-600 truncate max-w-[180px]">${m.fonte_oficial}</span>
-          <a href="${m.url_comprovante}" target="_blank" rel="noopener noreferrer" class="text-[#002776] font-bold hover:underline inline-flex items-center">
+        <div class="border-t border-red-100 pt-2.5 flex items-center justify-between gap-2 text-xs">
+          <span class="font-mono text-xs text-slate-600 truncate max-w-[180px]">${m.fonte_oficial}</span>
+          <a href="${m.url_comprovante}" target="_blank" rel="noopener noreferrer" class="min-h-8 px-2 py-1 text-[#002776] font-bold hover:underline inline-flex items-center whitespace-nowrap">
             Fonte Oficial ${svgExternalLink}
           </a>
         </div>
@@ -323,22 +323,22 @@ async function carregarEconomiaPlanoVsRealidade() {
       return `
         <tr class="${linhaClasse} transition-colors">
           <td class="py-3 px-4">
-            <div class="font-bold text-slate-900">${s.funcao}</div>
-            <div class="text-[11px] text-slate-600">${s.promessa_plano}</div>
+            <div class="font-bold text-slate-900 text-balance">${s.funcao}</div>
+            <div class="text-xs text-slate-600">${s.promessa_plano}</div>
           </td>
-          <td class="py-3 px-4 text-right font-mono tabular-nums font-semibold text-slate-900">
+          <td class="py-3 px-4 text-right font-mono tabular-nums font-semibold text-slate-900 whitespace-nowrap">
             ${formatarMoeda(s.orcamento_planejado_reais)}
           </td>
-          <td class="py-3 px-4 text-right font-mono tabular-nums font-bold text-emerald-800">
+          <td class="py-3 px-4 text-right font-mono tabular-nums font-bold text-emerald-800 whitespace-nowrap">
             ${formatarMoeda(s.executado_efetivo_reais)}
           </td>
-          <td class="py-3 px-4 text-right font-mono tabular-nums ${corPct}">
+          <td class="py-3 px-4 text-right font-mono tabular-nums whitespace-nowrap ${corPct}">
             ${s.taxa_execucao_pct.toFixed(1)}%
           </td>
-          <td class="py-3 px-4 text-right font-mono tabular-nums font-bold ${s.alerta_grave ? 'text-red-700' : 'text-amber-800'}">
+          <td class="py-3 px-4 text-right font-mono tabular-nums font-bold whitespace-nowrap ${s.alerta_grave ? 'text-red-700' : 'text-amber-800'}">
             ${formatarMoeda(s.travado_restos_a_pagar_reais)}
           </td>
-          <td class="py-3 px-4 text-xs ${s.alerta_grave ? 'text-red-800 font-semibold' : 'text-slate-700'}">
+          <td class="py-3 px-4 text-xs leading-relaxed ${s.alerta_grave ? 'text-red-800 font-semibold' : 'text-slate-700'}">
             ${s.diagnostico_auditoria}
           </td>
         </tr>
@@ -357,27 +357,27 @@ async function carregarOrgaos() {
     const orgaos = await res.json();
 
     if (!orgaos || orgaos.length === 0) {
-      container.innerHTML = '<div class="py-4 text-center text-xs text-slate-400">Nenhum órgão registrado.</div>';
+      container.innerHTML = '<div class="py-4 text-center text-xs text-slate-500">Nenhum órgão registrado.</div>';
       return;
     }
 
     container.innerHTML = orgaos.map((org, idx) => `
-      <div class="py-3 flex items-center justify-between text-xs hover:bg-slate-50 px-2 rounded-lg transition-colors">
+      <div class="py-3 flex items-center justify-between gap-3 text-xs hover:bg-slate-50 px-2 rounded-lg transition-colors">
         <div class="flex items-center gap-3">
-          <span class="w-6 h-6 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center font-bold text-[#002776] text-[11px] font-mono tabular-nums">
+          <span class="w-7 h-7 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center font-bold text-[#002776] text-xs font-mono tabular-nums shrink-0">
             ${idx + 1}
           </span>
           <div>
-            <div class="font-bold text-slate-900">${org.nome}</div>
-            <div class="text-[11px] text-slate-500 flex items-center gap-2">
-              <span>Cód: ${org.codigo}</span>
-              ${org.total_repasses > 0 ? `<span class="text-sky-700 font-medium">• Repasses: ${formatarMoeda(org.total_repasses)}</span>` : ''}
+            <div class="font-bold text-slate-900 text-balance">${org.nome}</div>
+            <div class="text-xs text-slate-600 flex items-center gap-2 flex-wrap">
+              <span class="whitespace-nowrap">Cód: ${org.codigo}</span>
+              ${org.total_repasses > 0 ? `<span class="text-sky-800 font-semibold whitespace-nowrap">• Repasses: ${formatarMoeda(org.total_repasses)}</span>` : ''}
             </div>
           </div>
         </div>
-        <div class="text-right">
+        <div class="text-right shrink-0 whitespace-nowrap">
           <div class="font-bold font-mono tabular-nums text-emerald-800">${formatarMoeda(org.total_pago)}</div>
-          <div class="text-[10px] text-slate-400 tabular-nums">${org.qtd_documentos} docs</div>
+          <div class="text-xs text-slate-600 font-semibold tabular-nums">${org.qtd_documentos} docs</div>
         </div>
       </div>
     `).join('');
@@ -395,9 +395,9 @@ async function carregarFuncoes() {
 
     container.innerHTML = funcoes.map((f) => `
       <div class="space-y-1 text-xs">
-        <div class="flex justify-between items-center text-slate-700">
+        <div class="flex justify-between items-baseline gap-2 text-slate-700">
           <span class="font-semibold text-slate-900">${f.funcao}</span>
-          <span class="font-mono tabular-nums text-slate-900 font-bold">${formatarMoeda(f.total_reais)} <span class="text-[#002776] text-[11px]">(${f.percentual}%)</span></span>
+          <span class="font-mono tabular-nums text-slate-900 font-bold whitespace-nowrap">${formatarMoeda(f.total_reais)} <span class="text-[#002776] text-xs font-bold">(${f.percentual}%)</span></span>
         </div>
         <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden border border-slate-200">
           <div class="bg-[#00853b] h-2 rounded-full" style="width: ${Math.min(100, f.percentual)}%"></div>
@@ -418,17 +418,22 @@ async function carregarMunicipios() {
 
     tbody.innerHTML = munics.map((m) => `
       <tr class="hover:bg-slate-50 transition-colors">
-        <td class="py-3 px-4 font-semibold text-slate-900">
+        <td class="py-3 px-4 font-semibold text-slate-900 whitespace-nowrap">
           ${m.municipio} - <span class="text-[#002776] font-bold">${m.uf}</span>
-          <div class="text-[10px] text-slate-500 font-mono tabular-nums">IBGE: ${m.codigo_ibge}</div>
+          <div class="text-xs text-slate-600 font-mono tabular-nums">IBGE: ${m.codigo_ibge}</div>
         </td>
-        <td class="py-3 px-4 font-mono tabular-nums text-slate-700 text-right">${formatarNumero(m.populacao_ibge)} hab.</td>
-        <td class="py-3 px-4 font-mono tabular-nums font-bold text-emerald-800 text-right">${formatarMoeda(m.gasto_per_capita)} / hab</td>
-        <td class="py-3 px-4 font-mono tabular-nums text-slate-600 text-right">${formatarMoeda(m.gasto_saude)}</td>
-        <td class="py-3 px-4 font-mono tabular-nums text-slate-600 text-right">${formatarMoeda(m.gasto_educacao)}</td>
-        <td class="py-3 px-4 font-mono tabular-nums font-semibold text-slate-900 text-right">${formatarMoeda(m.despesa_paga)}</td>
+        <td class="py-3 px-4 font-mono tabular-nums text-slate-700 text-right whitespace-nowrap">${formatarNumero(m.populacao_ibge)} hab.</td>
         <td class="py-3 px-4 text-right">
-          <a href="${m.fonte_url}" target="_blank" rel="noopener noreferrer" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-[#002776] border border-slate-200 rounded text-[11px] font-semibold transition-colors inline-flex items-center">
+          <div class="inline-flex items-baseline justify-end gap-1 whitespace-nowrap font-mono tabular-nums">
+            <span class="font-extrabold text-sm text-emerald-800">${formatarMoeda(m.gasto_per_capita)}</span>
+            <span class="text-xs font-semibold text-slate-600">/hab</span>
+          </div>
+        </td>
+        <td class="py-3 px-4 font-mono tabular-nums text-slate-700 text-right whitespace-nowrap">${formatarMoeda(m.gasto_saude)}</td>
+        <td class="py-3 px-4 font-mono tabular-nums text-slate-700 text-right whitespace-nowrap">${formatarMoeda(m.gasto_educacao)}</td>
+        <td class="py-3 px-4 font-mono tabular-nums font-bold text-slate-900 text-right whitespace-nowrap">${formatarMoeda(m.despesa_paga)}</td>
+        <td class="py-3 px-4 text-right">
+          <a href="${m.fonte_url}" target="_blank" rel="noopener noreferrer" class="min-h-8 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-[#002776] border border-slate-200 rounded-lg text-xs font-bold transition-colors inline-flex items-center whitespace-nowrap">
             SICONFI ${svgExternalLink}
           </a>
         </td>
@@ -449,27 +454,27 @@ async function carregarContratosPNCP() {
     container.innerHTML = contratos.map((c) => `
       <div class="bg-white border border-slate-200 rounded-xl p-4 flex flex-col justify-between space-y-3 hover:border-slate-300 transition-all shadow-xs">
         <div class="space-y-2">
-          <div class="flex items-center justify-between text-[11px]">
-            <span class="px-2 py-0.5 rounded bg-slate-100 text-[#002776] border border-slate-200 font-mono tabular-nums font-semibold">
+          <div class="flex items-center justify-between gap-2 text-xs">
+            <span class="px-2 py-0.5 rounded bg-slate-100 text-[#002776] border border-slate-200 font-mono tabular-nums font-bold whitespace-nowrap">
               Contrato nº ${c.numero_contrato}
             </span>
-            <span class="text-slate-500 font-mono text-[10px] tabular-nums">${c.vigencia_inicio} a ${c.vigencia_fim}</span>
+            <span class="text-slate-600 font-mono text-xs font-semibold tabular-nums whitespace-nowrap">${c.vigencia_inicio} a ${c.vigencia_fim}</span>
           </div>
-          <h4 class="text-xs font-semibold text-slate-900 line-clamp-2 leading-snug">
+          <h4 class="text-sm font-bold text-slate-900 line-clamp-2 leading-snug text-balance">
             ${c.objeto}
           </h4>
-          <div class="text-[11px] text-slate-600">
-            <span class="block text-slate-900 font-medium">${c.orgao_nome}</span>
-            <span class="block text-amber-800 font-mono text-[10px]">Credor: ${c.fornecedor_razao_social}</span>
+          <div class="text-xs text-slate-600 space-y-0.5">
+            <span class="block text-slate-900 font-semibold text-balance">${c.orgao_nome}</span>
+            <span class="block text-amber-800 font-mono text-xs font-semibold">Credor: ${c.fornecedor_razao_social}</span>
           </div>
         </div>
 
-        <div class="border-t border-slate-100 pt-2 flex items-center justify-between">
-          <div>
-            <div class="text-[10px] uppercase text-slate-500">Homologado</div>
-            <div class="text-sm font-bold font-mono tabular-nums text-emerald-800">${formatarMoeda(c.valor_homologado)}</div>
+        <div class="border-t border-slate-100 pt-2.5 flex items-center justify-between gap-2">
+          <div class="whitespace-nowrap">
+            <div class="text-xs font-bold uppercase tracking-wider text-slate-600">Homologado</div>
+            <div class="text-sm sm:text-base font-extrabold font-mono tabular-nums text-emerald-800">${formatarMoeda(c.valor_homologado)}</div>
           </div>
-          <a href="${c.url_oficial}" target="_blank" rel="noopener noreferrer" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-[#002776] border border-slate-200 rounded text-[11px] font-bold transition-colors inline-flex items-center">
+          <a href="${c.url_oficial}" target="_blank" rel="noopener noreferrer" class="min-h-8 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-[#002776] border border-slate-200 rounded-lg text-xs font-bold transition-colors inline-flex items-center whitespace-nowrap">
             Ver PNCP ${svgExternalLink}
           </a>
         </div>
@@ -490,16 +495,16 @@ async function carregarTopFornecedores() {
     tbody.innerHTML = fornecedores.map((f) => `
       <tr class="hover:bg-slate-50 transition-colors">
         <td class="py-3 px-4 font-semibold text-slate-900">${f.nome}</td>
-        <td class="py-3 px-4 font-mono tabular-nums text-slate-600">${f.documento}</td>
-        <td class="py-3 px-4">
-          <span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-slate-100 text-slate-700 border border-slate-200">
+        <td class="py-3 px-4 font-mono tabular-nums text-slate-700 whitespace-nowrap">${f.documento}</td>
+        <td class="py-3 px-4 whitespace-nowrap">
+          <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-slate-100 text-slate-700 border border-slate-200 whitespace-nowrap">
             ${f.tipo}
           </span>
         </td>
-        <td class="py-3 px-4 text-right font-mono tabular-nums text-slate-700">${f.qtd_pagamentos}</td>
-        <td class="py-3 px-4 text-right font-mono tabular-nums font-bold text-emerald-800">${formatarMoeda(f.total_recebido)}</td>
+        <td class="py-3 px-4 text-right font-mono tabular-nums text-slate-700 whitespace-nowrap">${f.qtd_pagamentos}</td>
+        <td class="py-3 px-4 text-right font-mono tabular-nums font-bold text-emerald-800 whitespace-nowrap">${formatarMoeda(f.total_recebido)}</td>
         <td class="py-3 px-4 text-right">
-          <a href="${f.url_comprovante}" target="_blank" rel="noopener noreferrer" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-[#002776] border border-slate-200 rounded text-[11px] font-semibold transition-colors inline-flex items-center">
+          <a href="${f.url_comprovante}" target="_blank" rel="noopener noreferrer" class="min-h-8 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-[#002776] border border-slate-200 rounded-lg text-xs font-bold transition-colors inline-flex items-center whitespace-nowrap">
             Consultar ${svgExternalLink}
           </a>
         </td>
@@ -545,36 +550,36 @@ async function carregarDespesasGranulares(termo = '') {
 
       return `
         <tr class="${linhaClasse} transition-colors">
-          <td class="py-3 px-4">
+          <td class="py-3 px-4 whitespace-nowrap">
             <span class="font-mono tabular-nums font-bold text-slate-900">${d.numero_documento}</span>
-            <div class="text-[10px] text-slate-500 font-mono">${d.tipo_documento}</div>
+            <div class="text-xs text-slate-600 font-mono font-semibold">${d.tipo_documento}</div>
           </td>
-          <td class="py-3 px-4 font-mono tabular-nums text-slate-600 text-[11px]">${d.data_evento}</td>
+          <td class="py-3 px-4 font-mono tabular-nums text-slate-700 text-xs whitespace-nowrap">${d.data_evento}</td>
           <td class="py-3 px-4">
-            <div class="font-semibold text-slate-900">${d.orgao}</div>
-            <div class="text-[11px] text-slate-500 line-clamp-1">${d.unidade_gestora}</div>
+            <div class="font-semibold text-slate-900 text-balance">${d.orgao}</div>
+            <div class="text-xs text-slate-600 line-clamp-1">${d.unidade_gestora}</div>
           </td>
           <td class="py-3 px-4">
             <div class="font-semibold text-slate-900">${d.favorecido_nome}</div>
-            <div class="text-[11px] text-amber-800 font-mono tabular-nums">${d.favorecido_documento}</div>
+            <div class="text-xs text-amber-800 font-mono tabular-nums whitespace-nowrap">${d.favorecido_documento}</div>
           </td>
           <td class="py-3 px-4">
             <div class="flex items-center gap-1.5 flex-wrap">
               <span class="badge-fase ${badgeClass}">${d.fase_despesa}</span>
               ${d.is_transferencia ? '<span class="badge-fase badge-repasse">REPASSE</span>' : ''}
               ${d.alerta_corrupcao ? `
-                <span class="badge-corrupcao text-[10px] font-mono">
+                <span class="badge-corrupcao text-xs font-mono">
                   ${svgAlertTriangle}
                   <span>CORRUPÇÃO / RISCO</span>
                 </span>
               ` : ''}
             </div>
           </td>
-          <td class="py-3 px-4 text-right font-mono tabular-nums font-bold ${d.alerta_corrupcao ? 'text-red-700' : 'text-emerald-800'}">
+          <td class="py-3 px-4 text-right font-mono tabular-nums font-bold whitespace-nowrap ${d.alerta_corrupcao ? 'text-red-700' : 'text-emerald-800'}">
             ${formatarMoeda(d.valor_liquido_reais)}
           </td>
           <td class="py-3 px-4 text-right">
-            <button onclick="abrirModalRastreabilidade('${d.numero_documento}')" class="px-2.5 py-1 ${d.alerta_corrupcao ? 'bg-[#dc2626] hover:bg-[#b91c1c] text-white border-red-600' : 'bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border-emerald-300'} border rounded text-[11px] font-bold transition-colors">
+            <button onclick="abrirModalRastreabilidade('${d.numero_documento}')" class="min-h-8 px-3 py-1.5 ${d.alerta_corrupcao ? 'bg-[#dc2626] hover:bg-[#b91c1c] text-white border-red-600' : 'bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border-emerald-300'} border rounded-lg text-xs font-bold transition-colors whitespace-nowrap">
               ${d.alerta_corrupcao ? 'Auditar' : 'Rastrear'}
             </button>
           </td>
@@ -615,17 +620,17 @@ async function abrirModalRastreabilidade(docId) {
         <!-- BANNER VERMELHO SE HOUVER INDÍCIO DE CORRUPÇÃO -->
         ${temAlertaCorrupcao ? `
           <div class="bg-red-50 border border-red-300 p-4 rounded-xl space-y-2 shadow-xs">
-            <div class="flex items-center justify-between text-red-800 font-extrabold text-xs uppercase tracking-wide">
+            <div class="flex items-center justify-between gap-2 text-red-800 font-extrabold text-xs uppercase tracking-wide flex-wrap">
               <span class="flex items-center gap-1.5">
                 ${svgAlertTriangle}
                 <span>INDÍCIO DE CORRUPÇÃO / IRREGULARIDADE GRAVE DETECTADO</span>
               </span>
-              <span class="text-[10px] font-mono bg-[#dc2626] text-white px-2 py-0.5 rounded font-bold">ALERTA AUDITORIA</span>
+              <span class="text-xs font-mono bg-[#dc2626] text-white px-2.5 py-0.5 rounded font-bold whitespace-nowrap">ALERTA AUDITORIA</span>
             </div>
             <p class="text-red-900 text-xs font-semibold leading-relaxed">
               ${rastro.auditoria_corrupcao.motivo}
             </p>
-            <div class="text-[10px] text-red-700 font-mono font-medium">
+            <div class="text-xs text-red-800 font-mono font-semibold">
               Classificação do Risco: <strong>${rastro.auditoria_corrupcao.tipo_risco}</strong> • Encaminhar denúncia aos órgãos de controle (TCU / CGU / MPF)
             </div>
           </div>
@@ -633,46 +638,46 @@ async function abrirModalRastreabilidade(docId) {
 
         <!-- Resumo do Documento -->
         <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-2">
-          <div class="flex items-center justify-between">
-            <span class="text-xs uppercase tracking-wider text-slate-500 font-semibold">Documento Oficial</span>
-            <span class="font-mono tabular-nums text-[#002776] font-bold">${rastro.documento.tipo} nº ${rastro.documento.numero}</span>
+          <div class="flex items-center justify-between gap-2">
+            <span class="text-xs uppercase tracking-wider text-slate-600 font-bold">Documento Oficial</span>
+            <span class="font-mono tabular-nums text-[#002776] font-bold whitespace-nowrap">${rastro.documento.tipo} nº ${rastro.documento.numero}</span>
           </div>
-          <div class="text-xl font-black ${temAlertaCorrupcao ? 'text-red-700' : 'text-emerald-800'} font-mono tabular-nums">
+          <div class="text-xl font-black ${temAlertaCorrupcao ? 'text-red-700' : 'text-emerald-800'} font-mono tabular-nums whitespace-nowrap">
             ${formatarMoeda(rastro.valor_liquido)}
           </div>
           <div class="text-xs text-slate-700">
             <strong>Fase Contábil:</strong> ${rastro.fase}
-            ${rastro.is_transferencia ? ' • <span class="text-sky-700 font-semibold">Repasse Intergovernamental (Fundo a Fundo)</span>' : ''}
+            ${rastro.is_transferencia ? ' • <span class="text-sky-800 font-semibold">Repasse Intergovernamental (Fundo a Fundo)</span>' : ''}
           </div>
         </div>
 
         <!-- Órgão e Favorecido -->
-        <div class="grid grid-cols-2 gap-3">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
-            <div class="text-[10px] uppercase text-slate-500 font-bold">Órgão Emissor</div>
-            <div class="font-semibold text-slate-900 mt-1">${rastro.orgao}</div>
-            <div class="text-[11px] text-slate-500 font-mono mt-0.5">${rastro.ug}</div>
+            <div class="text-xs uppercase tracking-wider text-slate-600 font-bold">Órgão Emissor</div>
+            <div class="font-semibold text-slate-900 mt-1 text-balance">${rastro.orgao}</div>
+            <div class="text-xs text-slate-600 font-mono mt-0.5">${rastro.ug}</div>
           </div>
           <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
-            <div class="text-[10px] uppercase text-slate-500 font-bold">Favorecido / Credor</div>
+            <div class="text-xs uppercase tracking-wider text-slate-600 font-bold">Favorecido / Credor</div>
             <div class="font-semibold text-slate-900 mt-1">${rastro.favorecido.nome}</div>
-            <div class="text-[11px] text-amber-800 font-mono tabular-nums mt-0.5">${rastro.favorecido.documento}</div>
+            <div class="text-xs text-amber-800 font-mono tabular-nums mt-0.5 whitespace-nowrap">${rastro.favorecido.documento}</div>
           </div>
         </div>
 
         <!-- Proveniência Forense & Integridade Criptográfica -->
         <div class="bg-slate-50 border border-slate-200 p-3.5 rounded-xl space-y-2">
-          <div class="flex items-center justify-between text-[#002776] text-xs font-semibold">
+          <div class="flex items-center justify-between gap-2 text-[#002776] text-xs font-bold flex-wrap">
             <span>Rastreabilidade Oficial (Lei nº 12.527 / LAI)</span>
-            <span class="text-[10px] font-mono bg-emerald-50 text-emerald-800 border border-emerald-200 px-2 py-0.5 rounded font-bold">STATUS: AUTÊNTICO</span>
+            <span class="text-xs font-mono bg-emerald-50 text-emerald-800 border border-emerald-200 px-2.5 py-0.5 rounded font-bold whitespace-nowrap">STATUS: AUTÊNTICO</span>
           </div>
-          <div class="space-y-1 text-[11px] text-slate-700">
+          <div class="space-y-1 text-xs text-slate-700">
             <div><strong>Fonte Oficial:</strong> ${rastro.auditoria_proveniencia.fonte_oficial}</div>
-            <div class="break-all font-mono text-[10px] text-slate-600">
+            <div class="break-all font-mono text-xs text-slate-600">
               <strong>Hash SHA-256 do Registro:</strong><br>
               ${rastro.auditoria_proveniencia.hash_sha256}
             </div>
-            <div class="text-slate-500 text-[10px] tabular-nums">
+            <div class="text-slate-600 text-xs tabular-nums">
               <strong>Data de Extração:</strong> ${rastro.auditoria_proveniencia.data_ingestao}
             </div>
           </div>
@@ -680,7 +685,7 @@ async function abrirModalRastreabilidade(docId) {
 
         <!-- Ação Oficial -->
         <div class="pt-1">
-          <a href="${rastro.auditoria_proveniencia.url_oficial}" target="_blank" rel="noopener noreferrer" class="w-full flex items-center justify-center gap-2 py-2.5 px-4 bg-[#00853b] hover:bg-[#006b2f] text-white font-bold rounded-xl transition-all shadow-xs text-xs">
+          <a href="${rastro.auditoria_proveniencia.url_oficial}" target="_blank" rel="noopener noreferrer" class="min-h-11 w-full flex items-center justify-center gap-2 py-2.5 px-4 bg-[#00853b] hover:bg-[#006b2f] text-white font-bold rounded-xl transition-all shadow-xs text-xs whitespace-nowrap">
             <span>Ver Comprovante no Portal da Transparência</span>
             ${svgExternalLink}
           </a>
