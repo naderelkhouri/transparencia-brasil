@@ -789,7 +789,7 @@ async function abrirModalRastreabilidade(docId) {
                 <span>2. Ouvidoria CGU (Fala.BR)</span>
                 ${svgExternalLink}
               </a>
-              <a href="https://contas.tcu.gov.br/ouvidoria/" target="_blank" rel="noopener noreferrer" class="min-h-10 px-3 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-lg text-xs font-bold flex items-center justify-center gap-1.5 transition-colors whitespace-nowrap">
+              <a href="https://portal.tcu.gov.br/ouvidoria/" target="_blank" rel="noopener noreferrer" class="min-h-10 px-3 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-lg text-xs font-bold flex items-center justify-center gap-1.5 transition-colors whitespace-nowrap">
                 <span>3. Denunciar ao TCU</span>
                 ${svgExternalLink}
               </a>
